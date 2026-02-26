@@ -1,4 +1,4 @@
-package com.bank.credit_card.domain.balance.vo;
+package com.bank.credit_card.domain.base.vo;
 
 public interface CurrencyErrorMessage {
     String CURRENCY_REQUIRED = "Currency is required";

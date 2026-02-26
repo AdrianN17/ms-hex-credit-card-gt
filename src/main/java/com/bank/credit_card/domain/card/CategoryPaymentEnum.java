@@ -1,9 +1,11 @@
-package com.bank.credit_card.domain.payment;
+package com.bank.credit_card.domain.card;
 
 public enum CategoryPaymentEnum {
 
-    MES("MES", 1),
-    TOTAL("TOTAL", 2);
+    NORMAL("NORMAL", 1),
+    TOTAL("TOTAL", 2),
+    MINIMO("MINIMO", 3),
+    ADELANTADO("ADELANTADO", 4);
 
     private final String code;
     private final int value;

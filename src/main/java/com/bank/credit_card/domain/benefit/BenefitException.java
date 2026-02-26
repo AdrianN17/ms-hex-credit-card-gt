@@ -1,16 +1,16 @@
-package com.bank.credit_card.domain.balance;
+package com.bank.credit_card.domain.benefit;
 
 import com.bank.credit_card.domain.exception.DomainException;
 
 import java.security.PrivilegedActionException;
 
-public class BalanceException extends DomainException {
+public class BenefitException extends DomainException {
     /**
      * Constructs a new exception with {@code null} as its detail message.
      * The cause is not initialized, and may subsequently be initialized by a
      * call to {@link #initCause}.
      */
-    public BalanceException() {
+    public BenefitException() {
     }
 
     /**
@@ -21,7 +21,7 @@ public class BalanceException extends DomainException {
      * @param message the detail message. The detail message is saved for
      *                later retrieval by the {@link #getMessage()} method.
      */
-    public BalanceException(String message) {
+    public BenefitException(String message) {
         super(message);
     }
 
@@ -39,7 +39,7 @@ public class BalanceException extends DomainException {
      *                unknown.)
      * @since 1.4
      */
-    public BalanceException(String message, Throwable cause) {
+    public BenefitException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -57,7 +57,7 @@ public class BalanceException extends DomainException {
      *              unknown.)
      * @since 1.4
      */
-    public BalanceException(Throwable cause) {
+    public BenefitException(Throwable cause) {
         super(cause);
     }
 
@@ -75,7 +75,7 @@ public class BalanceException extends DomainException {
      *                           be writable
      * @since 1.7
      */
-    public BalanceException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public BenefitException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

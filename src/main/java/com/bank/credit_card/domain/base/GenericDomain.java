@@ -2,7 +2,10 @@ package com.bank.credit_card.domain.base;
 
 import com.bank.credit_card.domain.exception.DomainException;
 
-public abstract class GenericDomain implements IsValid {
+import static com.bank.credit_card.domain.base.DomainErrorMessage.INVALID_ID;
+import static java.util.Objects.isNull;
+
+public abstract class GenericDomain {
 
     protected Long id;
 
@@ -21,8 +24,8 @@ public abstract class GenericDomain implements IsValid {
     }
 
     protected void isValidId(Long id) throws DomainException {
-        if (id == null || id <= 0) {
-            throw new DomainException(String.format("El id = %d no es válido", id));
+        if (isNull(id) || id <= 0) {
+            throw new DomainException(String.format(INVALID_ID, id));
         }
     }
 }

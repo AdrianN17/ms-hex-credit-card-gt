@@ -1,6 +1,6 @@
-package com.bank.credit_card.domain.balance.vo;
+package com.bank.credit_card.domain.base.vo;
 
-public interface MoneyErrorMessage {
+public interface AmountErrorMessage {
     String AMOUNT_REQUIRED = "Amount is required";
     String AMOUNT_NEGATIVE = "Amount cannot be negative";
 }

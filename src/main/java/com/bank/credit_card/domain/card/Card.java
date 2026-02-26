@@ -1,187 +1,152 @@
 package com.bank.credit_card.domain.card;
 
-import com.bank.credit_card.domain.balance.Balance;
-import com.bank.credit_card.domain.point.Point;
-import com.bank.credit_card.domain.balance.vo.Amount;
-import com.bank.credit_card.domain.balance.vo.Currency;
-import com.bank.credit_card.domain.base.CurrencyEnum;
 import com.bank.credit_card.domain.base.GenericDomain;
+import com.bank.credit_card.domain.base.vo.Amount;
+import com.bank.credit_card.domain.benefit.Benefit;
+import com.bank.credit_card.domain.benefit.vo.Point;
+import com.bank.credit_card.domain.card.vo.Consumption;
 import com.bank.credit_card.domain.card.vo.Credit;
-import com.bank.credit_card.domain.consumption.ConsumptionException;
+import com.bank.credit_card.domain.card.vo.Payment;
 import com.bank.credit_card.domain.exception.DomainException;
-import com.bank.credit_card.domain.payment.CategoryPaymentEnum;
-import com.bank.credit_card.domain.payment.PaymentException;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
-import static com.bank.credit_card.domain.card.CardConstant.OVERCHARGE_LIMIT;
+import static com.bank.credit_card.domain.card.BalanceErrorMessage.*;
 import static com.bank.credit_card.domain.card.CardErrorMessage.*;
 import static com.bank.credit_card.domain.card.CardStatusEnum.IN_DEBT;
+import static com.bank.credit_card.domain.card.CategoryPaymentEnum.ADELANTADO;
+import static com.bank.credit_card.domain.util.Validation.isConditional;
+import static com.bank.credit_card.domain.util.Validation.isNotNull;
 
 public class Card extends GenericDomain {
 
-    private TypeCardEnum typeCard;
-    private CategoryCardEnum categoryCard;
-    private Credit crediticialTotal;
+    private final TypeCardEnum typeCard;
+    private final CategoryCardEnum categoryCard;
+    private final Credit credit;
     private CardStatusEnum cardStatus;
     private Balance balance;
+    private Benefit benefit;
 
+    //agregate root
     private Card(Long id,
                  TypeCardEnum typeCard,
                  CategoryCardEnum categoryCard,
-                 Credit crediticialTotal,
+                 Credit credit,
                  CardStatusEnum cardStatus,
-                 Balance balance) throws DomainException {
+                 Balance balance,
+                 Benefit benefit) throws DomainException {
         super(id);
         this.typeCard = typeCard;
         this.categoryCard = categoryCard;
-        this.crediticialTotal = crediticialTotal;
-        this.cardStatus = cardStatus;
-        this.balance = null;
-    }
-
-    private Card(TypeCardEnum typeCard,
-                 CategoryCardEnum categoryCard,
-                 Credit crediticialTotal,
-                 CardStatusEnum cardStatus,
-                 Balance balance) throws DomainException {
-        super(null);
-        this.typeCard = typeCard;
-        this.categoryCard = categoryCard;
-        this.crediticialTotal = crediticialTotal;
+        this.credit = credit;
         this.cardStatus = cardStatus;
         this.balance = balance;
-    }
-
-    public static Card create(TypeCardEnum typeCard,
-                              CategoryCardEnum categoryCard,
-                              CurrencyEnum currency,
-                              BigDecimal crediticialTotalAmount,
-                              BigDecimal debtTax,
-                              BigDecimal exchangeRate,
-                              CardStatusEnum cardStatus,
-                              Balance balance) {
-
-        return new Card(
-                typeCard,
-                categoryCard,
-                Credit.create(Amount.create(Currency.create(currency, exchangeRate), crediticialTotalAmount), debtTax),
-                cardStatus,
-                balance);
+        this.benefit = benefit;
     }
 
     public static Card create(Long id,
                               TypeCardEnum typeCard,
                               CategoryCardEnum categoryCard,
-                              CurrencyEnum currency,
-                              BigDecimal crediticialTotalAmount,
-                              BigDecimal debtTax,
-                              BigDecimal exchangeRate,
+                              Credit credit,
                               CardStatusEnum cardStatus,
-                              Balance balance) {
+                              Balance balance,
+                              Benefit benefit) {
+
+        isNotNull(typeCard, new CardException(TYPE_CARD_CANNOT_BE_NULL));
+        isNotNull(categoryCard, new CardException(CATEGORY_CARD_CANNOT_BE_NULL));
+        isNotNull(credit, new CardException(CREDIT_CANNOT_BE_NULL));
+        isNotNull(cardStatus, new CardException(TYPE_CARD_CANNOT_BE_NULL));
+        isNotNull(balance, new CardException(BALANCE_CANNOT_BE_NULL));
+        isNotNull(benefit, new CardException(BENEFIT_CANNOT_BE_NULL));
 
         return new Card(
                 id,
                 typeCard,
                 categoryCard,
-                Credit.create(Amount.create(Currency.create(currency, exchangeRate), crediticialTotalAmount), debtTax),
+                credit,
                 cardStatus,
-                balance);
+                balance,
+                benefit);
     }
 
     public TypeCardEnum getTypeCard() {
         return typeCard;
     }
 
-    public void setTypeCard(TypeCardEnum typeCard) {
-        this.typeCard = typeCard;
-    }
-
     public CategoryCardEnum getCategoryCard() {
         return categoryCard;
     }
 
-    public void setCategoryCard(CategoryCardEnum categoryCard) {
-        this.categoryCard = categoryCard;
-    }
-
-    public Credit getCrediticialTotal() {
-        return crediticialTotal;
-    }
-
-    public void setCrediticialTotal(Credit crediticialTotal) {
-        this.crediticialTotal = crediticialTotal;
+    public Credit getCredit() {
+        return credit;
     }
 
     public Balance getBalance() {
         return balance;
     }
 
-    public void setBalance(Balance balance) {
-        this.balance = balance;
-    }
-
     public CardStatusEnum getCardStatus() {
         return cardStatus;
     }
 
-    public void setCardStatus(CardStatusEnum cardStatus) {
-        this.cardStatus = cardStatus;
+    public Benefit getBenefit() {
+        return benefit;
     }
 
-    @Override
-    public boolean valid() throws DomainException {
-        return false;
+    public Balance pagar(Payment pago) {
+
+        isNotNull(pago, new CardException(PAYMENT_CANNOT_BE_NULL));
+
+        if (Objects.equals(pago.getCategory(), ADELANTADO))
+            getBalance().pagoAdelantado(pago);
+        else
+            getBalance().pago(pago);
+
+        actualizarEstado();
+
+        if (Objects.equals(pago.getCategory(), ADELANTADO))
+            return getBalance();
+        else
+            return getBalance().nuevo();
     }
 
-    public void validarBloqueo() throws DomainException {
-        if (Objects.equals(getCardStatus(), IN_DEBT)) {
-            throw new CardException(IN_DEBT_CARD);
-        }
+    public Balance pagar(Payment pago, Point point) {
+
+        isNotNull(pago, new CardException(PAYMENT_CANNOT_BE_NULL));
+        isNotNull(point, new CardException(POINT_CANNOT_BE_NULL));
+
+        isConditional(Objects.equals(pago.getCategory(), ADELANTADO), new CardException(POINTS_CANNOT_USED_WITH_PREPAY));
+
+        getBalance().pago(benefit.descontar(pago, point));
+
+        actualizarEstado();
+
+        return getBalance().nuevo();
     }
 
-    public void pagar(Amount amount, CategoryPaymentEnum category) {
-
-        Amount totalDisponible = getBalance().getAvailable().mas(amount);
-        Amount totalBalance = getBalance().getTotal();
-
-        if (totalBalance.esIgual(totalDisponible) || !Objects.equals(category, CategoryPaymentEnum.TOTAL)) {
-            throw new PaymentException(PAYMENT_CATEGORY_NOT_SAME_AS_PAYMENT);
-        }
-
-        if (totalDisponible.estaSobrando(totalBalance)) {
-            Amount excedente = totalDisponible.menos(totalBalance);
-            throw new PaymentException(PAYMENT_CATEGORY_EXCEED_LIKE + excedente.toString());
-        }
-        balance.setAvailable(balance.getAvailable().mas(amount));
-
-        if (estaSobregirado(balance.getTotal(), balance.getAvailable())) {
-            setCardStatus(CardStatusEnum.OVERCHARGE);
-        } else {
-            setCardStatus(CardStatusEnum.OPERATIVE);
-        }
+    private void actualizarEstado() {
+        if (getBalance().estaSobregirado())
+            this.cardStatus = CardStatusEnum.OVERCHARGE;
+        else
+            this.cardStatus = CardStatusEnum.OPERATIVE;
     }
 
-    public Point consumir(Amount amount) {
-        validarBloqueo();
+    public void consumir(Amount consumo) {
 
-        Amount totalDisponible = getBalance().getAvailable().menos(amount);
+        isNotNull(consumo, new CardException(CONSUMPTION_CANNOT_BE_NULL));
 
-        if (totalDisponible.estaFaltando(getBalance().getTotal())) {
-            throw new ConsumptionException(AMOUNT_EXCEED_CREDIT_LIMIT);
-        }
+        isConditional(Objects.equals(getCardStatus(), IN_DEBT), new CardException(IN_DEBT_CARD));
 
-        balance.setAvailable(balance.getAvailable().menos(amount));
+        Amount totalDisponible = getBalance().calcularConsumo(consumo);
 
-        return Point.create(amount, getCategoryCard());
+        isConditional(totalDisponible.estaFaltando(getBalance().getTotal()), new ConsumptionException(AMOUNT_EXCEED_CREDIT_LIMIT));
+
+        getBalance().aplicarConsumo(consumo);
+
+        getBenefit().acumular(consumo, getCategoryCard());
     }
 
-
-    public Boolean estaSobregirado(Amount limiteCredito, Amount disponible) {
-        BigDecimal limiteSobregiro = limiteCredito.getAmount().multiply(OVERCHARGE_LIMIT);
-        BigDecimal limiteTotal = limiteCredito.getAmount().add(limiteSobregiro);
-
-        return disponible.getAmount().compareTo(limiteTotal) > 0;
+    public Consumption fraccionar(Consumption consumption, Integer quantity) {
+        return Consumption.create(consumption.getConsumo().fraccionar(quantity, credit.getDebtTax()));
     }
 }

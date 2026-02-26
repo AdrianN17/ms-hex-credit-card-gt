@@ -6,4 +6,11 @@ public interface CardErrorMessage {
 
     String PAYMENT_CATEGORY_NOT_SAME_AS_PAYMENT = "La categoria de pago no coincide con el monto a pagar";
     String PAYMENT_CATEGORY_EXCEED_LIKE = "El monto de pago excede en ";
+
+    String TYPE_CARD_CANNOT_BE_NULL = "Type card cannot be null";
+    String CATEGORY_CARD_CANNOT_BE_NULL = "Category card cannot be null";
+    String CREDIT_CANNOT_BE_NULL = "Credit cannot be null";
+    String BALANCE_CANNOT_BE_NULL = "Balance cannot be null";
+    String BENEFIT_CANNOT_BE_NULL = "Benefit cannot be null";
+
 }

@@ -1,4 +1,4 @@
-package com.bank.credit_card.domain.balance.vo;
+package com.bank.credit_card.domain.base.vo;
 
 public interface DateRangeErrorMessage {
     String START_DATE_AFTER_END_DATE = "La fecha de inicio no puede ser posterior a la fecha de fin.";
