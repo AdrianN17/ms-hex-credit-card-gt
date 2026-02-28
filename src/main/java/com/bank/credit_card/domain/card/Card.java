@@ -160,76 +160,76 @@ public class Card extends GenericDomain<Long> {
         return identifierId;
     }
 
-    public Balance pagar(Payment pago) {
+    public Balance pay(Payment payment) {
 
-        isNotNull(pago, new CardException(PAYMENT_CANNOT_BE_NULL));
+        isNotNull(payment, new CardException(PAYMENT_CANNOT_BE_NULL));
 
-        if (Objects.equals(pago.getCategory(), ADELANTADO))
-            getBalance().pagoAdelantado(pago);
+        if (Objects.equals(payment.getCategory(), ADELANTADO))
+            getBalance().pagoAdelantado(payment);
         else
-            getBalance().pago(pago);
+            getBalance().pay(payment);
 
-        actualizarEstado();
+        updateStatus();
 
-        if (Objects.equals(pago.getCategory(), ADELANTADO))
+        if (Objects.equals(payment.getCategory(), ADELANTADO))
             return getBalance();
         else
-            return getBalance().nuevo();
+            return getBalance().generate();
     }
 
-    public Balance pagar(Payment pago, Point point) {
+    public Balance pay(Payment payment, Point point) {
 
-        isNotNull(pago, new CardException(PAYMENT_CANNOT_BE_NULL));
+        isNotNull(payment, new CardException(PAYMENT_CANNOT_BE_NULL));
         isNotNull(point, new CardException(POINT_CANNOT_BE_NULL));
 
-        isConditional(Objects.equals(pago.getCategory(), ADELANTADO), new CardException(POINTS_CANNOT_USED_WITH_PREPAY));
+        isConditional(Objects.equals(payment.getCategory(), ADELANTADO), new CardException(POINTS_CANNOT_USED_WITH_PREPAY));
 
-        getBalance().pago(benefit.descontar(pago, point));
+        getBalance().pay(benefit.discount(payment, point));
 
-        actualizarEstado();
+        updateStatus();
 
-        return getBalance().nuevo();
+        return getBalance().generate();
     }
 
-    private void actualizarEstado() {
-        if (getBalance().estaSobregirado())
+    private void updateStatus() {
+        if (getBalance().isOvercharged())
             this.cardStatus = CardStatusEnum.OVERCHARGE;
         else
             this.cardStatus = CardStatusEnum.OPERATIVE;
     }
 
-    public void consumir(Amount consumo) {
+    public void consumption(Amount consumption) {
 
-        isNotNull(consumo, new CardException(CONSUMPTION_CANNOT_BE_NULL));
+        isNotNull(consumption, new CardException(CONSUMPTION_CANNOT_BE_NULL));
 
         isConditional(Objects.equals(getCardStatus(), IN_DEBT), new CardException(IN_DEBT_CARD));
 
-        Amount totalDisponible = getBalance().calcularConsumo(consumo);
+        Amount totalAvailable = getBalance().calculateConsumption(consumption);
 
-        isConditional(totalDisponible.estaFaltando(getBalance().getTotal()), new ConsumptionException(AMOUNT_EXCEED_CREDIT_LIMIT));
+        isConditional(totalAvailable.estaFaltando(getBalance().getTotal()), new ConsumptionException(AMOUNT_EXCEED_CREDIT_LIMIT));
 
-        getBalance().aplicarConsumo(consumo);
+        getBalance().applyConsumption(consumption);
 
-        getBenefit().acumular(consumo, getCategoryCard());
+        getBenefit().accumulate(consumption, getCategoryCard());
     }
 
-    public List<Consumption> fraccionar(Consumption consumption, Integer quantity) {
-        return consumption.fraccionado(quantity, credit.getDebtTax());
+    public List<Consumption> split(Consumption consumption, Integer quantity) {
+        return consumption.split(quantity, credit.getDebtTax());
     }
 
-    public void anularConsumo(Consumption consumption) {
+    public void cancelConsumption(Consumption consumption) {
         isNotNull(consumption, new CardException(CONSUMPTION_CANNOT_BE_NULL));
 
-        getBalance().anularConsumo(consumption);
+        getBalance().cancellConsumption(consumption);
     }
 
-    public void anularPago(Payment pago) {
-        isNotNull(pago, new CardException(PAYMENT_CANNOT_BE_NULL));
+    public void cancelPayment(Payment payment) {
+        isNotNull(payment, new CardException(PAYMENT_CANNOT_BE_NULL));
 
-        getBalance().anularPago(pago);
+        getBalance().cancellPayment(payment);
     }
 
-    public Card clonar() {
+    public Card copy() {
         return Card.create(
                 getTypeCard(),
                 getIdentifierId(),
@@ -240,10 +240,10 @@ public class Card extends GenericDomain<Long> {
                 getBenefit());
     }
 
-    public void cerrar() {
+    public void close() {
         softDelete();
-        getBalance().cerrar();
-        getBenefit().cerrar();
+        getBalance().close();
+        getBenefit().close();
     }
 
 }

@@ -24,20 +24,20 @@ public class Point {
         return new Point(pointEarned);
     }
 
-    public Point disminuirPuntos(Point puntosUsar) {
-        return Point.create(getPointEarned() - puntosUsar.getPointEarned());
+    public Point dismissPoints(Point usedPoints) {
+        return Point.create(getPointEarned() - usedPoints.getPointEarned());
     }
 
-    public Point aumentarPuntos(Point puntosSumar) {
-        return Point.create(getPointEarned() + puntosSumar.getPointEarned());
+    public Point earnPoints(Point points) {
+        return Point.create(getPointEarned() + points.getPointEarned());
     }
 
-    public Boolean calcularSiNoTengoPuntosSuficientes(Point puntosUsar) {
-        return getPointEarned() < puntosUsar.getPointEarned();
+    public Boolean calculateIfHaveEnoughPoints(Point usedPoints) {
+        return getPointEarned() < usedPoints.getPointEarned();
     }
 
-    public Point multiplicar(BigDecimal multiplicador) {
-        return Point.create(getPointEarned() * multiplicador.intValue());
+    public Point mulitply(BigDecimal factor) {
+        return Point.create(getPointEarned() * factor.intValue());
     }
 
     public Integer getPointEarned() {

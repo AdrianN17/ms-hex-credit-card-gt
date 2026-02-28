@@ -118,7 +118,7 @@ public class Balance extends GenericDomain<Long> {
         );
     }
 
-    public Balance nuevo() {
+    public Balance generate() {
         softDelete();
 
         return new Balance(
@@ -131,88 +131,88 @@ public class Balance extends GenericDomain<Long> {
         );
     }
 
-    public Boolean noDisponiblePago(LocalDate fecha) {
+    public Boolean UnavailablePayment(LocalDate fecha) {
         return getDateRange().ensureWithinRange(fecha);
     }
 
-    public Amount calcularPago(Amount pago) {
-        return getAvailable().mas(pago);
+    public Amount calculatePayment(Amount payment) {
+        return getAvailable().mas(payment);
     }
 
-    public void aplicarPago(Amount pago) {
-        this.available = getAvailable().mas(pago);
+    public void applyPayment(Amount payment) {
+        this.available = getAvailable().mas(payment);
     }
 
-    public Amount calcularConsumo(Amount consumo) {
-        return getAvailable().menos(consumo);
+    public Amount calculateConsumption(Amount consumption) {
+        return getAvailable().menos(consumption);
     }
 
-    public void aplicarConsumo(Amount consumo) {
-        this.available = getAvailable().menos(consumo);
+    public void applyConsumption(Amount consumption) {
+        this.available = getAvailable().menos(consumption);
     }
 
-    public void aplicarPagoAnulado(Amount pago) {
-        this.available = getAvailable().menos(pago);
+    public void applyCancelledPayment(Amount payment) {
+        this.available = getAvailable().menos(payment);
     }
 
-    public void aplicarConsumoAnulado(Amount consumo) {
-        this.available = getAvailable().mas(consumo);
+    public void applyCancelledConsumption(Amount consumption) {
+        this.available = getAvailable().mas(consumption);
     }
 
-    public Boolean estaSobregirado() {
-        BigDecimal limiteSobregiro = getTotal().getAmount().multiply(OVERCHARGE_LIMIT);
-        BigDecimal limiteTotal = getTotal().getAmount().add(limiteSobregiro);
+    public Boolean isOvercharged() {
+        BigDecimal limitOvercharge = getTotal().getAmount().multiply(OVERCHARGE_LIMIT);
+        BigDecimal totalLimit = getTotal().getAmount().add(limitOvercharge);
 
-        return getAvailable().getAmount().compareTo(limiteTotal) > 0;
+        return getAvailable().getAmount().compareTo(totalLimit) > 0;
     }
 
-    public void pagoAdelantado(Payment pago) {
+    public void pagoAdelantado(Payment payment) {
 
-        isNotNull(pago, new BalanceException(PAYMENT_CANNOT_BE_NULL));
+        isNotNull(payment, new BalanceException(PAYMENT_CANNOT_BE_NULL));
 
-        isConditional(!Objects.equals(pago.getCategory(), ADELANTADO),
+        isConditional(!Objects.equals(payment.getCategory(), ADELANTADO),
                 new BalanceException(DATE_NOT_WITHIN_RANGE));
 
-        aplicarPago(pago.getPago());
+        applyPayment(payment.getPaymentAmount());
 
-        Amount totalDisponible = getAvailable();
+        Amount totalAmount = getAvailable();
         Amount totalBalance = getTotal();
 
-        isConditional(totalDisponible.estaSobrando(totalBalance),
-                new BalanceException(PAYMENT_CATEGORY_EXCEED_LIKE + totalDisponible.menos(totalBalance).toString()));
+        isConditional(totalAmount.estaSobrando(totalBalance),
+                new BalanceException(PAYMENT_CATEGORY_EXCEED_LIKE + totalAmount.menos(totalBalance).toString()));
     }
 
-    public void pago(Payment pago) {
+    public void pay(Payment payment) {
 
-        isNotNull(pago, new BalanceException(PAYMENT_CANNOT_BE_NULL));
+        isNotNull(payment, new BalanceException(PAYMENT_CANNOT_BE_NULL));
 
-        isConditional(noDisponiblePago(pago.getDiaPago()),
+        isConditional(UnavailablePayment(payment.getPaymentDate()),
                 new BalanceException(DATE_NOT_WITHIN_RANGE));
 
-        Amount totalDisponible = getAvailable();
+        Amount totalAmount = getAvailable();
         Amount totalBalance = getTotal();
 
-        isConditional(totalBalance.esIgual(totalDisponible) && !Objects.equals(pago.getCategory(), CategoryPaymentEnum.TOTAL),
+        isConditional(totalBalance.esIgual(totalAmount) && !Objects.equals(payment.getCategory(), CategoryPaymentEnum.TOTAL),
                 new BalanceException(PAYMENT_CATEGORY_NOT_SAME_AS_PAYMENT));
-        isConditional(totalDisponible.estaSobrando(totalBalance),
-                new BalanceException(PAYMENT_CATEGORY_EXCEED_LIKE + totalDisponible.menos(totalBalance).toString()));
+        isConditional(totalAmount.estaSobrando(totalBalance),
+                new BalanceException(PAYMENT_CATEGORY_EXCEED_LIKE + totalAmount.menos(totalBalance).toString()));
 
-        aplicarPago(pago.getPago());
+        applyPayment(payment.getPaymentAmount());
     }
 
-    public void anularConsumo(Consumption consumption) {
+    public void cancellConsumption(Consumption consumption) {
         isNotNull(consumption, new BalanceException(CONSUMPTION_CANNOT_BE_NULL));
-        aplicarConsumoAnulado(consumption.getConsumo());
+        applyCancelledConsumption(consumption.getConsumptionAmount());
         consumption.softDelete();
     }
 
-    public void anularPago(Payment pago) {
-        isNotNull(pago, new BalanceException(PAYMENT_CANNOT_BE_NULL));
-        aplicarPagoAnulado(pago.getPago());
-        pago.softDelete();
+    public void cancellPayment(Payment payment) {
+        isNotNull(payment, new BalanceException(PAYMENT_CANNOT_BE_NULL));
+        applyCancelledPayment(payment.getPaymentAmount());
+        payment.softDelete();
     }
 
-    public void cerrar()
+    public void close()
     {
         softDelete();
     }

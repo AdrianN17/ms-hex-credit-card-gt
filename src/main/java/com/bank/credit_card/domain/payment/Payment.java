@@ -13,25 +13,25 @@ import static com.bank.credit_card.domain.util.Validation.isConditional;
 import static com.bank.credit_card.domain.util.Validation.isNotNull;
 
 public class Payment extends GenericDomain<Long> {
-    private final Amount pago;
-    private final LocalDate diaPago;
+    private final Amount paymentAmount;
+    private final LocalDate paymentDate;
     private final CategoryPaymentEnum category;
     private final IdentifierId identifierId;
 
-    private Payment(Long id, Amount pago, LocalDate diaPago, CategoryPaymentEnum category, IdentifierId identifierId) {
+    private Payment(Long id, Amount paymentAmount, LocalDate paymentDate, CategoryPaymentEnum category, IdentifierId identifierId) {
         super(id);
-        this.pago = pago;
-        this.diaPago = diaPago;
+        this.paymentAmount = paymentAmount;
+        this.paymentDate = paymentDate;
         this.category = category;
         this.identifierId = identifierId;
     }
 
-    public Amount getPago() {
-        return pago;
+    public Amount getPaymentAmount() {
+        return paymentAmount;
     }
 
-    public LocalDate getDiaPago() {
-        return diaPago;
+    public LocalDate getPaymentDate() {
+        return paymentDate;
     }
 
     public CategoryPaymentEnum getCategory() {
@@ -42,30 +42,30 @@ public class Payment extends GenericDomain<Long> {
         return identifierId;
     }
 
-    public static Payment create(Long id, Amount pago, LocalDate diaPago, CategoryPaymentEnum category, IdentifierId identifierId) {
+    public static Payment create(Long id, Amount paymentAmount, LocalDate paymentDate, CategoryPaymentEnum category, IdentifierId identifierId) {
 
-        isNotNull(pago, new PaymentException(PAYMENT_AMOUNT_NOT_NULL));
-        isNotNull(diaPago, new PaymentException(PAYMENT_DAY_NOT_NULL));
+        isNotNull(paymentAmount, new PaymentException(PAYMENT_AMOUNT_NOT_NULL));
+        isNotNull(paymentDate, new PaymentException(PAYMENT_DAY_NOT_NULL));
         isNotNull(category, new PaymentException(PAYMENT_CATEGORY_NOT_NULL));
-        isConditional(pago.estaVacio(), new PaymentException(PAYMENT_AMOUNT_NOT_ZERO));
+        isConditional(paymentAmount.estaVacio(), new PaymentException(PAYMENT_AMOUNT_NOT_ZERO));
         isNotNull(identifierId, new PaymentException(IDENTIFIER_ID_NOT_NULL));
 
-        return new Payment(id, pago, diaPago, category, identifierId);
+        return new Payment(id, paymentAmount, paymentDate, category, identifierId);
     }
 
-    public static Payment create(Amount pago, LocalDate diaPago, CategoryPaymentEnum category, IdentifierId identifierId) {
+    public static Payment create(Amount paymentAmount, LocalDate paymentDate, CategoryPaymentEnum category, IdentifierId identifierId) {
 
-        isNotNull(pago, new PaymentException(PAYMENT_AMOUNT_NOT_NULL));
-        isNotNull(diaPago, new PaymentException(PAYMENT_DAY_NOT_NULL));
+        isNotNull(paymentAmount, new PaymentException(PAYMENT_AMOUNT_NOT_NULL));
+        isNotNull(paymentDate, new PaymentException(PAYMENT_DAY_NOT_NULL));
         isNotNull(category, new PaymentException(PAYMENT_CATEGORY_NOT_NULL));
-        isConditional(pago.estaVacio(), new PaymentException(PAYMENT_AMOUNT_NOT_ZERO));
+        isConditional(paymentAmount.estaVacio(), new PaymentException(PAYMENT_AMOUNT_NOT_ZERO));
         isNotNull(identifierId, new PaymentException(IDENTIFIER_ID_NOT_NULL));
 
-        return new Payment(-1L, pago, diaPago, category, identifierId);
+        return new Payment(-1L, paymentAmount, paymentDate, category, identifierId);
     }
 
-    public Payment descontar(BigDecimal descuento) {
-        return Payment.create(getPago().descuento(descuento), getDiaPago(), getCategory(), getIdentifierId());
+    public Payment discount(BigDecimal discount) {
+        return Payment.create(getPaymentAmount().descuento(discount), getPaymentDate(), getCategory(), getIdentifierId());
     }
 }
 

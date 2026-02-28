@@ -58,7 +58,7 @@ public class Benefit extends GenericDomain {
         return new Benefit(id, totalPoints, DiscountPolicy.create(hasDiscount, multiplierPoints), identifierId);
     }
 
-    public void acumular(Amount amount, CategoryCardEnum categoryCard) {
+    public void accumulate(Amount amount, CategoryCardEnum categoryCard) {
 
         isNotNull(amount, new BenefitException(AMOUNT_NOT_NULL));
         isNotNull(categoryCard, new BenefitException(CATEGORY_NOT_NULL));
@@ -76,26 +76,26 @@ public class Benefit extends GenericDomain {
         Integer pointEarned = amount.getAmount().divide(ratio, RoundingMode.DOWN).intValue();
 
         this.totalPoints = getTotalPoints()
-                .aumentarPuntos(Point.create(pointEarned));
+                .earnPoints(Point.create(pointEarned));
     }
 
-    public Payment descontar(Payment payment, Point puntosUsar) {
+    public Payment discount(Payment payment, Point puntosUsar) {
         isNotNull(payment, new BenefitException(PAYMENT_NOT_NULL));
         isNotNull(puntosUsar, new BenefitException(POINT_NOT_NULL));
 
         isConditional(getTotalPoints()
-                .calcularSiNoTengoPuntosSuficientes(puntosUsar), new BenefitException(NOT_ENOUGH_POINTS));
+                .calculateIfHaveEnoughPoints(puntosUsar), new BenefitException(NOT_ENOUGH_POINTS));
 
-        Point puntosCalculados = (getDiscountPolicy().getHasDiscount()) ? puntosUsar.multiplicar(getDiscountPolicy().getMultiplierPoints()) : puntosUsar;
+        Point calculatePoints = (getDiscountPolicy().getHasDiscount()) ? puntosUsar.mulitply(getDiscountPolicy().getMultiplierPoints()) : puntosUsar;
 
-        BigDecimal descuento = new BigDecimal(puntosCalculados.getPointEarned()).multiply(DISCOUNT_PER_POINT);
+        BigDecimal discount = new BigDecimal(calculatePoints.getPointEarned()).multiply(DISCOUNT_PER_POINT);
 
-        this.totalPoints = getTotalPoints().disminuirPuntos(puntosCalculados);
+        this.totalPoints = getTotalPoints().dismissPoints(calculatePoints);
 
-        return payment.descontar(descuento);
+        return payment.discount(discount);
     }
 
-    public void cerrar() {
+    public void close() {
         softDelete();
     }
 }

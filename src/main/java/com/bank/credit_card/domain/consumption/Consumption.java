@@ -2,7 +2,6 @@ package com.bank.credit_card.domain.consumption;
 
 import com.bank.credit_card.domain.base.GenericDomain;
 import com.bank.credit_card.domain.base.vo.Amount;
-import com.bank.credit_card.domain.card.Card;
 import com.bank.credit_card.domain.card.vo.IdentifierId;
 
 import java.math.BigDecimal;
@@ -15,48 +14,52 @@ import static com.bank.credit_card.domain.consumption.ConsumptionErrorMessage.*;
 import static com.bank.credit_card.domain.util.Validation.isNotNull;
 
 public class Consumption extends GenericDomain<UUID> {
-    private final Amount consumo;
+    private final Amount consumptionAmount;
     private final LocalDateTime consumptionDate;
     private final IdentifierId identifierId;
 
-    private Consumption(UUID id, Amount consumo, LocalDateTime consumptionDate, IdentifierId identifierId) {
+    private Consumption(UUID id, Amount consumptionAmount, LocalDateTime consumptionDate, IdentifierId identifierId) {
         super(id);
-        this.consumo = consumo;
+        this.consumptionAmount = consumptionAmount;
         this.consumptionDate = consumptionDate;
         this.identifierId = identifierId;
     }
 
-    public static Consumption create(UUID id, Amount consumo, LocalDateTime consumptionDate, IdentifierId identifierId) {
-        isNotNull(consumo, new ConsumptionException(CONSUMPTION_AMOUNT_CANNOT_BE_NULL));
+    public static Consumption create(UUID id, Amount consumptionAmount, LocalDateTime consumptionDate, IdentifierId identifierId) {
+        isNotNull(consumptionAmount, new ConsumptionException(CONSUMPTION_AMOUNT_CANNOT_BE_NULL));
         isNotNull(consumptionDate, new ConsumptionException(CONSUMPTION_DATE_CANNOT_BE_NULL));
         isNotNull(identifierId, new ConsumptionException(IDENTIFIER_ID_CANNOT_BE_NULL));
 
-        return new Consumption(id, consumo, consumptionDate, identifierId);
+        return new Consumption(id, consumptionAmount, consumptionDate, identifierId);
     }
 
-    public static Consumption create(Amount consumo, LocalDateTime consumptionDate, IdentifierId identifierId) {
-        isNotNull(consumo, new ConsumptionException(CONSUMPTION_AMOUNT_CANNOT_BE_NULL));
+    public static Consumption create(Amount consumptionAmount, LocalDateTime consumptionDate, IdentifierId identifierId) {
+        isNotNull(consumptionAmount, new ConsumptionException(CONSUMPTION_AMOUNT_CANNOT_BE_NULL));
         isNotNull(consumptionDate, new ConsumptionException(CONSUMPTION_DATE_CANNOT_BE_NULL));
         isNotNull(identifierId, new ConsumptionException(IDENTIFIER_ID_CANNOT_BE_NULL));
 
-        return new Consumption(UUID.randomUUID(), consumo, consumptionDate, identifierId);
+        return new Consumption(UUID.randomUUID(), consumptionAmount, consumptionDate, identifierId);
     }
 
-    public Amount getConsumo() {
-        return consumo;
+    public Amount getConsumptionAmount() {
+        return consumptionAmount;
     }
 
     public LocalDateTime getConsumptionDate() {
         return consumptionDate;
     }
 
-    public List<Consumption> fraccionado(Integer quantity, BigDecimal tax) {
+    public IdentifierId getIdentifierId() {
+        return identifierId;
+    }
 
-        Amount amount = this.getConsumo().fraccionar(quantity, tax);
+    public List<Consumption> split(Integer quantity, BigDecimal tax) {
+
+        Amount amount = this.getConsumptionAmount().fraccionar(quantity, tax);
         return IntStream.rangeClosed(1, quantity).mapToObj(value -> {
             var newDate = getConsumptionDate().plusMonths(value);
 
-            return Consumption.create(amount, newDate);
+            return Consumption.create(amount, newDate, getIdentifierId());
         }).toList();
     }
 
