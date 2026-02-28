@@ -8,5 +8,6 @@ public interface BenefitErrorMessage {
     String MULTIPLIER_POINTS_NOT_NULL = "Multiplier points cannot be null";
     String AMOUNT_NOT_NULL = "Amount cannot be null";
     String PAYMENT_NOT_NULL = "Payment cannot be null";
+    String IDENTIFIER_ID_NOT_NULL = "Identifier ID cannot be null";
 
 }

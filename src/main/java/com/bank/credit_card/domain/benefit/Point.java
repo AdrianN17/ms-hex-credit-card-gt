@@ -1,11 +1,11 @@
-package com.bank.credit_card.domain.benefit.vo;
+package com.bank.credit_card.domain.benefit;
 
 import com.bank.credit_card.domain.exception.DomainException;
 
 import java.math.BigDecimal;
 
-import static com.bank.credit_card.domain.benefit.vo.PointConstant.POINT_EARNED_NOT_NULL;
-import static com.bank.credit_card.domain.benefit.vo.PointConstant.POINT_EARNED_POSITIVE;
+import static com.bank.credit_card.domain.benefit.PointConstant.POINT_EARNED_NOT_NULL;
+import static com.bank.credit_card.domain.benefit.PointConstant.POINT_EARNED_POSITIVE;
 import static com.bank.credit_card.domain.util.Validation.isConditional;
 import static com.bank.credit_card.domain.util.Validation.isNotNull;
 

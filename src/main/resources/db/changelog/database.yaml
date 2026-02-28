@@ -1,0 +1,328 @@
+# Liquibase changelog generado a partir del esquema proporcionado
+# Suposiciones:
+# - int -> INT AUTO_INCREMENT (primary keys marcadas como autoincrement)
+# - varchar -> VARCHAR(255) por defecto
+# - date -> DATE
+# - datetime -> TIMESTAMP
+# - number -> DECIMAL(19,2)
+# - int(1) -> SMALLINT
+# Ajustes: las FK se crean en changeSets separados, uno por relación.
+
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-cardEntities
+      author: liquibase
+      changes:
+        - createTable:
+            tableName: Cards
+            columns:
+              - column:
+                  name: cardId
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: identifierId
+                  type: UUID
+              - column:
+                  name: typeCard
+                  type: SMALLINT
+              - column:
+                  name: numberCard
+                  type: VARCHAR(255)
+              - column:
+                  name: categoryCard
+                  type: SMALLINT
+              - column:
+                  name: cvv
+                  type: VARCHAR(10)
+              - column:
+                  name: dateCard
+                  type: VARCHAR(7)
+              - column:
+                  name: createdDate
+                  type: TIMESTAMP
+              - column:
+                  name: Names
+                  type: VARCHAR(255)
+              - column:
+                  name: updatedDate
+                  type: TIMESTAMP
+              - column:
+                  name: status
+                  type: SMALLINT
+
+  - changeSet:
+      id: 003-create-cardaccounts
+      author: liquibase
+      changes:
+        - createTable:
+            tableName: CardAccounts
+            columns:
+              - column:
+                  name: cardAccountId
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: identifierId
+                  type: UUID
+              - column:
+                  name: crediticialTotalAmount
+                  type: DECIMAL(19,2)
+              - column:
+                  name: debtTax
+                  type: DECIMAL(19,2)
+              - column:
+                  name: currency
+                  type: SMALLINT
+              - column:
+                  name: facturationDate
+                  type: SMALLINT
+              - column:
+                  name: paymentDate
+                  type: SMALLINT
+              - column:
+                  name: cardStatus
+                  type: SMALLINT
+              - column:
+                  name: createdDate
+                  type: TIMESTAMP
+              - column:
+                  name: updatedDate
+                  type: TIMESTAMP
+              - column:
+                  name: status
+                  type: SMALLINT
+
+  - changeSet:
+      id: 004-create-payments
+      author: liquibase
+      changes:
+        - createTable:
+            tableName: Payments
+            columns:
+              - column:
+                  name: paymentId
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: identifierId
+                  type: UUID
+              - column:
+                  name: cardId
+                  type: INT
+              - column:
+                  name: amount
+                  type: DECIMAL(19,2)
+              - column:
+                  name: currency
+                  type: SMALLINT
+              - column:
+                  name: paymentDate
+                  type: TIMESTAMP
+              - column:
+                  name: paymentApprobationDate
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: true
+              - column:
+                  name: channel
+                  type: SMALLINT
+              - column:
+                  name: createdDate
+                  type: TIMESTAMP
+              - column:
+                  name: updatedDate
+                  type: TIMESTAMP
+              - column:
+                  name: category
+                  type: SMALLINT
+              - column:
+                  name: status
+                  type: SMALLINT
+
+  - changeSet:
+      id: 005-create-consumptions
+      author: liquibase
+      changes:
+        - createTable:
+            tableName: Consumptions
+            columns:
+              - column:
+                  name: consumptionId
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: identifierId
+                  type: UUID
+              - column:
+                  name: cardId
+                  type: INT
+              - column:
+                  name: sellerName
+                  type: VARCHAR(255)
+              - column:
+                  name: currency
+                  type: SMALLINT
+              - column:
+                  name: amount
+                  type: DECIMAL(19,2)
+              - column:
+                  name: consumptionDate
+                  type: TIMESTAMP
+              - column:
+                  name: consumptionApprobationDate
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: true
+              - column:
+                  name: createdDate
+                  type: TIMESTAMP
+              - column:
+                  name: updatedDate
+                  type: TIMESTAMP
+              - column:
+                  name: status
+                  type: SMALLINT
+
+  - changeSet:
+      id: 006-create-balances
+      author: liquibase
+      changes:
+        - createTable:
+            tableName: balances
+            columns:
+              - column:
+                  name: idBalance
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: identifierId
+                  type: UUID
+              - column:
+                  name: totalAmount
+                  type: DECIMAL(19,2)
+              - column:
+                  name: availableAmount
+                  type: DECIMAL(19,2)
+              - column:
+                  name: oldAmount
+                  type: DECIMAL(19,2)
+              - column:
+                  name: consumptionAmount
+                  type: DECIMAL(19,2)
+              - column:
+                  name: paymentAmount
+                  type: DECIMAL(19,2)
+              - column:
+                  name: exchangeRate
+                  type: DECIMAL(19,2)
+              - column:
+                  name: currency
+                  type: SMALLINT
+              - column:
+                  name: startDate
+                  type: DATE
+              - column:
+                  name: endDate
+                  type: DATE
+              - column:
+                  name: createdDate
+                  type: TIMESTAMP
+              - column:
+                  name: updatedDate
+                  type: TIMESTAMP
+              - column:
+                  name: status
+                  type: SMALLINT
+  - changeSet:
+      id: 007-create-benefit
+      author: liquibase
+      changes:
+        - createTable:
+            tableName: Benefits
+            columns:
+                - column:
+                  name: idBenefit
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                - column:
+                    name: identifierId
+                    type: UUID
+                - column:
+                    name: hasDiscount
+                    type: BIT
+                - column:
+                    name: discountPercentage
+                    type: DECIMAL(5,2)
+                - column:
+                    name: createdDate
+                    type: TIMESTAMP
+                - column:
+                    name: updatedDate
+                    type: TIMESTAMP
+                - column:
+                    name: status
+                    type: SMALLINT
+
+  # Foreign keys: uno por changeSet para mantener orden y poder aplicarlos/revertirlos individualmente
+  - changeSet:
+      id: 008-fk-cardaccounts-cardid
+      author: liquibase
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: CardAccounts
+            baseColumnNames: cardId
+            referencedTableName: Cards
+            referencedColumnNames: cardId
+            constraintName: fk_cardaccounts_cardid
+
+  - changeSet:
+      id: 009-fk-payments-cardid
+      author: liquibase
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: Payments
+            baseColumnNames: cardId
+            referencedTableName: Cards
+            referencedColumnNames: cardId
+            constraintName: fk_payments_cardid
+
+  - changeSet:
+      id: 010-fk-consumptions-cardid
+      author: liquibase
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: Consumptions
+            baseColumnNames: cardId
+            referencedTableName: Cards
+            referencedColumnNames: cardId
+            constraintName: fk_consumptions_cardid
+
+  - changeSet:
+      id: 011-fk-balances-cardid
+      author: liquibase
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: balances
+            baseColumnNames: cardId
+            referencedTableName: Cards
+            referencedColumnNames: cardId
+            constraintName: fk_balances_cardid

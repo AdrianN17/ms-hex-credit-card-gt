@@ -1,4 +1,4 @@
-package com.bank.credit_card.domain.card.vo;
+package com.bank.credit_card.domain.payment;
 
 import com.bank.credit_card.domain.exception.DomainException;
 

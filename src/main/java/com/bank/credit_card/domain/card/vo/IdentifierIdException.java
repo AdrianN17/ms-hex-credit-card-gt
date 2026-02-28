@@ -4,13 +4,13 @@ import com.bank.credit_card.domain.exception.DomainException;
 
 import java.security.PrivilegedActionException;
 
-public class ConsumptionException extends DomainException {
+public class IdentifierIdException extends DomainException {
     /**
      * Constructs a new exception with {@code null} as its detail message.
      * The cause is not initialized, and may subsequently be initialized by a
      * call to {@link #initCause}.
      */
-    public ConsumptionException() {
+    public IdentifierIdException() {
     }
 
     /**
@@ -21,7 +21,7 @@ public class ConsumptionException extends DomainException {
      * @param message the detail message. The detail message is saved for
      *                later retrieval by the {@link #getMessage()} method.
      */
-    public ConsumptionException(String message) {
+    public IdentifierIdException(String message) {
         super(message);
     }
 
@@ -39,7 +39,7 @@ public class ConsumptionException extends DomainException {
      *                unknown.)
      * @since 1.4
      */
-    public ConsumptionException(String message, Throwable cause) {
+    public IdentifierIdException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -57,7 +57,7 @@ public class ConsumptionException extends DomainException {
      *              unknown.)
      * @since 1.4
      */
-    public ConsumptionException(Throwable cause) {
+    public IdentifierIdException(Throwable cause) {
         super(cause);
     }
 
@@ -75,7 +75,7 @@ public class ConsumptionException extends DomainException {
      *                           be writable
      * @since 1.7
      */
-    public ConsumptionException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public IdentifierIdException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

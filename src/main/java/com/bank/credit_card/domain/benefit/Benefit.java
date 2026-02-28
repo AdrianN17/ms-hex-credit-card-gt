@@ -3,10 +3,10 @@ package com.bank.credit_card.domain.benefit;
 import com.bank.credit_card.domain.base.GenericDomain;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.benefit.vo.DiscountPolicy;
-import com.bank.credit_card.domain.benefit.vo.Point;
 import com.bank.credit_card.domain.card.CategoryCardEnum;
-import com.bank.credit_card.domain.card.vo.Payment;
+import com.bank.credit_card.domain.card.vo.IdentifierId;
 import com.bank.credit_card.domain.exception.DomainException;
+import com.bank.credit_card.domain.payment.Payment;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -20,12 +20,14 @@ public class Benefit extends GenericDomain {
 
     private Point totalPoints;
     private final DiscountPolicy discountPolicy;
+    private final IdentifierId identifierId;
     //tabla
 
-    private Benefit(Long id, Point totalPoints, DiscountPolicy discountPolicy) throws DomainException {
+    private Benefit(Long id, Point totalPoints, DiscountPolicy discountPolicy, IdentifierId identifierId) throws DomainException {
         super(id);
         this.totalPoints = totalPoints;
         this.discountPolicy = discountPolicy;
+        this.identifierId = identifierId;
     }
 
     public Point getTotalPoints() {
@@ -36,18 +38,24 @@ public class Benefit extends GenericDomain {
         return discountPolicy;
     }
 
+    public IdentifierId getIdentifierId() {
+        return identifierId;
+    }
+
     public static Benefit create(Long id,
                                  Point totalPoints,
                                  Boolean hasDiscount,
-                                 BigDecimal multiplierPoints) {
+                                 BigDecimal multiplierPoints,
+                                 IdentifierId identifierId) {
 
         isNotNull(totalPoints, new BenefitException(POINT_NOT_NULL));
         isNotNull(hasDiscount, new BenefitException(HAS_DISCOUNT_NOT_NULL));
+        isNotNull(identifierId, new BenefitException(IDENTIFIER_ID_NOT_NULL));
 
         if (hasDiscount)
             isNotNull(multiplierPoints, new BenefitException(MULTIPLIER_POINTS_NOT_NULL));
 
-        return new Benefit(id, totalPoints, DiscountPolicy.create(hasDiscount, multiplierPoints));
+        return new Benefit(id, totalPoints, DiscountPolicy.create(hasDiscount, multiplierPoints), identifierId);
     }
 
     public void acumular(Amount amount, CategoryCardEnum categoryCard) {
@@ -85,5 +93,9 @@ public class Benefit extends GenericDomain {
         this.totalPoints = getTotalPoints().disminuirPuntos(puntosCalculados);
 
         return payment.descontar(descuento);
+    }
+
+    public void cerrar() {
+        softDelete();
     }
 }
