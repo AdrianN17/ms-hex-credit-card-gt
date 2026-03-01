@@ -4,7 +4,7 @@ import com.bank.credit_card.domain.base.GenericDomain;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.benefit.vo.DiscountPolicy;
 import com.bank.credit_card.domain.card.CategoryCardEnum;
-import com.bank.credit_card.domain.card.vo.IdentifierId;
+import com.bank.credit_card.domain.card.vo.CardId;
 import com.bank.credit_card.domain.exception.DomainException;
 import com.bank.credit_card.domain.payment.Payment;
 
@@ -20,14 +20,14 @@ public class Benefit extends GenericDomain {
 
     private Point totalPoints;
     private final DiscountPolicy discountPolicy;
-    private final IdentifierId identifierId;
+    private final CardId cardId;
     //tabla
 
-    private Benefit(Long id, Point totalPoints, DiscountPolicy discountPolicy, IdentifierId identifierId) throws DomainException {
+    private Benefit(Long id, Point totalPoints, DiscountPolicy discountPolicy, CardId cardId) throws DomainException {
         super(id);
         this.totalPoints = totalPoints;
         this.discountPolicy = discountPolicy;
-        this.identifierId = identifierId;
+        this.cardId = cardId;
     }
 
     public Point getTotalPoints() {
@@ -38,24 +38,26 @@ public class Benefit extends GenericDomain {
         return discountPolicy;
     }
 
-    public IdentifierId getIdentifierId() {
-        return identifierId;
-    }
-
     public static Benefit create(Long id,
                                  Point totalPoints,
-                                 Boolean hasDiscount,
-                                 BigDecimal multiplierPoints,
-                                 IdentifierId identifierId) {
+                                 DiscountPolicy discountPolicy,
+                                 CardId cardId) {
 
         isNotNull(totalPoints, new BenefitException(POINT_NOT_NULL));
-        isNotNull(hasDiscount, new BenefitException(HAS_DISCOUNT_NOT_NULL));
-        isNotNull(identifierId, new BenefitException(IDENTIFIER_ID_NOT_NULL));
+        isNotNull(cardId, new BenefitException(CARD_ID_NOT_NULL));
+        isNotNull(discountPolicy, new BenefitException(DISCUOUNT_POLICY_NOT_NULL));
 
-        if (hasDiscount)
-            isNotNull(multiplierPoints, new BenefitException(MULTIPLIER_POINTS_NOT_NULL));
 
-        return new Benefit(id, totalPoints, DiscountPolicy.create(hasDiscount, multiplierPoints), identifierId);
+        return new Benefit(id, totalPoints, discountPolicy, cardId);
+    }
+
+    public static Benefit create(DiscountPolicy discountPolicy,
+                                 CardId cardId) {
+
+        isNotNull(cardId, new BenefitException(CARD_ID_NOT_NULL));
+        isNotNull(discountPolicy, new BenefitException(DISCUOUNT_POLICY_NOT_NULL));
+
+        return new Benefit(-1L, Point.create(), discountPolicy, cardId);
     }
 
     public void accumulate(Amount amount, CategoryCardEnum categoryCard) {

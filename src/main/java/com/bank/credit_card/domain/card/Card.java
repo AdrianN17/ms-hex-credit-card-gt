@@ -4,8 +4,8 @@ import com.bank.credit_card.domain.base.GenericDomain;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.benefit.Benefit;
 import com.bank.credit_card.domain.benefit.Point;
+import com.bank.credit_card.domain.card.vo.CardAccountId;
 import com.bank.credit_card.domain.card.vo.Credit;
-import com.bank.credit_card.domain.card.vo.IdentifierId;
 import com.bank.credit_card.domain.consumption.Consumption;
 import com.bank.credit_card.domain.consumption.ConsumptionException;
 import com.bank.credit_card.domain.exception.DomainException;
@@ -16,39 +16,38 @@ import java.util.Objects;
 
 import static com.bank.credit_card.domain.card.BalanceErrorMessage.*;
 import static com.bank.credit_card.domain.card.CardErrorMessage.*;
-import static com.bank.credit_card.domain.card.CardErrorMessage.IDENTIFIER_ID_CANNOT_BE_NULL;
 import static com.bank.credit_card.domain.card.CardStatusEnum.IN_DEBT;
 import static com.bank.credit_card.domain.card.CategoryPaymentEnum.ADELANTADO;
+import static com.bank.credit_card.domain.card.vo.CardAccountIdErrorMessage.CARD_ACCOUNTID_CANNOT_BE_NULL;
 import static com.bank.credit_card.domain.util.Validation.isConditional;
 import static com.bank.credit_card.domain.util.Validation.isNotNull;
 
 public class Card extends GenericDomain<Long> {
 
     private final TypeCardEnum typeCard;
-    private final IdentifierId identifierId;
     private final CategoryCardEnum categoryCard;
     private final Credit credit;
     private CardStatusEnum cardStatus;
     private Balance balance;
     private Benefit benefit;
+    private final CardAccountId cardAccountId;
 
     //agregate root
     private Card(Long id,
                  TypeCardEnum typeCard,
-                 IdentifierId identifierId,
                  CategoryCardEnum categoryCard,
                  Credit credit,
                  CardStatusEnum cardStatus,
                  Balance balance,
-                 Benefit benefit) throws DomainException {
+                 Benefit benefit, CardAccountId cardAccountId) throws DomainException {
         super(id);
         this.typeCard = typeCard;
-        this.identifierId = identifierId;
         this.categoryCard = categoryCard;
         this.credit = credit;
         this.cardStatus = cardStatus;
         this.balance = balance;
         this.benefit = benefit;
+        this.cardAccountId = cardAccountId;
     }
 
     public static Card create(Long id,
@@ -57,7 +56,8 @@ public class Card extends GenericDomain<Long> {
                               Credit credit,
                               CardStatusEnum cardStatus,
                               Balance balance,
-                              Benefit benefit) {
+                              Benefit benefit,
+                              CardAccountId cardAccountId) {
 
         isNotNull(typeCard, new CardException(TYPE_CARD_CANNOT_BE_NULL));
         isNotNull(categoryCard, new CardException(CATEGORY_CARD_CANNOT_BE_NULL));
@@ -65,48 +65,20 @@ public class Card extends GenericDomain<Long> {
         isNotNull(cardStatus, new CardException(TYPE_CARD_CANNOT_BE_NULL));
         isNotNull(balance, new CardException(BALANCE_CANNOT_BE_NULL));
         isNotNull(benefit, new CardException(BENEFIT_CANNOT_BE_NULL));
+        isNotNull(cardAccountId, new CardException(CARD_ACCOUNTID_CANNOT_BE_NULL));
 
         return new Card(
                 id,
                 typeCard,
-                IdentifierId.create(),
                 categoryCard,
                 credit,
                 cardStatus,
                 balance,
-                benefit);
-    }
-
-    public static Card create(Long id,
-                              TypeCardEnum typeCard,
-                              IdentifierId identifierId,
-                              CategoryCardEnum categoryCard,
-                              Credit credit,
-                              CardStatusEnum cardStatus,
-                              Balance balance,
-                              Benefit benefit) {
-
-        isNotNull(typeCard, new CardException(TYPE_CARD_CANNOT_BE_NULL));
-        isNotNull(identifierId, new CardException(IDENTIFIER_ID_CANNOT_BE_NULL));
-        isNotNull(categoryCard, new CardException(CATEGORY_CARD_CANNOT_BE_NULL));
-        isNotNull(credit, new CardException(CREDIT_CANNOT_BE_NULL));
-        isNotNull(cardStatus, new CardException(TYPE_CARD_CANNOT_BE_NULL));
-        isNotNull(balance, new CardException(BALANCE_CANNOT_BE_NULL));
-        isNotNull(benefit, new CardException(BENEFIT_CANNOT_BE_NULL));
-
-        return new Card(
-                id,
-                typeCard,
-                identifierId,
-                categoryCard,
-                credit,
-                cardStatus,
-                balance,
-                benefit);
+                benefit,
+                cardAccountId);
     }
 
     public static Card create(TypeCardEnum typeCard,
-                              IdentifierId identifierId,
                               CategoryCardEnum categoryCard,
                               Credit credit,
                               CardStatusEnum cardStatus,
@@ -114,7 +86,6 @@ public class Card extends GenericDomain<Long> {
                               Benefit benefit) {
 
         isNotNull(typeCard, new CardException(TYPE_CARD_CANNOT_BE_NULL));
-        isNotNull(identifierId, new CardException(IDENTIFIER_ID_CANNOT_BE_NULL));
         isNotNull(categoryCard, new CardException(CATEGORY_CARD_CANNOT_BE_NULL));
         isNotNull(credit, new CardException(CREDIT_CANNOT_BE_NULL));
         isNotNull(cardStatus, new CardException(TYPE_CARD_CANNOT_BE_NULL));
@@ -124,12 +95,33 @@ public class Card extends GenericDomain<Long> {
         return new Card(
                 -1L,
                 typeCard,
-                identifierId,
                 categoryCard,
                 credit,
                 cardStatus,
                 balance,
-                benefit);
+                benefit,
+                CardAccountId.create());
+    }
+
+    public static Card create(TypeCardEnum typeCard,
+                              CategoryCardEnum categoryCard,
+                              Credit credit,
+                              CardStatusEnum cardStatus) {
+
+        isNotNull(typeCard, new CardException(TYPE_CARD_CANNOT_BE_NULL));
+        isNotNull(categoryCard, new CardException(CATEGORY_CARD_CANNOT_BE_NULL));
+        isNotNull(credit, new CardException(CREDIT_CANNOT_BE_NULL));
+        isNotNull(cardStatus, new CardException(TYPE_CARD_CANNOT_BE_NULL));
+
+        return new Card(
+                -1L,
+                typeCard,
+                categoryCard,
+                credit,
+                cardStatus,
+                null,
+                null,
+                CardAccountId.create());
     }
 
     public TypeCardEnum getTypeCard() {
@@ -156,39 +148,38 @@ public class Card extends GenericDomain<Long> {
         return benefit;
     }
 
-    public IdentifierId getIdentifierId() {
-        return identifierId;
+    public CardAccountId getCardAccountId() {
+        return cardAccountId;
     }
 
-    public Balance pay(Payment payment) {
+    public void pay(Payment payment) {
+
+        isNotNull(getBalance(), new CardException(BALANCE_CANNOT_BE_NULL));
 
         isNotNull(payment, new CardException(PAYMENT_CANNOT_BE_NULL));
 
         if (Objects.equals(payment.getCategory(), ADELANTADO))
-            getBalance().pagoAdelantado(payment);
+            getBalance().prePay(payment);
         else
             getBalance().pay(payment);
 
         updateStatus();
 
-        if (Objects.equals(payment.getCategory(), ADELANTADO))
-            return getBalance();
-        else
-            return getBalance().generate();
     }
 
-    public Balance pay(Payment payment, Point point) {
+    public void pay(Payment payment, Point point) {
+
+        isNotNull(getBalance(), new CardException(BALANCE_CANNOT_BE_NULL));
+        isNotNull(getBenefit(), new CardException(BENEFIT_CANNOT_BE_NULL));
 
         isNotNull(payment, new CardException(PAYMENT_CANNOT_BE_NULL));
         isNotNull(point, new CardException(POINT_CANNOT_BE_NULL));
 
         isConditional(Objects.equals(payment.getCategory(), ADELANTADO), new CardException(POINTS_CANNOT_USED_WITH_PREPAY));
 
-        getBalance().pay(benefit.discount(payment, point));
+        getBalance().pay(getBenefit().discount(payment, point));
 
         updateStatus();
-
-        return getBalance().generate();
     }
 
     private void updateStatus() {
@@ -198,46 +189,49 @@ public class Card extends GenericDomain<Long> {
             this.cardStatus = CardStatusEnum.OPERATIVE;
     }
 
-    public void consumption(Amount consumption) {
+    public void consumption(Consumption consumption) {
+
+        isNotNull(getBalance(), new CardException(BALANCE_CANNOT_BE_NULL));
+        isNotNull(getBenefit(), new CardException(BENEFIT_CANNOT_BE_NULL));
 
         isNotNull(consumption, new CardException(CONSUMPTION_CANNOT_BE_NULL));
 
         isConditional(Objects.equals(getCardStatus(), IN_DEBT), new CardException(IN_DEBT_CARD));
 
-        Amount totalAvailable = getBalance().calculateConsumption(consumption);
+        Amount totalAvailable = getBalance().calculateConsumption(consumption.getConsumptionAmount());
 
         isConditional(totalAvailable.estaFaltando(getBalance().getTotal()), new ConsumptionException(AMOUNT_EXCEED_CREDIT_LIMIT));
 
-        getBalance().applyConsumption(consumption);
+        getBalance().applyConsumption(consumption.getConsumptionAmount());
 
-        getBenefit().accumulate(consumption, getCategoryCard());
+        getBenefit().accumulate(consumption.getConsumptionAmount(), getCategoryCard());
     }
 
     public List<Consumption> split(Consumption consumption, Integer quantity) {
-        return consumption.split(quantity, credit.getDebtTax());
+        isNotNull(getBalance(), new CardException(BALANCE_CANNOT_BE_NULL));
+        consumption.validateIfConsumptionIsInApprobation();
+        List<Consumption> consumptionsSplit = consumption.split(quantity, credit.getDebtTax());
+        getBalance().cancellConsumption(consumption);
+        getBalance().consumptionSplitted(consumptionsSplit);
+        return consumptionsSplit;
     }
 
     public void cancelConsumption(Consumption consumption) {
-        isNotNull(consumption, new CardException(CONSUMPTION_CANNOT_BE_NULL));
 
+        isNotNull(getBalance(), new CardException(BALANCE_CANNOT_BE_NULL));
+
+        isNotNull(consumption, new CardException(CONSUMPTION_CANNOT_BE_NULL));
+        consumption.validateIfConsumptionIsInApprobation();
         getBalance().cancellConsumption(consumption);
     }
 
     public void cancelPayment(Payment payment) {
+
+        isNotNull(getBalance(), new CardException(BALANCE_CANNOT_BE_NULL));
+
         isNotNull(payment, new CardException(PAYMENT_CANNOT_BE_NULL));
-
+        payment.validateIfPaymentIsInApprobation();
         getBalance().cancellPayment(payment);
-    }
-
-    public Card copy() {
-        return Card.create(
-                getTypeCard(),
-                getIdentifierId(),
-                getCategoryCard(),
-                getCredit(),
-                getCardStatus(),
-                getBalance(),
-                getBenefit());
     }
 
     public void close() {

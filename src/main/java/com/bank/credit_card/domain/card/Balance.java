@@ -3,12 +3,13 @@ package com.bank.credit_card.domain.card;
 import com.bank.credit_card.domain.base.GenericDomain;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.base.vo.DateRange;
-import com.bank.credit_card.domain.card.vo.IdentifierId;
+import com.bank.credit_card.domain.card.vo.CardId;
 import com.bank.credit_card.domain.consumption.Consumption;
 import com.bank.credit_card.domain.payment.Payment;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 import static com.bank.credit_card.domain.base.vo.DateRangeErrorMessage.DATE_NOT_WITHIN_RANGE;
@@ -25,15 +26,15 @@ public class Balance extends GenericDomain<Long> {
     private final Amount old;
     private final DateRange dateRange;
     private Amount available;
-    private final IdentifierId identifierId;
+    private final CardId cardId;
 
-    private Balance(Long id, Amount total, Amount old, DateRange dateRange, Amount available, IdentifierId identifierId) {
+    private Balance(Long id, Amount total, Amount old, DateRange dateRange, Amount available, CardId cardId) {
         super(id);
         this.total = total;
         this.old = old;
         this.dateRange = dateRange;
         this.available = available;
-        this.identifierId = identifierId;
+        this.cardId = cardId;
     }
 
     public Amount getTotal() {
@@ -52,25 +53,21 @@ public class Balance extends GenericDomain<Long> {
         return available;
     }
 
-    public IdentifierId getIdentifierId() {
-        return identifierId;
-    }
-
-    public static Balance create(Long id,
-                                 Amount total,
+    public static Balance create(Amount total,
                                  DateRange dateRange,
-                                 IdentifierId identifierId) {
+                                 CardId cardId) {
 
         isNotNull(total, new BalanceException(TOTAL_AMOUNT_CANNOT_BE_NULL));
         isNotNull(dateRange, new BalanceException(DATE_RANGE_CANNOT_BE_NULL));
+        isNotNull(cardId, new BalanceException(CARD_ID_CANNOT_BE_NULL));
 
         return new Balance(
-                id,
+                -1L,
                 total,
                 total,
                 dateRange,
                 total,
-                identifierId
+                cardId
         );
     }
 
@@ -79,13 +76,13 @@ public class Balance extends GenericDomain<Long> {
                                  Amount old,
                                  DateRange dateRange,
                                  Amount available,
-                                 IdentifierId identifierId) {
+                                 CardId cardId) {
 
         isNotNull(total, new BalanceException(TOTAL_AMOUNT_CANNOT_BE_NULL));
         isNotNull(old, new BalanceException(OLD_AMOUNT_CANNOT_BE_NULL));
         isNotNull(dateRange, new BalanceException(DATE_RANGE_CANNOT_BE_NULL));
         isNotNull(available, new BalanceException(AVAILABLE_AMOUNT_CANNOT_BE_NULL));
-        isNotNull(identifierId, new BalanceException(IDENTIFIER_ID_CANNOT_BE_NULL));
+        isNotNull(cardId, new BalanceException(CARD_ID_CANNOT_BE_NULL));
 
         return new Balance(
                 id,
@@ -93,46 +90,12 @@ public class Balance extends GenericDomain<Long> {
                 old,
                 dateRange,
                 available,
-                identifierId
+                cardId
         );
     }
 
-    public static Balance create(Long id,
-                                 Amount total,
-                                 Amount old,
-                                 DateRange dateRange,
-                                 IdentifierId identifierId) {
-
-        isNotNull(total, new BalanceException(TOTAL_AMOUNT_CANNOT_BE_NULL));
-        isNotNull(old, new BalanceException(OLD_AMOUNT_CANNOT_BE_NULL));
-        isNotNull(dateRange, new BalanceException(DATE_RANGE_CANNOT_BE_NULL));
-        isNotNull(identifierId, new BalanceException(IDENTIFIER_ID_CANNOT_BE_NULL));
-
-        return new Balance(
-                id,
-                total,
-                old,
-                dateRange,
-                total,
-                identifierId
-        );
-    }
-
-    public Balance generate() {
-        softDelete();
-
-        return new Balance(
-                null,
-                Amount.create(getTotal().getCurrency(), getTotal().getAmount()),
-                Amount.create(getOld().getCurrency(), getOld().getAmount()),
-                DateRange.create(getDateRange()),
-                getAvailable(),
-                getIdentifierId()
-        );
-    }
-
-    public Boolean UnavailablePayment(LocalDate fecha) {
-        return getDateRange().ensureWithinRange(fecha);
+    public Boolean UnavailablePayment(LocalDateTime fecha) {
+        return getDateRange().ensureWithinRange(fecha.toLocalDate());
     }
 
     public Amount calculatePayment(Amount payment) {
@@ -166,7 +129,7 @@ public class Balance extends GenericDomain<Long> {
         return getAvailable().getAmount().compareTo(totalLimit) > 0;
     }
 
-    public void pagoAdelantado(Payment payment) {
+    public void prePay(Payment payment) {
 
         isNotNull(payment, new BalanceException(PAYMENT_CANNOT_BE_NULL));
 
@@ -200,6 +163,16 @@ public class Balance extends GenericDomain<Long> {
         applyPayment(payment.getPaymentAmount());
     }
 
+    public void consumptionSplitted(List<Consumption> consumptions) {
+        isNotNull(consumptions, new BalanceException(CONSUMPTIONS_CANNOT_BE_NULL));
+        isConditional(consumptions.isEmpty(), new BalanceException(CONSUMPTIONS_CANNOT_BE_EMPTY));
+
+        consumptions.forEach(consumption -> {
+            isNotNull(consumption, new BalanceException(CONSUMPTION_CANNOT_BE_NULL));
+            applyConsumption(consumption.getConsumptionAmount());
+        });
+    }
+
     public void cancellConsumption(Consumption consumption) {
         isNotNull(consumption, new BalanceException(CONSUMPTION_CANNOT_BE_NULL));
         applyCancelledConsumption(consumption.getConsumptionAmount());
@@ -212,8 +185,7 @@ public class Balance extends GenericDomain<Long> {
         payment.softDelete();
     }
 
-    public void close()
-    {
+    public void close() {
         softDelete();
     }
 }

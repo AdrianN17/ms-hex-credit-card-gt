@@ -24,6 +24,11 @@ public class Point {
         return new Point(pointEarned);
     }
 
+    public static Point create() {
+
+        return new Point(0);
+    }
+
     public Point dismissPoints(Point usedPoints) {
         return Point.create(getPointEarned() - usedPoints.getPointEarned());
     }

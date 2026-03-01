@@ -24,29 +24,14 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: identifierId
-                  type: UUID
-              - column:
                   name: typeCard
                   type: SMALLINT
-              - column:
-                  name: numberCard
-                  type: VARCHAR(255)
               - column:
                   name: categoryCard
                   type: SMALLINT
               - column:
-                  name: cvv
-                  type: VARCHAR(10)
-              - column:
-                  name: dateCard
-                  type: VARCHAR(7)
-              - column:
                   name: createdDate
                   type: TIMESTAMP
-              - column:
-                  name: Names
-                  type: VARCHAR(255)
               - column:
                   name: updatedDate
                   type: TIMESTAMP
@@ -69,19 +54,13 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: identifierId
-                  type: UUID
-              - column:
-                  name: crediticialTotalAmount
+                  name: creditTotal
                   type: DECIMAL(19,2)
               - column:
                   name: debtTax
                   type: DECIMAL(19,2)
               - column:
                   name: currency
-                  type: SMALLINT
-              - column:
-                  name: facturationDate
                   type: SMALLINT
               - column:
                   name: paymentDate
@@ -113,9 +92,6 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
                     nullable: false
-              - column:
-                  name: identifierId
-                  type: UUID
               - column:
                   name: cardId
                   type: INT
@@ -164,9 +140,6 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: identifierId
-                  type: UUID
-              - column:
                   name: cardId
                   type: INT
               - column:
@@ -211,9 +184,6 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: identifierId
-                  type: UUID
-              - column:
                   name: totalAmount
                   type: DECIMAL(19,2)
               - column:
@@ -223,17 +193,8 @@ databaseChangeLog:
                   name: oldAmount
                   type: DECIMAL(19,2)
               - column:
-                  name: consumptionAmount
-                  type: DECIMAL(19,2)
-              - column:
-                  name: paymentAmount
-                  type: DECIMAL(19,2)
-              - column:
                   name: exchangeRate
                   type: DECIMAL(19,2)
-              - column:
-                  name: currency
-                  type: SMALLINT
               - column:
                   name: startDate
                   type: DATE
@@ -264,13 +225,13 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
                 - column:
-                    name: identifierId
-                    type: UUID
-                - column:
                     name: hasDiscount
                     type: BIT
                 - column:
-                    name: discountPercentage
+                    name: totalPoints
+                    type: INT
+                - column:
+                    name: multiplierPoints
                     type: DECIMAL(5,2)
                 - column:
                     name: createdDate

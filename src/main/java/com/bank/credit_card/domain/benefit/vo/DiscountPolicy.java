@@ -2,7 +2,9 @@ package com.bank.credit_card.domain.benefit.vo;
 
 import java.math.BigDecimal;
 
-import static java.util.Objects.isNull;
+import static com.bank.credit_card.domain.benefit.vo.DiscountPolicyErrorMessage.HAS_DISCOUNT_NOT_NULL;
+import static com.bank.credit_card.domain.benefit.vo.DiscountPolicyErrorMessage.MULTIPLIER_POINTS_NOT_NULL;
+import static com.bank.credit_card.domain.util.Validation.isNotNull;
 
 public class DiscountPolicy {
     private final Boolean hasDiscount;
@@ -15,11 +17,9 @@ public class DiscountPolicy {
 
     public static DiscountPolicy create(Boolean hasDiscount, BigDecimal multiplierPoints) {
 
-        if (isNull(hasDiscount))
-            hasDiscount = false;
-
-        if (isNull(multiplierPoints))
-            multiplierPoints = BigDecimal.ZERO;
+        isNotNull(hasDiscount, new DiscountPolicyException(HAS_DISCOUNT_NOT_NULL));
+        if (hasDiscount)
+            isNotNull(multiplierPoints, new DiscountPolicyException(MULTIPLIER_POINTS_NOT_NULL));
 
         return new DiscountPolicy(hasDiscount, multiplierPoints);
     }

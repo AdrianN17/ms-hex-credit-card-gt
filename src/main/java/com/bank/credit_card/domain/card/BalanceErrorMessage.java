@@ -9,5 +9,7 @@ public interface BalanceErrorMessage {
     String POINTS_CANNOT_USED_WITH_PREPAY = "Points cannot be used with prepay";
     String AVAILABLE_AMOUNT_CANNOT_BE_NULL = "Available amount cannot be null";
     String OLD_AMOUNT_CANNOT_BE_NULL = "Old amount cannot be null";
-    String IDENTIFIER_ID_CANNOT_BE_NULL = "Identifier ID cannot be null";
+    String CONSUMPTIONS_CANNOT_BE_NULL = "Consumptions cannot be null";
+    String CONSUMPTIONS_CANNOT_BE_EMPTY = "Consumptions cannot be empty";
+    String CARD_ID_CANNOT_BE_NULL = "Card ID cannot be null";
 }

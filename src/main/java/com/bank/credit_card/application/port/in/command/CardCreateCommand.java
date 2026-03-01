@@ -1,0 +1,22 @@
+package com.bank.credit_card.application.port.in.command;
+
+import com.bank.credit_card.domain.base.CurrencyEnum;
+import com.bank.credit_card.domain.card.CardStatusEnum;
+import com.bank.credit_card.domain.card.CategoryCardEnum;
+import com.bank.credit_card.domain.card.TypeCardEnum;
+
+import java.math.BigDecimal;
+
+public record CardCreateCommand(TypeCardEnum typeCard,
+                                CategoryCardEnum categoryCard,
+                                BigDecimal creditTotal,
+                                BigDecimal debtTax,
+                                CardStatusEnum cardStatus,
+                                Long cardAccountId,
+                                Integer totalPoint,
+                                Boolean hasDiscount,
+                                BigDecimal multiplierPoints,
+                                BigDecimal total,
+                                Short day,
+                                CurrencyEnum currency) {
+}
