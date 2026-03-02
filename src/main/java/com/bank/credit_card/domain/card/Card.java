@@ -209,9 +209,10 @@ public class Card extends GenericDomain<Long> {
 
     public List<Consumption> split(Consumption consumption, Integer quantity) {
         isNotNull(getBalance(), new CardException(BALANCE_CANNOT_BE_NULL));
+
         consumption.validateIfConsumptionIsInApprobation();
         List<Consumption> consumptionsSplit = consumption.split(quantity, credit.getDebtTax());
-        getBalance().cancellConsumption(consumption);
+        getBalance().cancelConsumption(consumption);
         getBalance().consumptionSplitted(consumptionsSplit);
         return consumptionsSplit;
     }
@@ -222,7 +223,7 @@ public class Card extends GenericDomain<Long> {
 
         isNotNull(consumption, new CardException(CONSUMPTION_CANNOT_BE_NULL));
         consumption.validateIfConsumptionIsInApprobation();
-        getBalance().cancellConsumption(consumption);
+        getBalance().cancelConsumption(consumption);
     }
 
     public void cancelPayment(Payment payment) {
@@ -231,7 +232,7 @@ public class Card extends GenericDomain<Long> {
 
         isNotNull(payment, new CardException(PAYMENT_CANNOT_BE_NULL));
         payment.validateIfPaymentIsInApprobation();
-        getBalance().cancellPayment(payment);
+        getBalance().cancelPayment(payment);
     }
 
     public void close() {

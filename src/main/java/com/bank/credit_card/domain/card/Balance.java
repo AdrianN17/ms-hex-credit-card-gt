@@ -173,16 +173,16 @@ public class Balance extends GenericDomain<Long> {
         });
     }
 
-    public void cancellConsumption(Consumption consumption) {
+    public void cancelConsumption(Consumption consumption) {
         isNotNull(consumption, new BalanceException(CONSUMPTION_CANNOT_BE_NULL));
         applyCancelledConsumption(consumption.getConsumptionAmount());
-        consumption.softDelete();
+        consumption.cancel();
     }
 
-    public void cancellPayment(Payment payment) {
+    public void cancelPayment(Payment payment) {
         isNotNull(payment, new BalanceException(PAYMENT_CANNOT_BE_NULL));
         applyCancelledPayment(payment.getPaymentAmount());
-        payment.softDelete();
+        payment.cancel();
     }
 
     public void close() {

@@ -109,4 +109,8 @@ public class Consumption extends GenericDomain<Long> {
     public void validateIfConsumptionIsInApprobation() {
         isConditional(isNull(getConsumptionApprobationDate()), new ConsumptionException(CONSUMPTION_IS_STILL_IN_APPROBATION));
     }
+
+    public void cancel() {
+        softDelete();
+    }
 }

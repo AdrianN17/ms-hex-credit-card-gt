@@ -101,5 +101,9 @@ public class Payment extends GenericDomain<Long> {
     public void validateIfPaymentIsInApprobation() {
         isConditional(isNull(getPaymentApprobationDate()), new PaymentException(PAYMENT_IS_STILL_IN_APPROBATION));
     }
+
+    public void cancel() {
+        softDelete();
+    }
 }
 
