@@ -1,10 +1,11 @@
 package com.bank.credit_card.application.port.out.payment.usecase;
 
-import com.bank.credit_card.application.port.in.query.view.LoadPaymentView;
+import com.bank.credit_card.domain.payment.Payment;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @FunctionalInterface
 public interface LoadPaymentPort {
-    Optional<LoadPaymentView> load(Long paymentId);
+    Optional<Payment> load(UUID paymentId);
 }

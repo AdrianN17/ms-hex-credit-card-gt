@@ -7,13 +7,14 @@ import com.bank.credit_card.domain.card.vo.CardId;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static com.bank.credit_card.domain.payment.PaymentErrorMessage.*;
 import static com.bank.credit_card.domain.util.Validation.isConditional;
 import static com.bank.credit_card.domain.util.Validation.isNotNull;
 import static java.util.Objects.isNull;
 
-public class Payment extends GenericDomain<Long> {
+public class Payment extends GenericDomain<UUID> {
     private final Amount paymentAmount;
     private final LocalDateTime paymentDate;
     private final LocalDateTime paymentApprobationDate;
@@ -21,7 +22,7 @@ public class Payment extends GenericDomain<Long> {
     private final CardId cardId;
     private final ChannelPaymentEnum channelPayment;
 
-    private Payment(Long id,
+    private Payment(UUID id,
                     Amount paymentAmount,
                     LocalDateTime paymentDate,
                     LocalDateTime paymentApprobationDate,
@@ -60,7 +61,7 @@ public class Payment extends GenericDomain<Long> {
         return channelPayment;
     }
 
-    public static Payment create(Long id,
+    public static Payment create(UUID id,
                                  Amount paymentAmount,
                                  LocalDateTime paymentDate,
                                  LocalDateTime paymentApprobationDate,
@@ -79,23 +80,21 @@ public class Payment extends GenericDomain<Long> {
     }
 
     public static Payment create(Amount paymentAmount,
-                                 LocalDateTime paymentDate,
                                  CategoryPaymentEnum category,
                                  CardId cardId,
                                  ChannelPaymentEnum channelPayment) {
 
         isNotNull(paymentAmount, new PaymentException(PAYMENT_AMOUNT_NOT_NULL));
-        isNotNull(paymentDate, new PaymentException(PAYMENT_DAY_NOT_NULL));
         isNotNull(category, new PaymentException(PAYMENT_CATEGORY_NOT_NULL));
         isConditional(paymentAmount.estaVacio(), new PaymentException(PAYMENT_AMOUNT_NOT_ZERO));
         isNotNull(channelPayment, new PaymentException(CHANGE_PAYMENT_NOT_NULL));
 
-        return new Payment(-1L, paymentAmount, paymentDate, null, category, cardId, channelPayment);
+        return new Payment(UUID.randomUUID(), paymentAmount, LocalDateTime.now(), null, category, cardId, channelPayment);
     }
 
     public Payment discount(BigDecimal discount) {
         return Payment.create(getPaymentAmount().descuento(discount),
-                getPaymentDate(), getCategory(), getCardId(), getChannelPayment());
+                getCategory(), getCardId(), getChannelPayment());
     }
 
     public void validateIfPaymentIsInApprobation() {

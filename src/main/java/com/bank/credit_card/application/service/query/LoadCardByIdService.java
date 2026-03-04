@@ -18,7 +18,7 @@ public class LoadCardByIdService implements LoadCardByIdQuery {
     @Override
     public LoadCardBalanceBenefitView findById(Long cardId) {
         return loadCardBalanceBenefitPort
-                .load(cardId)
+                .loadAll(cardId)
                 .orElseThrow(() ->
                         new ApplicationCardException(CARD_BALANCE_BENEFIT_NOT_FOUND));
     }

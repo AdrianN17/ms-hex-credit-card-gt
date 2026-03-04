@@ -1,0 +1,120 @@
+package com.bank.credit_card.infraestructure.web.api.schema.request;
+
+import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.math.BigDecimal;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import jakarta.annotation.Generated;
+
+/**
+ * CardRequestBenefit
+ */
+
+@JsonTypeName("CardRequest_benefit")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-03-04T15:10:48.324834300-05:00[America/Lima]")
+public class CardRequestBenefit {
+
+  private Boolean hasDiscount;
+
+  private BigDecimal multiplierPoints;
+
+  public CardRequestBenefit() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public CardRequestBenefit(Boolean hasDiscount, BigDecimal multiplierPoints) {
+    this.hasDiscount = hasDiscount;
+    this.multiplierPoints = multiplierPoints;
+  }
+
+  public CardRequestBenefit hasDiscount(Boolean hasDiscount) {
+    this.hasDiscount = hasDiscount;
+    return this;
+  }
+
+  /**
+   * Get hasDiscount
+   * @return hasDiscount
+  */
+  @NotNull 
+  @Schema(name = "hasDiscount", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("hasDiscount")
+  public Boolean getHasDiscount() {
+    return hasDiscount;
+  }
+
+  public void setHasDiscount(Boolean hasDiscount) {
+    this.hasDiscount = hasDiscount;
+  }
+
+  public CardRequestBenefit multiplierPoints(BigDecimal multiplierPoints) {
+    this.multiplierPoints = multiplierPoints;
+    return this;
+  }
+
+  /**
+   * Get multiplierPoints
+   * minimum: 0
+   * maximum: 1
+   * @return multiplierPoints
+  */
+  @NotNull @Valid @DecimalMin("0") @DecimalMax("1") 
+  @Schema(name = "multiplierPoints", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("multiplierPoints")
+  public BigDecimal getMultiplierPoints() {
+    return multiplierPoints;
+  }
+
+  public void setMultiplierPoints(BigDecimal multiplierPoints) {
+    this.multiplierPoints = multiplierPoints;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    CardRequestBenefit cardRequestBenefit = (CardRequestBenefit) o;
+    return Objects.equals(this.hasDiscount, cardRequestBenefit.hasDiscount) &&
+        Objects.equals(this.multiplierPoints, cardRequestBenefit.multiplierPoints);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(hasDiscount, multiplierPoints);
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("class CardRequestBenefit {\n");
+    sb.append("    hasDiscount: ").append(toIndentedString(hasDiscount)).append("\n");
+    sb.append("    multiplierPoints: ").append(toIndentedString(multiplierPoints)).append("\n");
+    sb.append("}");
+    return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
+  }
+}
+

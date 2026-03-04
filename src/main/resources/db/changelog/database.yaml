@@ -54,6 +54,11 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
+                  name: cardId
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
                   name: creditTotal
                   type: DECIMAL(19,2)
               - column:
@@ -184,6 +189,14 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
+                  name: cardId
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: SMALLINT
+              - column:
                   name: totalAmount
                   type: DECIMAL(19,2)
               - column:
@@ -224,6 +237,11 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
                     nullable: false
+                - column:
+                    name: cardId
+                    type: INT
+                    constraints:
+                      nullable: false
                 - column:
                     name: hasDiscount
                     type: BIT
@@ -287,3 +305,14 @@ databaseChangeLog:
             referencedTableName: Cards
             referencedColumnNames: cardId
             constraintName: fk_balances_cardid
+
+  - changeSet:
+      id: 012-fk-benefits-cardid
+      author: liquibase
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: Benefits
+            baseColumnNames: cardId
+            referencedTableName: Cards
+            referencedColumnNames: cardId
+            constraintName: fk_benefits_cardid

@@ -6,5 +6,5 @@ import java.util.Optional;
 
 @FunctionalInterface
 public interface LoadCardBalanceBenefitPort {
-    Optional<LoadCardBalanceBenefitView> load(Long cardId);
+    Optional<LoadCardBalanceBenefitView> loadAll(Long cardId);
 }

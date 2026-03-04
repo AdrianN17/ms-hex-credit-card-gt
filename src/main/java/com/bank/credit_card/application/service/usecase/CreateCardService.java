@@ -3,8 +3,8 @@ package com.bank.credit_card.application.service.usecase;
 import com.bank.credit_card.application.error.balance.ApplicationBalanceException;
 import com.bank.credit_card.application.error.benefit.ApplicationBenefitException;
 import com.bank.credit_card.application.error.card.ApplicationCardException;
-import com.bank.credit_card.application.port.in.usecase.CardCreateUseCase;
 import com.bank.credit_card.application.port.in.command.CardCreateCommand;
+import com.bank.credit_card.application.port.in.usecase.CardCreateUseCase;
 import com.bank.credit_card.application.port.out.balance.SaveBalancePort;
 import com.bank.credit_card.application.port.out.benefit.SaveBenefitPort;
 import com.bank.credit_card.application.port.out.card.usecase.SaveCardPort;
@@ -18,7 +18,6 @@ import com.bank.credit_card.domain.card.Card;
 import com.bank.credit_card.domain.card.vo.CardId;
 import com.bank.credit_card.domain.card.vo.Credit;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
 import static com.bank.credit_card.application.error.balance.BalanceApplicationErrorMessage.FAILED_TO_CREATE_BALANCE;
@@ -41,9 +40,7 @@ public class CreateCardService implements CardCreateUseCase {
     public Card createCard(CardCreateCommand cardCreateCommand) {
 
         Currency currency = Currency.create(cardCreateCommand.currency(),
-                BigDecimal.ONE);
-
-        //corregir currency
+                cardCreateCommand.exchangeRate());
 
         Card card = Card.create(cardCreateCommand.typeCard(),
                 cardCreateCommand.categoryCard(),
@@ -52,7 +49,7 @@ public class CreateCardService implements CardCreateUseCase {
                                 currency,
                                 cardCreateCommand.creditTotal()),
                         cardCreateCommand.debtTax()),
-                cardCreateCommand.cardStatus());
+                cardCreateCommand.paymentDay());
 
         Optional<Long> cardIdOpt = this.saveCardPort.save(card);
 
@@ -62,8 +59,8 @@ public class CreateCardService implements CardCreateUseCase {
         Balance balance = Balance.create(
                 Amount.create(
                         currency,
-                        cardCreateCommand.total()),
-                DateRange.create(cardCreateCommand.day()), cardId);
+                        cardCreateCommand.creditTotal()),
+                DateRange.create(cardCreateCommand.paymentDay()), cardId);
 
         Benefit benefit = Benefit.create(
                 DiscountPolicy.create(cardCreateCommand.hasDiscount(),

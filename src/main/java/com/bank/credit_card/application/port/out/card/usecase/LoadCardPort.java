@@ -1,10 +1,10 @@
 package com.bank.credit_card.application.port.out.card.usecase;
 
-import com.bank.credit_card.application.port.in.query.view.LoadCardView;
+import com.bank.credit_card.domain.card.Card;
 
 import java.util.Optional;
 
 @FunctionalInterface
 public interface LoadCardPort {
-    Optional<LoadCardView> load(Long cardId);
+    Optional<Card> load(Long cardId);
 }

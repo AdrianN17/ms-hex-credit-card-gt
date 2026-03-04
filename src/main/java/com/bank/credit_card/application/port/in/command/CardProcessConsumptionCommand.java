@@ -8,8 +8,7 @@ import java.time.LocalDateTime;
 public record CardProcessConsumptionCommand(
         BigDecimal amount,
         CurrencyEnum currency,
-        LocalDateTime consumptionDate,
-        LocalDateTime consumptionApprobationDate,
         Long cardId,
-        String sellerName) {
+        String sellerName,
+        BigDecimal exchangeRate) {
 }

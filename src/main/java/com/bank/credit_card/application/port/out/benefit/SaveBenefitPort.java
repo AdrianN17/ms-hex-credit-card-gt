@@ -6,6 +6,5 @@ import java.util.Optional;
 
 @FunctionalInterface
 public interface SaveBenefitPort {
-    Optional<Long> save(Benefit benefit
-    );
+    Optional<Long> save(Benefit benefit);
 }

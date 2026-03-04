@@ -11,12 +11,9 @@ public record CardCreateCommand(TypeCardEnum typeCard,
                                 CategoryCardEnum categoryCard,
                                 BigDecimal creditTotal,
                                 BigDecimal debtTax,
-                                CardStatusEnum cardStatus,
-                                Long cardAccountId,
-                                Integer totalPoint,
                                 Boolean hasDiscount,
                                 BigDecimal multiplierPoints,
-                                BigDecimal total,
-                                Short day,
-                                CurrencyEnum currency) {
+                                Short paymentDay,
+                                CurrencyEnum currency,
+                                BigDecimal exchangeRate) {
 }

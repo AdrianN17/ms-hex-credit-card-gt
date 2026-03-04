@@ -1,10 +1,11 @@
 package com.bank.credit_card.application.port.out.consumption.usecase;
 
-import com.bank.credit_card.application.port.in.query.view.LoadConsumptionView;
+import com.bank.credit_card.domain.consumption.Consumption;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @FunctionalInterface
 public interface LoadConsumptionPort {
-    Optional<LoadConsumptionView> load(Long consumptonId);
+    Optional<Consumption> load(UUID consumptonId);
 }

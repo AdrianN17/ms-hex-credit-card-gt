@@ -10,19 +10,16 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record LoadCardBalanceBenefitView(
-        Long cardId,
         TypeCardEnum typeCard,
         CategoryCardEnum categoryCard,
         BigDecimal creditTotal,
         CurrencyEnum currency,
         BigDecimal debtTax,
         CardStatusEnum cardStatus,
-        Long cardAccountId,
-        Long benefitId,
+        Short paymentDate,
         Integer totalPoint,
         Boolean hasDiscount,
         BigDecimal multiplierPoints,
-        Long balanceId,
         BigDecimal total,
         BigDecimal old,
         LocalDate startDate,

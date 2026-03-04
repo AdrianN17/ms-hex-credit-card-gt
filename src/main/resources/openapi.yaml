@@ -1,0 +1,775 @@
+openapi: 3.0.1
+info:
+  title: credit_card
+  description: ''
+  version: 1.0.0
+tags: []
+paths:
+  /CardManagement/{cardId}/Retrieve:
+    get:
+      summary: retrieveBalance
+      deprecated: false
+      description: ''
+      operationId: retrieveBalance
+      tags: []
+      parameters:
+        - name: cardId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CardResponse'
+                  tracking:
+                    $ref: '#/components/schemas/Tracking'
+                required:
+                  - data
+                  - tracking
+          headers: {}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+          description: ''
+        '404':
+          $ref: '#/components/responses/NotFound'
+          description: ''
+        '500':
+          $ref: '#/components/responses/InternalError'
+          description: ''
+      security: []
+  /CardManagement/{cardId}/Control:
+    put:
+      summary: controlCard
+      deprecated: false
+      description: ''
+      operationId: controlCard
+      tags: []
+      parameters:
+        - name: cardId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '202':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tracking:
+                    $ref: '#/components/schemas/Tracking'
+                required:
+                  - tracking
+          headers: {}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+          description: ''
+        '404':
+          $ref: '#/components/responses/NotFound'
+          description: ''
+        '500':
+          $ref: '#/components/responses/InternalError'
+          description: ''
+      security: []
+  /CardManagement/Initiate:
+    post:
+      summary: initiateCard
+      deprecated: false
+      description: ''
+      operationId: initiateCard
+      tags: []
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/CardRequest'
+              required:
+                - data
+            examples: {}
+        required: true
+      responses:
+        '202':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tracking:
+                    $ref: '#/components/schemas/Tracking'
+                required:
+                  - tracking
+          headers: {}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+          description: ''
+        '404':
+          $ref: '#/components/responses/NotFound'
+          description: ''
+        '500':
+          $ref: '#/components/responses/InternalError'
+          description: ''
+      security: []
+  /CardManagement/{cardId}/Consumption/Initiate:
+    post:
+      summary: initiateConsumption
+      deprecated: false
+      description: ''
+      operationId: initiateConsumption
+      tags: []
+      parameters:
+        - name: cardId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsumptionRequest'
+            examples: {}
+        required: true
+      responses:
+        '202':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tracking:
+                    $ref: '#/components/schemas/Tracking'
+                required:
+                  - tracking
+          headers: {}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+          description: ''
+        '404':
+          $ref: '#/components/responses/NotFound'
+          description: ''
+        '500':
+          $ref: '#/components/responses/InternalError'
+          description: ''
+      security: []
+  /CardManagement/{cardId}/Payment/Initiate:
+    post:
+      summary: initiatePayment
+      deprecated: false
+      description: ''
+      operationId: createPayment
+      tags: []
+      parameters:
+        - name: cardId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/PaymentRequest'
+              required:
+                - data
+            examples: {}
+        required: true
+      responses:
+        '202':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tracking:
+                    $ref: '#/components/schemas/Tracking'
+                required:
+                  - tracking
+          headers: {}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+          description: ''
+        '404':
+          $ref: '#/components/responses/NotFound'
+          description: ''
+        '500':
+          $ref: '#/components/responses/InternalError'
+          description: ''
+      security: []
+  /CardManagement/{cardId}/Payment/{paymentId}/Control:
+    put:
+      summary: controlPayment
+      deprecated: false
+      description: ''
+      operationId: controlPayment
+      tags: []
+      parameters:
+        - name: cardId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: paymentId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '202':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tracking:
+                    $ref: '#/components/schemas/Tracking'
+                required:
+                  - tracking
+          headers: {}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+          description: ''
+        '404':
+          $ref: '#/components/responses/NotFound'
+          description: ''
+        '500':
+          $ref: '#/components/responses/InternalError'
+          description: ''
+      security: []
+  /CardManagement/{cardId}/Consumption/{ConsumptionId}/Control:
+    put:
+      summary: controlConsumption
+      deprecated: false
+      description: ''
+      operationId: controlConsumption
+      tags: []
+      parameters:
+        - name: cardId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: ConsumptionId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '202':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tracking:
+                    $ref: '#/components/schemas/Tracking'
+                required:
+                  - tracking
+          headers: {}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+          description: ''
+        '404':
+          $ref: '#/components/responses/NotFound'
+          description: ''
+        '500':
+          $ref: '#/components/responses/InternalError'
+          description: ''
+      security: []
+  /CardManagement/{cardId}/Consumption/{ConsumptionId}/Exchange:
+    put:
+      summary: exchangeConsumption
+      deprecated: false
+      description: ''
+      operationId: exchangeConsumption
+      tags: []
+      parameters:
+        - name: cardId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: integer
+            format: uint64
+        - name: ConsumptionId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    installments:
+                      type: integer
+                      minimum: 1
+                      maximum: 36
+                      multipleOf: 1
+                  required:
+                    - installments
+              required:
+                - data
+            examples: {}
+        required: true
+      responses:
+        '202':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tracking:
+                    $ref: '#/components/schemas/Tracking'
+                required:
+                  - tracking
+          headers: {}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+          description: ''
+        '404':
+          $ref: '#/components/responses/NotFound'
+          description: ''
+        '500':
+          $ref: '#/components/responses/InternalError'
+          description: ''
+      security: []
+  /CardManagement/{cardId}/Payment/{paymentId}/Retrieve:
+    get:
+      summary: retrievePayment
+      deprecated: false
+      description: ''
+      operationId: retrievePayment
+      tags: []
+      parameters:
+        - name: cardId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: paymentId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: dateStart
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: dateEnd
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tracking:
+                    $ref: '#/components/schemas/Tracking'
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PaymentResponse'
+                required:
+                  - tracking
+                  - data
+          headers: {}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+          description: ''
+        '404':
+          $ref: '#/components/responses/NotFound'
+          description: ''
+        '500':
+          $ref: '#/components/responses/InternalError'
+          description: ''
+      security: []
+  /CardManagement/{cardId}/Consumption/{ConsumptionId}/Retrieve:
+    get:
+      summary: retrieveConsumption
+      deprecated: false
+      description: ''
+      operationId: retrieveConsumption
+      tags: []
+      parameters:
+        - name: cardId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: ConsumptionId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: dateStart
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: dateEnd
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tracking:
+                    $ref: '#/components/schemas/Tracking'
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ConsumptionResponse'
+                required:
+                  - tracking
+                  - data
+          headers: {}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+          description: ''
+        '404':
+          $ref: '#/components/responses/NotFound'
+          description: ''
+        '500':
+          $ref: '#/components/responses/InternalError'
+          description: ''
+      security: []
+components:
+  schemas:
+    CardRequest:
+      type: object
+      properties:
+        typeCard:
+          type: string
+          pattern: ^(VISA|MASTERCARD)$
+        categoryCard:
+          type: string
+          pattern: ^(NORMAL|SILVER|GOLD|PLATINUM|BLACK|SIGNATURE|INFINITY)$
+        benefit:
+          type: object
+          properties:
+            hasDiscount:
+              type: boolean
+            multiplierPoints:
+              type: number
+              minimum: 0
+              maximum: 1
+          required:
+            - hasDiscount
+            - multiplierPoints
+        account:
+          type: object
+          properties:
+            creditTotal:
+              type: number
+              minimum: 0
+              maximum: 100000
+            debtTax:
+              type: number
+              minimum: 0
+              maximum: 1
+            currency:
+              type: string
+              pattern: ^(PEN|USD)$
+            paymentDate:
+              type: string
+              pattern: ^(1|15|27)$
+          required:
+            - creditTotal
+            - debtTax
+            - currency
+            - paymentDate
+      required:
+        - typeCard
+        - categoryCard
+        - benefit
+        - account
+    CardResponse:
+      type: object
+      properties:
+        typeCard:
+          type: string
+          pattern: ^(VISA|MASTERCARD)$
+        categoryCard:
+          type: string
+          pattern: ^(NORMAL|SILVER|GOLD|PLATINUM|BLACK|SIGNATURE|INFINITY)$
+        benefit:
+          type: object
+          properties:
+            hasDiscount:
+              type: boolean
+            multiplierPoints:
+              type: number
+              minimum: 0
+              maximum: 1
+            totalPoint:
+              type: integer
+          required:
+            - hasDiscount
+            - multiplierPoints
+            - totalPoint
+        balance:
+          type: object
+          properties:
+            totalAmount:
+              type: number
+            oldAmount:
+              type: number
+            availableAmount:
+              type: number
+            startDate:
+              type: string
+              format: date
+            endDate:
+              type: string
+              format: date
+          required:
+            - totalAmount
+            - oldAmount
+            - availableAmount
+            - startDate
+            - endDate
+        account:
+          type: object
+          properties:
+            creditTotal:
+              type: number
+              minimum: 0
+              maximum: 100000
+            debtTax:
+              type: number
+              minimum: 0
+              maximum: 1
+            currency:
+              type: string
+              pattern: ^(PEN|USD)$
+            paymentDate:
+              type: string
+              pattern: ^(1|15|27)$
+            cardStatus:
+              type: string
+              pattern: ^(OPERATIVA|SOBREGIRADA|DEUDOR)$
+          required:
+            - creditTotal
+            - debtTax
+            - currency
+            - paymentDate
+            - cardStatus
+      required:
+        - typeCard
+        - categoryCard
+        - benefit
+        - balance
+        - account
+    PaymentRequest:
+      type: object
+      properties:
+        channel:
+          type: string
+          pattern: ^(WEB|APP)$
+        currency:
+          type: string
+          pattern: ^(PEN|USD)$
+        amount:
+          type: number
+        category:
+          type: string
+          pattern: ^(MES|ADELANTADO|TOTAL)$
+        pointsUsed:
+          type: integer
+          minimum: 0
+          multipleOf: 1
+          maximum: 1000
+      required:
+        - amount
+        - currency
+        - channel
+        - category
+        - pointsUsed
+    ConsumptionRequest:
+      type: object
+      properties:
+        sellerName:
+          type: string
+        currency:
+          type: string
+          pattern: ^(PEN|USD)$
+        amount:
+          type: number
+      required:
+        - sellerName
+        - currency
+        - amount
+    Tracking:
+      type: object
+      properties:
+        trackingId:
+          type: string
+          format: uuid
+        operationDate:
+          type: string
+          format: date-time
+      required:
+        - trackingId
+        - operationDate
+    PaymentResponse:
+      type: object
+      properties:
+        channel:
+          type: string
+          pattern: ^(WEB|APP)$
+        currency:
+          type: string
+          pattern: ^(PEN|USD)$
+        amount:
+          type: number
+        category:
+          type: string
+          pattern: ^(MES|ADELANTADO|TOTAL)$
+        paymentDate:
+          type: string
+          format: date-time
+        paymentApprobationDate:
+          type: string
+          format: date-time
+      required:
+        - amount
+        - currency
+        - channel
+        - category
+        - paymentDate
+        - paymentApprobationDate
+    ConsumptionResponse:
+      type: object
+      properties:
+        sellerName:
+          type: string
+        currency:
+          type: string
+          pattern: ^(PEN|USD)$
+        amount:
+          type: number
+        consumptionDate:
+          type: string
+          format: date-time
+        consumptionApprobationDate:
+          type: string
+          format: date-time
+      required:
+        - sellerName
+        - currency
+        - amount
+        - consumptionDate
+        - consumptionApprobationDate
+    DefaultResponse4xx:
+      type: object
+      properties:
+        description:
+          type: string
+        errors:
+          type: array
+          items:
+            type: string
+      required:
+        - description
+        - errors
+    DefaultResponse:
+      type: object
+      properties:
+        description:
+          type: string
+      required:
+        - description
+  responses:
+    BadRequest:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DefaultResponse4xx'
+    NotFound:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DefaultResponse'
+    InternalError:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DefaultResponse'
+  securitySchemes: {}
+servers: []
+security: []

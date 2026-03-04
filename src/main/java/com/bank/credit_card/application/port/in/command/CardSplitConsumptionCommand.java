@@ -1,6 +1,9 @@
 package com.bank.credit_card.application.port.in.command;
 
+import java.util.UUID;
+
 public record CardSplitConsumptionCommand(
-        Long consumptionId,
-        Integer installments) {
+        UUID consumptionId,
+        Integer installments,
+        Long cardId) {
 }

@@ -12,6 +12,6 @@ public interface CardErrorMessage {
     String CREDIT_CANNOT_BE_NULL = "Credit cannot be null";
     String BALANCE_CANNOT_BE_NULL = "Balance cannot be null";
     String BENEFIT_CANNOT_BE_NULL = "Benefit cannot be null";
-    String CARD_ACCOUNT_ID_CANNOT_BE_NULL = "CardAccountId cannot be null";
+    String PAYMENT_DAY_CANNOT_BE_NULL = "Payment paymentDay cannot be null";
 
 }

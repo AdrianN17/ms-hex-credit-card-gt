@@ -4,13 +4,14 @@ import com.bank.credit_card.domain.base.CurrencyEnum;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record LoadConsumptionView(
-        Long consumptionId,
+        UUID consumptionId,
         BigDecimal amount,
         CurrencyEnum currency,
         LocalDateTime consumptionDate,
         LocalDateTime consumptionApprobationDate,
-        Long cardId,
+        String cardId,
         String sellerName) {
 }

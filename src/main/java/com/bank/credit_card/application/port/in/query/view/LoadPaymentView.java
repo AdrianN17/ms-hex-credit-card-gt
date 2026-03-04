@@ -6,15 +6,16 @@ import com.bank.credit_card.domain.payment.ChannelPaymentEnum;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record LoadPaymentView(
-        Long paymentId,
+        UUID paymentId,
         BigDecimal amount,
         CurrencyEnum currency,
         LocalDateTime paymentDate,
         LocalDateTime paymentApprobationDate,
         CategoryPaymentEnum category,
-        Long cardId,
+        String cardId,
         ChannelPaymentEnum channelPayment
 ) {
 }

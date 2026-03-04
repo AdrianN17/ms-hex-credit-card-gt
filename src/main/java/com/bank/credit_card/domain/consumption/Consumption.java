@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.IntStream;
+import java.util.UUID;
 
 import static com.bank.credit_card.domain.consumption.ConsumptionConstant.CONSUMPTION_SPLIT;
 import static com.bank.credit_card.domain.consumption.ConsumptionErrorMessage.*;
@@ -15,18 +16,19 @@ import static com.bank.credit_card.domain.util.Validation.isConditional;
 import static com.bank.credit_card.domain.util.Validation.isNotNull;
 import static java.util.Objects.isNull;
 
-public class Consumption extends GenericDomain<Long> {
+public class Consumption extends GenericDomain<UUID> {
     private final Amount consumptionAmount;
     private final LocalDateTime consumptionDate;
     private final LocalDateTime consumptionApprobationDate;
     private final CardId cardId;
     private final String sellerName;
 
-    private Consumption(Long id,
+    private Consumption(UUID id,
                         Amount consumptionAmount,
                         LocalDateTime consumptionDate,
                         LocalDateTime consumptionApprobationDate,
-                        CardId cardId, String sellerName) {
+                        CardId cardId,
+                        String sellerName) {
         super(id);
         this.consumptionAmount = consumptionAmount;
         this.consumptionDate = consumptionDate;
@@ -35,7 +37,7 @@ public class Consumption extends GenericDomain<Long> {
         this.sellerName = sellerName;
     }
 
-    public static Consumption create(Long id,
+    public static Consumption create(UUID id,
                                      Amount consumptionAmount,
                                      LocalDateTime consumptionDate,
                                      LocalDateTime consumptionApprobationDate,
@@ -60,7 +62,18 @@ public class Consumption extends GenericDomain<Long> {
         isNotNull(sellerName, new ConsumptionException(SELLER_NAME_CANNOT_BE_NULL));
         isConditional(sellerName.isEmpty(), new ConsumptionException(SELLER_NAME_CANNOT_BE_EMPTY));
 
-        return new Consumption(-1L, consumptionAmount, consumptionDate, null, cardId, sellerName);
+        return new Consumption(UUID.randomUUID(), consumptionAmount, consumptionDate, null, cardId, sellerName);
+    }
+
+    public static Consumption create(Amount consumptionAmount,
+                                     CardId cardId,
+                                     String sellerName) {
+        isNotNull(consumptionAmount, new ConsumptionException(CONSUMPTION_AMOUNT_CANNOT_BE_NULL));
+        isNotNull(cardId, new ConsumptionException(CARD_ID_NOT_NULL));
+        isNotNull(sellerName, new ConsumptionException(SELLER_NAME_CANNOT_BE_NULL));
+        isConditional(sellerName.isEmpty(), new ConsumptionException(SELLER_NAME_CANNOT_BE_EMPTY));
+
+        return new Consumption(UUID.randomUUID(), consumptionAmount, LocalDateTime.now(), null, cardId, sellerName);
     }
 
     public Amount getConsumptionAmount() {

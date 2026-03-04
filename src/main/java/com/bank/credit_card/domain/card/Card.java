@@ -17,6 +17,7 @@ import java.util.Objects;
 import static com.bank.credit_card.domain.card.BalanceErrorMessage.*;
 import static com.bank.credit_card.domain.card.CardErrorMessage.*;
 import static com.bank.credit_card.domain.card.CardStatusEnum.IN_DEBT;
+import static com.bank.credit_card.domain.card.CardStatusEnum.OPERATIVE;
 import static com.bank.credit_card.domain.card.CategoryPaymentEnum.ADELANTADO;
 import static com.bank.credit_card.domain.card.vo.CardAccountIdErrorMessage.CARD_ACCOUNTID_CANNOT_BE_NULL;
 import static com.bank.credit_card.domain.util.Validation.isConditional;
@@ -31,6 +32,7 @@ public class Card extends GenericDomain<Long> {
     private Balance balance;
     private Benefit benefit;
     private final CardAccountId cardAccountId;
+    private final Short paymentDay;
 
     //agregate root
     private Card(Long id,
@@ -39,7 +41,7 @@ public class Card extends GenericDomain<Long> {
                  Credit credit,
                  CardStatusEnum cardStatus,
                  Balance balance,
-                 Benefit benefit, CardAccountId cardAccountId) throws DomainException {
+                 Benefit benefit, CardAccountId cardAccountId, Short paymentDay) throws DomainException {
         super(id);
         this.typeCard = typeCard;
         this.categoryCard = categoryCard;
@@ -48,6 +50,7 @@ public class Card extends GenericDomain<Long> {
         this.balance = balance;
         this.benefit = benefit;
         this.cardAccountId = cardAccountId;
+        this.paymentDay = paymentDay;
     }
 
     public static Card create(Long id,
@@ -57,7 +60,8 @@ public class Card extends GenericDomain<Long> {
                               CardStatusEnum cardStatus,
                               Balance balance,
                               Benefit benefit,
-                              CardAccountId cardAccountId) {
+                              CardAccountId cardAccountId,
+                              Short paymentDay) {
 
         isNotNull(typeCard, new CardException(TYPE_CARD_CANNOT_BE_NULL));
         isNotNull(categoryCard, new CardException(CATEGORY_CARD_CANNOT_BE_NULL));
@@ -66,6 +70,7 @@ public class Card extends GenericDomain<Long> {
         isNotNull(balance, new CardException(BALANCE_CANNOT_BE_NULL));
         isNotNull(benefit, new CardException(BENEFIT_CANNOT_BE_NULL));
         isNotNull(cardAccountId, new CardException(CARD_ACCOUNTID_CANNOT_BE_NULL));
+        isNotNull(paymentDay, new CardException(PAYMENT_DAY_CANNOT_BE_NULL));
 
         return new Card(
                 id,
@@ -75,7 +80,8 @@ public class Card extends GenericDomain<Long> {
                 cardStatus,
                 balance,
                 benefit,
-                cardAccountId);
+                cardAccountId,
+                paymentDay);
     }
 
     public static Card create(TypeCardEnum typeCard,
@@ -83,7 +89,8 @@ public class Card extends GenericDomain<Long> {
                               Credit credit,
                               CardStatusEnum cardStatus,
                               Balance balance,
-                              Benefit benefit) {
+                              Benefit benefit,
+                              Short paymentDay) {
 
         isNotNull(typeCard, new CardException(TYPE_CARD_CANNOT_BE_NULL));
         isNotNull(categoryCard, new CardException(CATEGORY_CARD_CANNOT_BE_NULL));
@@ -91,6 +98,7 @@ public class Card extends GenericDomain<Long> {
         isNotNull(cardStatus, new CardException(TYPE_CARD_CANNOT_BE_NULL));
         isNotNull(balance, new CardException(BALANCE_CANNOT_BE_NULL));
         isNotNull(benefit, new CardException(BENEFIT_CANNOT_BE_NULL));
+        isNotNull(paymentDay, new CardException(PAYMENT_DAY_CANNOT_BE_NULL));
 
         return new Card(
                 -1L,
@@ -100,28 +108,30 @@ public class Card extends GenericDomain<Long> {
                 cardStatus,
                 balance,
                 benefit,
-                CardAccountId.create());
+                CardAccountId.create(),
+                paymentDay);
     }
 
     public static Card create(TypeCardEnum typeCard,
                               CategoryCardEnum categoryCard,
                               Credit credit,
-                              CardStatusEnum cardStatus) {
+                              Short paymentDay) {
 
         isNotNull(typeCard, new CardException(TYPE_CARD_CANNOT_BE_NULL));
         isNotNull(categoryCard, new CardException(CATEGORY_CARD_CANNOT_BE_NULL));
         isNotNull(credit, new CardException(CREDIT_CANNOT_BE_NULL));
-        isNotNull(cardStatus, new CardException(TYPE_CARD_CANNOT_BE_NULL));
+        isNotNull(paymentDay, new CardException(PAYMENT_DAY_CANNOT_BE_NULL));
 
         return new Card(
                 -1L,
                 typeCard,
                 categoryCard,
                 credit,
-                cardStatus,
+                OPERATIVE,
                 null,
                 null,
-                CardAccountId.create());
+                CardAccountId.create(),
+                paymentDay);
     }
 
     public TypeCardEnum getTypeCard() {
@@ -150,6 +160,10 @@ public class Card extends GenericDomain<Long> {
 
     public CardAccountId getCardAccountId() {
         return cardAccountId;
+    }
+
+    public Short getPaymentDay() {
+        return paymentDay;
     }
 
     public void pay(Payment payment) {
@@ -186,7 +200,7 @@ public class Card extends GenericDomain<Long> {
         if (getBalance().isOvercharged())
             this.cardStatus = CardStatusEnum.OVERCHARGE;
         else
-            this.cardStatus = CardStatusEnum.OPERATIVE;
+            this.cardStatus = OPERATIVE;
     }
 
     public void consumption(Consumption consumption) {

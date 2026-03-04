@@ -1,4 +1,6 @@
 package com.bank.credit_card.application.port.in.command;
 
-public record CardCancelConsumptionCommand(Long consumptionId) {
+import java.util.UUID;
+
+public record CardCancelConsumptionCommand(UUID consumptionId, Long cardId) {
 }

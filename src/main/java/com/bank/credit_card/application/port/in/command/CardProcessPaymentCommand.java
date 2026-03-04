@@ -10,11 +10,10 @@ import java.time.LocalDateTime;
 public record CardProcessPaymentCommand(
         BigDecimal amount,
         CurrencyEnum currency,
-        LocalDateTime paymentDate,
-        LocalDateTime paymentApprobationDate,
         CategoryPaymentEnum category,
         Long cardId,
         ChannelPaymentEnum channelPayment,
-        Integer pointsUsed
+        Integer pointsUsed,
+        BigDecimal exchangeRate
 ) {
 }
