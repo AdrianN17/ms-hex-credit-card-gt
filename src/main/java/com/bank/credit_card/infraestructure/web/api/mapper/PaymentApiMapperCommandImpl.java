@@ -29,8 +29,8 @@ public class PaymentApiMapperCommandImpl implements PaymentApiMapperCommand {
     }
 
     @Override
-    public CardCancelPaymentCommand toCommandId(UUID uuid) {
-        return new CardCancelPaymentCommand(uuid, 1L);
+    public CardCancelPaymentCommand toCommandId(UUID uuid, Long cardId) {
+        return new CardCancelPaymentCommand(uuid, cardId);
     }
 
     @Override

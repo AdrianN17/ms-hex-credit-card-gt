@@ -23,8 +23,8 @@ public class ConsumptionApiMapperCommandImpl implements ConsumptionApiMapperComm
     }
 
     @Override
-    public CardCancelConsumptionCommand toCommandId(UUID uuid) {
-        return new CardCancelConsumptionCommand(uuid, 1L);
+    public CardCancelConsumptionCommand toCommandId(UUID uuid, Long cardId) {
+        return new CardCancelConsumptionCommand(uuid, cardId);
     }
 
     @Override
