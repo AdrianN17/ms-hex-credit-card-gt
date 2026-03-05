@@ -5,7 +5,7 @@ import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.entity.C
 import org.springframework.stereotype.Component;
 
 @Component
-public class ConsumptionQueryMapperImpl implements ConsumptionQueryMapper{
+public class ConsumptionQueryMapperImpl implements ConsumptionQueryMapper {
 
     @Override
     public LoadConsumptionView toView(ConsumptionEntity entity) {

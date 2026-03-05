@@ -14,8 +14,8 @@ public class PaymentCosmosRepositoryAdapterConfig {
 
     @Bean
     PaymentCosmosRepositoryAdapter paymentCosmosRepositoryAdapter(PaymentCosmosRepository paymentCosmosRepository,
-                                                                   PaymentPersistanceMapper paymentPersistanceMapper,
-                                                                   PaymentQueryMapper paymentQueryMapper) {
+                                                                  PaymentPersistanceMapper paymentPersistanceMapper,
+                                                                  PaymentQueryMapper paymentQueryMapper) {
         return new PaymentCosmosRepositoryAdapter(paymentCosmosRepository,
                 paymentPersistanceMapper,
                 paymentQueryMapper);

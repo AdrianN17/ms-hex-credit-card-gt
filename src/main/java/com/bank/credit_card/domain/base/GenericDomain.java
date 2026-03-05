@@ -14,9 +14,12 @@ public abstract class GenericDomain<T> {
     protected LocalDateTime createdDate;
     protected LocalDateTime updatedDate;
 
-    protected GenericDomain(T id) throws DomainException {
+    protected GenericDomain(T id, StatusEnum status, LocalDateTime createdDate, LocalDateTime updatedDate) throws DomainException {
         this.isValidId(id);
         this.id = id;
+        this.status = status;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
     }
 
     public T getId() {
@@ -44,11 +47,6 @@ public abstract class GenericDomain<T> {
     public void softDelete() {
         this.status = StatusEnum.INACTIVE;
         this.updatedDate = LocalDateTime.now();
-    }
-
-    public void create() {
-        this.status = StatusEnum.ACTIVE;
-        this.createdDate = LocalDateTime.now();
     }
 
 

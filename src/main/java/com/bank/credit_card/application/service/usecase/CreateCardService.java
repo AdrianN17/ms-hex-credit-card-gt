@@ -17,6 +17,7 @@ import com.bank.credit_card.domain.card.Balance;
 import com.bank.credit_card.domain.card.Card;
 import com.bank.credit_card.domain.card.vo.CardId;
 import com.bank.credit_card.domain.card.vo.Credit;
+import com.bank.credit_card.domain.generator.CardIdGenerator;
 
 import java.util.Optional;
 
@@ -29,11 +30,13 @@ public class CreateCardService implements CardCreateUseCase {
     private final SaveCardPort saveCardPort;
     private final SaveBalancePort saveBalancePort;
     private final SaveBenefitPort saveBenefitPort;
+    private final CardIdGenerator idGenerator;
 
-    public CreateCardService(SaveCardPort saveCardPort, SaveBalancePort saveBalancePort, SaveBenefitPort saveBenefitPort) {
+    public CreateCardService(SaveCardPort saveCardPort, SaveBalancePort saveBalancePort, SaveBenefitPort saveBenefitPort, CardIdGenerator idGenerator) {
         this.saveCardPort = saveCardPort;
         this.saveBalancePort = saveBalancePort;
         this.saveBenefitPort = saveBenefitPort;
+        this.idGenerator = idGenerator;
     }
 
     @Override
@@ -42,7 +45,9 @@ public class CreateCardService implements CardCreateUseCase {
         Currency currency = Currency.create(cardCreateCommand.currency(),
                 cardCreateCommand.exchangeRate());
 
-        Card card = Card.create(cardCreateCommand.typeCard(),
+        Card card = Card.create(
+                idGenerator,
+                cardCreateCommand.typeCard(),
                 cardCreateCommand.categoryCard(),
                 Credit.create(
                         Amount.create(
@@ -57,12 +62,14 @@ public class CreateCardService implements CardCreateUseCase {
                 .orElseThrow(() -> new ApplicationCardException(FAILED_TO_CREATE_CARD));
 
         Balance balance = Balance.create(
+                idGenerator,
                 Amount.create(
                         currency,
                         cardCreateCommand.creditTotal()),
                 DateRange.create(cardCreateCommand.paymentDay()), cardId);
 
         Benefit benefit = Benefit.create(
+                idGenerator,
                 DiscountPolicy.create(cardCreateCommand.hasDiscount(),
                         cardCreateCommand.multiplierPoints()),
                 cardId);

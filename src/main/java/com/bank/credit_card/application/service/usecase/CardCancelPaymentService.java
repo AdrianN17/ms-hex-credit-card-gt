@@ -37,7 +37,7 @@ public class CardCancelPaymentService implements CardCancelPaymentUseCase {
     }
 
     @Override
-    public void cancellPayment(CardCancelPaymentCommand cardCancelPaymentCommand) {
+    public void cancelPayment(CardCancelPaymentCommand cardCancelPaymentCommand) {
         Payment payment = loadPaymentPort
                 .load(cardCancelPaymentCommand.paymentId())
                 .orElseThrow(() -> new ApplicationPaymentException(PAYMENT_NOT_FOUND));

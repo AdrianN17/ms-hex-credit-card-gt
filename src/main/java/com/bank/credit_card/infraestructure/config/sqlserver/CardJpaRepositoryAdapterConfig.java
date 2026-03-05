@@ -16,8 +16,8 @@ public class CardJpaRepositoryAdapterConfig {
 
     @Bean
     CardJpaRepositoryAdapter cardJpaRepositoryAdapter(CardJpaRepository cardJpaRepository,
-                                                       CardPersistanceMapper cardPersistanceMapper,
-                                                       CardQueryMapper cardQueryMapper) {
+                                                      CardPersistanceMapper cardPersistanceMapper,
+                                                      CardQueryMapper cardQueryMapper) {
         return new CardJpaRepositoryAdapter(cardJpaRepository,
                 cardPersistanceMapper,
                 cardQueryMapper);

@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @Getter
 @Setter
+@NoArgsConstructor
+@SuperBuilder
 public class GenericEntity {
     @Column(name = "createdDate")
     private LocalDateTime createdDate;

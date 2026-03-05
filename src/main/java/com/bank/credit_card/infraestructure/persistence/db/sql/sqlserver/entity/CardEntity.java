@@ -5,14 +5,14 @@ import com.bank.credit_card.domain.card.TypeCardEnum;
 import com.bank.credit_card.infraestructure.persistence.db.generic.entity.GenericEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
 @Table(name = "Cards")
 public class CardEntity extends GenericEntity {
@@ -28,9 +28,12 @@ public class CardEntity extends GenericEntity {
     @Column(name = "categoryCard")
     private CategoryCardEnum categoryCard;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cardId")
     private CardAccountEntity cardAccountEntity;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cardId")
     private BalanceEntity balanceEntity;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cardId")
     private BenefitEntity benefitEntity;
 }

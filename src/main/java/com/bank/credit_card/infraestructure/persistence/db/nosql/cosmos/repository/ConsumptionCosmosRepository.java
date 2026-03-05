@@ -1,7 +1,7 @@
 package com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.repository;
 
-import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.entity.ConsumptionEntity;
 import com.bank.credit_card.infraestructure.persistence.db.generic.repository.GenericCosmosRespository;
+import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.entity.ConsumptionEntity;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;

@@ -7,6 +7,7 @@ import com.bank.credit_card.application.port.out.consumption.usecase.LoadConsump
 import com.bank.credit_card.application.port.out.consumption.usecase.SaveConsumptionPort;
 import com.bank.credit_card.domain.consumption.Consumption;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.entity.ConsumptionEntity;
+import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.exception.ConsumptionPersistanceException;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.mapper.persistance.ConsumptionPersistanceMapper;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.mapper.query.ConsumptionQueryMapper;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.repository.ConsumptionCosmosRepository;
@@ -16,6 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.constant.TimeConstant.*;
+import static com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.exception.ConsumptionErrorMessage.*;
 
 public class ConsumptionCosmosRepositoryAdapter implements LoadConsumptionPort, SaveConsumptionPort, LoadConsumptionsByDatesAndCardIdPort {
 
@@ -31,24 +33,40 @@ public class ConsumptionCosmosRepositoryAdapter implements LoadConsumptionPort, 
 
     @Override
     public List<LoadConsumptionView> load(FindConsumptionByDatesAndCardIdCriteria criteria) {
-        return consumptionCosmosRepository.findByCardIdAndConsumptionDateBetween(
-                        String.valueOf(criteria.cardId()),
-                        criteria.start().atStartOfDay(),
-                        criteria.end().atTime(LAST_HOUR, LAST_MINUTE, LAST_SECOND))
-                .stream()
+
+        List<ConsumptionEntity> consumptionEntities = consumptionCosmosRepository.findByCardIdAndConsumptionDateBetween(
+                String.valueOf(criteria.cardId()),
+                criteria.start().atStartOfDay(),
+                criteria.end().atTime(LAST_HOUR, LAST_MINUTE, LAST_SECOND));
+
+        if (consumptionEntities.isEmpty()) {
+            throw new ConsumptionPersistanceException(NO_CONSUMPTIONS_FOUND);
+        }
+
+        return consumptionEntities.stream()
                 .map(consumptionQueryMapper::toView)
                 .toList();
+
     }
 
     @Override
     public Optional<UUID> save(Consumption consumption) {
-        Optional<ConsumptionEntity> consumptionEntity = Optional.of(consumptionCosmosRepository.save(consumptionPersistanceMapper.toEntity(consumption)));
-        return consumptionEntity.map(ConsumptionEntity::getConsumptionId);
+
+        Optional<ConsumptionEntity> consumptionEntity = Optional.of(consumptionCosmosRepository
+                .save(consumptionPersistanceMapper.toEntity(consumption)));
+
+        return Optional.ofNullable(consumptionEntity
+                        .orElseThrow(() -> new ConsumptionPersistanceException(CONSUMPTION_NOT_SAVED)))
+                .map(ConsumptionEntity::getConsumptionId);
+
     }
 
     @Override
-    public Optional<Consumption> load(UUID consumptonId) {
-        return consumptionCosmosRepository.findById(consumptonId)
+    public Optional<Consumption> load(UUID consumptionId) {
+
+        return Optional.of(consumptionCosmosRepository.findById(consumptionId)
+                        .orElseThrow(() -> new ConsumptionPersistanceException(CONSUMPTION_NOT_FOUND)))
                 .map(consumptionPersistanceMapper::toDomain);
+
     }
 }

@@ -12,7 +12,7 @@ public class BalanceJpaRepositoryAdapterConfig {
 
     @Bean
     BalanceJpaRepositoryAdapter balanceJpaRepositoryAdapter(BalanceJpaRepository balanceJpaRepository,
-                                                             BalancePersistanceMapper balancePersistanceMapper) {
+                                                            BalancePersistanceMapper balancePersistanceMapper) {
         return new BalanceJpaRepositoryAdapter(balanceJpaRepository, balancePersistanceMapper);
     }
 

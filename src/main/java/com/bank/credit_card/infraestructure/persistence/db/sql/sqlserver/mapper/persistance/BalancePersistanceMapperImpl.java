@@ -16,11 +16,14 @@ public class BalancePersistanceMapperImpl implements BalancePersistanceMapper {
         Currency currency = Currency.create(balanceEntity.getCurrency(), BigDecimal.ONE);
         return Balance.create(
                 balanceEntity.getIdBalance(),
+                balanceEntity.getStatus(),
+                balanceEntity.getCreatedDate(),
+                balanceEntity.getUpdatedDate(),
                 Amount.create(currency, balanceEntity.getTotalAmount()),
                 Amount.create(currency, balanceEntity.getOldAmount()),
                 DateRange.create(balanceEntity.getStartDate(), balanceEntity.getEndDate()),
                 Amount.create(currency, balanceEntity.getAvailableAmount()),
-                CardId.create(balanceEntity.getCardId())
+                CardId.create(balanceEntity.getCardId().getCardId())
         );
     }
 
@@ -33,6 +36,9 @@ public class BalancePersistanceMapperImpl implements BalancePersistanceMapper {
                 .availableAmount(balance.getAvailable().getAmount())
                 .startDate(balance.getDateRange().getStartDate())
                 .endDate(balance.getDateRange().getEndDate())
+                .createdDate(balance.getCreatedDate())
+                .updatedDate(balance.getUpdatedDate())
+                .status(balance.getStatus())
                 .build();
     }
 }

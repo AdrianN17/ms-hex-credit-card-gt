@@ -1,10 +1,12 @@
 package com.bank.credit_card.domain.card;
 
 import com.bank.credit_card.domain.base.GenericDomain;
+import com.bank.credit_card.domain.base.StatusEnum;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.base.vo.DateRange;
 import com.bank.credit_card.domain.card.vo.CardId;
 import com.bank.credit_card.domain.consumption.Consumption;
+import com.bank.credit_card.domain.generator.CardIdGenerator;
 import com.bank.credit_card.domain.payment.Payment;
 
 import java.math.BigDecimal;
@@ -12,13 +14,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
+import static com.bank.credit_card.domain.base.StatusEnum.ACTIVE;
 import static com.bank.credit_card.domain.base.vo.DateRangeErrorMessage.DATE_NOT_WITHIN_RANGE;
 import static com.bank.credit_card.domain.card.BalanceErrorMessage.*;
 import static com.bank.credit_card.domain.card.CardConstant.OVERCHARGE_LIMIT;
 import static com.bank.credit_card.domain.card.CardErrorMessage.PAYMENT_CATEGORY_EXCEED_LIKE;
 import static com.bank.credit_card.domain.card.CardErrorMessage.PAYMENT_CATEGORY_NOT_SAME_AS_PAYMENT;
 import static com.bank.credit_card.domain.card.CategoryPaymentEnum.ADELANTADO;
-import static com.bank.credit_card.domain.util.Validation.isConditional;
+import static com.bank.credit_card.domain.util.Validation.isNotConditional;
 import static com.bank.credit_card.domain.util.Validation.isNotNull;
 
 public class Balance extends GenericDomain<Long> {
@@ -28,8 +31,18 @@ public class Balance extends GenericDomain<Long> {
     private Amount available;
     private final CardId cardId;
 
-    private Balance(Long id, Amount total, Amount old, DateRange dateRange, Amount available, CardId cardId) {
-        super(id);
+    private Balance(
+            Long id,
+            StatusEnum status,
+            LocalDateTime createdDate,
+            LocalDateTime updatedDate,
+            Amount total,
+            Amount old,
+            DateRange dateRange,
+            Amount available,
+            CardId cardId) {
+
+        super(id, status, createdDate, updatedDate);
         this.total = total;
         this.old = old;
         this.dateRange = dateRange;
@@ -53,16 +66,23 @@ public class Balance extends GenericDomain<Long> {
         return available;
     }
 
-    public static Balance create(Amount total,
-                                 DateRange dateRange,
-                                 CardId cardId) {
+    public static Balance create(
+            CardIdGenerator cardIdGenerator,
+            Amount total,
+            DateRange dateRange,
+            CardId cardId) {
+
+        isNotNull(cardIdGenerator, new BalanceException(CARD_GENERATOR_CANNOT_BE_NULL));
 
         isNotNull(total, new BalanceException(TOTAL_AMOUNT_CANNOT_BE_NULL));
         isNotNull(dateRange, new BalanceException(DATE_RANGE_CANNOT_BE_NULL));
         isNotNull(cardId, new BalanceException(CARD_ID_CANNOT_BE_NULL));
 
         return new Balance(
-                -1L,
+                cardIdGenerator.nextId(),
+                ACTIVE,
+                LocalDateTime.now(),
+                null,
                 total,
                 total,
                 dateRange,
@@ -71,12 +91,16 @@ public class Balance extends GenericDomain<Long> {
         );
     }
 
-    public static Balance create(Long id,
-                                 Amount total,
-                                 Amount old,
-                                 DateRange dateRange,
-                                 Amount available,
-                                 CardId cardId) {
+    public static Balance create(
+            Long id,
+            StatusEnum status,
+            LocalDateTime createdDate,
+            LocalDateTime updatedDate,
+            Amount total,
+            Amount old,
+            DateRange dateRange,
+            Amount available,
+            CardId cardId) {
 
         isNotNull(total, new BalanceException(TOTAL_AMOUNT_CANNOT_BE_NULL));
         isNotNull(old, new BalanceException(OLD_AMOUNT_CANNOT_BE_NULL));
@@ -86,6 +110,9 @@ public class Balance extends GenericDomain<Long> {
 
         return new Balance(
                 id,
+                status,
+                createdDate,
+                updatedDate,
                 total,
                 old,
                 dateRange,
@@ -133,7 +160,7 @@ public class Balance extends GenericDomain<Long> {
 
         isNotNull(payment, new BalanceException(PAYMENT_CANNOT_BE_NULL));
 
-        isConditional(!Objects.equals(payment.getCategory(), ADELANTADO),
+        isNotConditional(!Objects.equals(payment.getCategory(), ADELANTADO),
                 new BalanceException(DATE_NOT_WITHIN_RANGE));
 
         applyPayment(payment.getPaymentAmount());
@@ -141,7 +168,7 @@ public class Balance extends GenericDomain<Long> {
         Amount totalAmount = getAvailable();
         Amount totalBalance = getTotal();
 
-        isConditional(totalAmount.estaSobrando(totalBalance),
+        isNotConditional(totalAmount.estaSobrando(totalBalance),
                 new BalanceException(PAYMENT_CATEGORY_EXCEED_LIKE + totalAmount.menos(totalBalance).toString()));
     }
 
@@ -149,15 +176,15 @@ public class Balance extends GenericDomain<Long> {
 
         isNotNull(payment, new BalanceException(PAYMENT_CANNOT_BE_NULL));
 
-        isConditional(UnavailablePayment(payment.getPaymentDate()),
+        isNotConditional(UnavailablePayment(payment.getPaymentDate()),
                 new BalanceException(DATE_NOT_WITHIN_RANGE));
 
         Amount totalAmount = getAvailable();
         Amount totalBalance = getTotal();
 
-        isConditional(totalBalance.esIgual(totalAmount) && !Objects.equals(payment.getCategory(), CategoryPaymentEnum.TOTAL),
+        isNotConditional(totalBalance.esIgual(totalAmount) && !Objects.equals(payment.getCategory(), CategoryPaymentEnum.TOTAL),
                 new BalanceException(PAYMENT_CATEGORY_NOT_SAME_AS_PAYMENT));
-        isConditional(totalAmount.estaSobrando(totalBalance),
+        isNotConditional(totalAmount.estaSobrando(totalBalance),
                 new BalanceException(PAYMENT_CATEGORY_EXCEED_LIKE + totalAmount.menos(totalBalance).toString()));
 
         applyPayment(payment.getPaymentAmount());
@@ -165,7 +192,7 @@ public class Balance extends GenericDomain<Long> {
 
     public void consumptionSplitted(List<Consumption> consumptions) {
         isNotNull(consumptions, new BalanceException(CONSUMPTIONS_CANNOT_BE_NULL));
-        isConditional(consumptions.isEmpty(), new BalanceException(CONSUMPTIONS_CANNOT_BE_EMPTY));
+        isNotConditional(consumptions.isEmpty(), new BalanceException(CONSUMPTIONS_CANNOT_BE_EMPTY));
 
         consumptions.forEach(consumption -> {
             isNotNull(consumption, new BalanceException(CONSUMPTION_CANNOT_BE_NULL));

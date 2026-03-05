@@ -14,4 +14,6 @@ public interface CardErrorMessage {
     String BENEFIT_CANNOT_BE_NULL = "Benefit cannot be null";
     String PAYMENT_DAY_CANNOT_BE_NULL = "Payment paymentDay cannot be null";
 
+    String CARD_GENERATOR_CANNOT_BE_NULL = "Card generator cannot be null";
+
 }

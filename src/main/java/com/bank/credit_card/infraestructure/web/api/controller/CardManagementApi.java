@@ -5,9 +5,9 @@
  */
 package com.bank.credit_card.infraestructure.web.api.controller;
 
-import com.bank.credit_card.infraestructure.web.api.schema.request.ConsumptionRequest;
-import com.bank.credit_card.infraestructure.web.api.schema.request.CreatePaymentRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.request.InitiateCardRequest;
+import com.bank.credit_card.infraestructure.web.api.schema.request.InitiateConsumptionRequest;
+import com.bank.credit_card.infraestructure.web.api.schema.request.InitiatePaymentRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.response.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -157,15 +157,15 @@ public interface CardManagementApi {
     /**
      * POST /CardManagement/{cardId}/Payment/Initiate : initiatePayment
      *
-     * @param cardId               (required)
-     * @param createPaymentRequest (required)
+     * @param cardId                 (required)
+     * @param initiatePaymentRequest (required)
      * @return (status code 202)
      * or  (status code 400)
      * or  (status code 404)
      * or  (status code 500)
      */
     @Operation(
-            operationId = "createPayment",
+            operationId = "initiatePayment",
             summary = "initiatePayment",
             description = "",
             tags = {},
@@ -190,9 +190,9 @@ public interface CardManagementApi {
             produces = {"application/json"},
             consumes = {"application/json"}
     )
-    ResponseEntity<DefaultResponse2xx> createPayment(
+    ResponseEntity<DefaultResponse2xx> initiatePayment(
             @Parameter(name = "cardId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("cardId") Long cardId,
-            @Parameter(name = "CreatePaymentRequest", description = "", required = true) @Valid @RequestBody CreatePaymentRequest createPaymentRequest,
+            @Parameter(name = "CreatePaymentRequest", description = "", required = true) @Valid @RequestBody InitiatePaymentRequest initiatePaymentRequest,
             BindingResult bindingResult
     );
 
@@ -286,8 +286,8 @@ public interface CardManagementApi {
     /**
      * POST /CardManagement/{cardId}/Consumption/Initiate : initiateConsumption
      *
-     * @param cardId             (required)
-     * @param consumptionRequest (required)
+     * @param cardId                     (required)
+     * @param initiateConsumptionRequest (required)
      * @return (status code 202)
      * or  (status code 400)
      * or  (status code 404)
@@ -321,7 +321,7 @@ public interface CardManagementApi {
     )
     ResponseEntity<DefaultResponse2xx> initiateConsumption(
             @Parameter(name = "cardId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("cardId") Long cardId,
-            @Parameter(name = "ConsumptionRequest", description = "", required = true) @Valid @RequestBody ConsumptionRequest consumptionRequest,
+            @Parameter(name = "ConsumptionRequest", description = "", required = true) @Valid @RequestBody InitiateConsumptionRequest initiateConsumptionRequest,
             BindingResult bindingResult
     );
 
@@ -366,10 +366,9 @@ public interface CardManagementApi {
 
 
     /**
-     * GET /CardManagement/{cardId}/Consumption/{ConsumptionId}/Retrieve : retrieveConsumption
+     * GET /CardManagement/{cardId}/Consumption/Retrieve : retrieveConsumption
      *
      * @param cardId        (required)
-     * @param consumptionId (required)
      * @param dateStart     (required)
      * @param dateEnd       (required)
      * @return (status code 200)
@@ -399,22 +398,20 @@ public interface CardManagementApi {
     )
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/CardManagement/{cardId}/Consumption/{ConsumptionId}/Retrieve",
+            value = "/CardManagement/{cardId}/Consumption/Retrieve",
             produces = {"application/json"}
     )
     ResponseEntity<RetrieveConsumption200Response> retrieveConsumption(
             @Parameter(name = "cardId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("cardId") Long cardId,
-            @Parameter(name = "ConsumptionId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("ConsumptionId") UUID consumptionId,
             @NotNull @Parameter(name = "dateStart", description = "", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "dateStart", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateStart,
             @NotNull @Parameter(name = "dateEnd", description = "", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "dateEnd", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateEnd
     );
 
 
     /**
-     * GET /CardManagement/{cardId}/Payment/{paymentId}/Retrieve : retrievePayment
+     * GET /CardManagement/{cardId}/Payment/Retrieve : retrievePayment
      *
      * @param cardId    (required)
-     * @param paymentId (required)
      * @param dateStart (required)
      * @param dateEnd   (required)
      * @return (status code 200)
@@ -444,12 +441,11 @@ public interface CardManagementApi {
     )
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/CardManagement/{cardId}/Payment/{paymentId}/Retrieve",
+            value = "/CardManagement/{cardId}/Payment/Retrieve",
             produces = {"application/json"}
     )
     ResponseEntity<RetrievePayment200Response> retrievePayment(
             @Parameter(name = "cardId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("cardId") Long cardId,
-            @Parameter(name = "paymentId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("paymentId") UUID paymentId,
             @NotNull @Parameter(name = "dateStart", description = "", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "dateStart", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateStart,
             @NotNull @Parameter(name = "dateEnd", description = "", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "dateEnd", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateEnd
     );

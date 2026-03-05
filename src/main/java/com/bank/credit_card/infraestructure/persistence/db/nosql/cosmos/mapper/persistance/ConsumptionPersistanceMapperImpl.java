@@ -12,7 +12,11 @@ public class ConsumptionPersistanceMapperImpl implements ConsumptionPersistanceM
 
     @Override
     public Consumption toDomain(ConsumptionEntity consumptionEntity) {
-        return Consumption.create(consumptionEntity.getConsumptionId(),
+        return Consumption.create(
+                consumptionEntity.getConsumptionId(),
+                consumptionEntity.getStatus(),
+                consumptionEntity.getCreatedDate(),
+                consumptionEntity.getUpdatedDate(),
                 Amount.create(Currency.create(consumptionEntity.getCurrency(), BigDecimal.ONE), consumptionEntity.getAmount()),
                 consumptionEntity.getConsumptionDate(),
                 consumptionEntity.getConsumptionApprobationDate(),
@@ -24,8 +28,6 @@ public class ConsumptionPersistanceMapperImpl implements ConsumptionPersistanceM
     @Override
     public ConsumptionEntity toEntity(Consumption consumption) {
 
-        ConsumptionEntity consumptionEntity = new ConsumptionEntity();
-
         return ConsumptionEntity.builder()
                 .consumptionId(consumption.getId())
                 .amount(consumption.getConsumptionAmount().getAmount())
@@ -34,6 +36,9 @@ public class ConsumptionPersistanceMapperImpl implements ConsumptionPersistanceM
                 .consumptionApprobationDate(consumption.getConsumptionApprobationDate())
                 .sellerName(consumption.getSellerName())
                 .cardId(consumption.getCardId().getValue().toString())
+                .createdDate(consumption.getCreatedDate())
+                .updatedDate(consumption.getUpdatedDate())
+                .status(consumption.getStatus())
                 .build();
     }
 }

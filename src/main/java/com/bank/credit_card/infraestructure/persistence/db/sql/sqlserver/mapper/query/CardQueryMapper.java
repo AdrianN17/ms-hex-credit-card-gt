@@ -4,5 +4,6 @@ import com.bank.credit_card.application.port.in.query.view.LoadCardBalanceBenefi
 import com.bank.credit_card.infraestructure.persistence.db.generic.mapper.GenericQueryMapper;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.CardEntity;
 
+@FunctionalInterface
 public interface CardQueryMapper extends GenericQueryMapper<LoadCardBalanceBenefitView, CardEntity> {
 }

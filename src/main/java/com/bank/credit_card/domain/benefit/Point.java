@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 import static com.bank.credit_card.domain.benefit.PointConstant.POINT_EARNED_NOT_NULL;
 import static com.bank.credit_card.domain.benefit.PointConstant.POINT_EARNED_POSITIVE;
-import static com.bank.credit_card.domain.util.Validation.isConditional;
+import static com.bank.credit_card.domain.util.Validation.isNotConditional;
 import static com.bank.credit_card.domain.util.Validation.isNotNull;
 
 public class Point {
@@ -19,7 +19,7 @@ public class Point {
 
     public static Point create(Integer pointEarned) {
         isNotNull(pointEarned, new PointException(POINT_EARNED_NOT_NULL));
-        isConditional(pointEarned < 0, new PointException(POINT_EARNED_POSITIVE));
+        isNotConditional(pointEarned < 0, new PointException(POINT_EARNED_POSITIVE));
 
         return new Point(pointEarned);
     }

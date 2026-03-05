@@ -4,9 +4,9 @@ import com.bank.credit_card.domain.base.CurrencyEnum;
 import com.bank.credit_card.infraestructure.persistence.db.generic.entity.GenericEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
 @Table(name = "balances")
 public class BalanceEntity extends GenericEntity {
@@ -24,8 +24,9 @@ public class BalanceEntity extends GenericEntity {
     @Column(name = "idBalance", nullable = false)
     private Long idBalance;
 
-    @Column(name = "cardId", nullable = false)
-    private Long cardId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cardId", referencedColumnName = "cardId", nullable = false)
+    private CardEntity cardId;
 
     @Column(name = "totalAmount", precision = 19, scale = 2)
     private BigDecimal totalAmount;

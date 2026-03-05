@@ -12,7 +12,7 @@ public class Validation {
         }
     }
 
-    public static <X extends RuntimeException> void isConditional(
+    public static <X extends RuntimeException> void isNotConditional(
             Boolean value,
             X exception
     ) {

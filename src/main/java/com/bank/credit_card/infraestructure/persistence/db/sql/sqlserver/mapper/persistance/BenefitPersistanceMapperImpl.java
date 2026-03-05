@@ -12,9 +12,12 @@ public class BenefitPersistanceMapperImpl implements BenefitPersistanceMapper {
     public Benefit toDomain(BenefitEntity benefitEntity) {
         return Benefit.create(
                 benefitEntity.getIdBenefit(),
+                benefitEntity.getStatus(),
+                benefitEntity.getCreatedDate(),
+                benefitEntity.getUpdatedDate(),
                 Point.create(benefitEntity.getTotalPoints()),
                 DiscountPolicy.create(benefitEntity.getHasDiscount(), benefitEntity.getMultiplierPoints()),
-                CardId.create(benefitEntity.getCardId())
+                CardId.create(benefitEntity.getCardId().getCardId())
         );
     }
 
@@ -24,6 +27,9 @@ public class BenefitPersistanceMapperImpl implements BenefitPersistanceMapper {
                 .totalPoints(benefit.getTotalPoints().getPointEarned())
                 .hasDiscount(benefit.getDiscountPolicy().getHasDiscount())
                 .multiplierPoints(benefit.getDiscountPolicy().getMultiplierPoints())
+                .createdDate(benefit.getCreatedDate())
+                .updatedDate(benefit.getUpdatedDate())
+                .status(benefit.getStatus())
                 .build();
     }
 }

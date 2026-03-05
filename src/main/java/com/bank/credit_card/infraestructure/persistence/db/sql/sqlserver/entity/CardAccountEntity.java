@@ -5,16 +5,16 @@ import com.bank.credit_card.domain.card.CardStatusEnum;
 import com.bank.credit_card.infraestructure.persistence.db.generic.entity.GenericEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
 @Table(name = "CardAccounts")
 public class CardAccountEntity extends GenericEntity {
@@ -24,8 +24,9 @@ public class CardAccountEntity extends GenericEntity {
     @Column(name = "cardAccountId", nullable = false)
     private Long cardAccountId;
 
-    @Column(name = "cardId", nullable = false)
-    private Long cardId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cardId", referencedColumnName = "cardId", nullable = false)
+    private CardEntity cardId;
 
     @Column(name = "creditTotal", precision = 19, scale = 2)
     private BigDecimal creditTotal;

@@ -12,7 +12,7 @@ public class BenefitJpaRepositoryAdapterConfig {
 
     @Bean
     BenefitJpaRepositoryAdapter benefitJpaRepositoryAdapter(BenefitJpaRepository benefitJpaRepository,
-                                                             BenefitPersistanceMapper benefitPersistanceMapper) {
+                                                            BenefitPersistanceMapper benefitPersistanceMapper) {
         return new BenefitJpaRepositoryAdapter(benefitJpaRepository, benefitPersistanceMapper);
     }
 

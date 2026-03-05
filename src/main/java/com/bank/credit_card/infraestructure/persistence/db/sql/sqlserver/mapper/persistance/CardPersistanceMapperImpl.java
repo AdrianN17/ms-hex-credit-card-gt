@@ -30,6 +30,9 @@ public class CardPersistanceMapperImpl implements CardPersistanceMapper {
 
         return Card.create(
                 cardEntity.getCardId(),
+                cardEntity.getStatus(),
+                cardEntity.getCreatedDate(),
+                cardEntity.getUpdatedDate(),
                 cardEntity.getTypeCard(),
                 cardEntity.getCategoryCard(),
                 Credit.create(credit, cardEntity.getCardAccountEntity().getDebtTax()),
@@ -46,14 +49,15 @@ public class CardPersistanceMapperImpl implements CardPersistanceMapper {
 
         CardAccountEntity cardAccountEntity = CardAccountEntity.builder()
                 .cardAccountId(card.getCardAccountId().getValue())
-                .cardId(card.getId())
                 .cardStatus(card.getCardStatus())
                 .currency(card.getCredit().getCreditTotal().getCurrency().getCurrency())
                 .debtTax(card.getCredit().getDebtTax())
                 .creditTotal(card.getCredit().getCreditTotal().getAmount())
                 .paymentDate(card.getPaymentDay())
+                .createdDate(card.getCreatedDate())
+                .updatedDate(card.getUpdatedDate())
+                .status(card.getStatus())
                 .build();
-
 
         return CardEntity.builder()
                 .cardId(card.getId())
@@ -62,6 +66,9 @@ public class CardPersistanceMapperImpl implements CardPersistanceMapper {
                 .cardAccountEntity(cardAccountEntity)
                 .balanceEntity(balancePersistanceMapper.toEntity(card.getBalance()))
                 .benefitEntity(benefitPersistanceMapper.toEntity(card.getBenefit()))
+                .createdDate(card.getCreatedDate())
+                .updatedDate(card.getUpdatedDate())
+                .status(card.getStatus())
                 .build();
     }
 }

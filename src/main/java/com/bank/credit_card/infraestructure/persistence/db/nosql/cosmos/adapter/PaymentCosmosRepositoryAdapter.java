@@ -7,6 +7,7 @@ import com.bank.credit_card.application.port.out.payment.usecase.LoadPaymentPort
 import com.bank.credit_card.application.port.out.payment.usecase.SavePaymentPort;
 import com.bank.credit_card.domain.payment.Payment;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.entity.PaymentEntity;
+import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.exception.PaymentPersistanceException;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.mapper.persistance.PaymentPersistanceMapper;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.mapper.query.PaymentQueryMapper;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.repository.PaymentCosmosRepository;
@@ -16,6 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.constant.TimeConstant.*;
+import static com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.exception.PaymentErrorMessage.*;
 
 public class PaymentCosmosRepositoryAdapter implements LoadPaymentPort, SavePaymentPort, LoadPaymentsByDatesAndCardIdPort {
 
@@ -31,11 +33,18 @@ public class PaymentCosmosRepositoryAdapter implements LoadPaymentPort, SavePaym
 
     @Override
     public List<LoadPaymentView> load(FindPaymentByDatesAndCardIdCriteria criteria) {
-        return paymentCosmosRepository.findByCardIdAndPaymentDateBetween(
-                        String.valueOf(criteria.cardId()),
-                        criteria.start().atStartOfDay(),
-                        criteria.end().atTime(LAST_HOUR, LAST_MINUTE, LAST_SECOND))
-                .stream()
+
+        List<PaymentEntity> paymentEntities = paymentCosmosRepository.findByCardIdAndPaymentDateBetween(
+                String.valueOf(criteria.cardId()),
+                criteria.start().atStartOfDay(),
+                criteria.end().atTime(LAST_HOUR, LAST_MINUTE, LAST_SECOND));
+
+
+        if (paymentEntities.isEmpty()) {
+            throw new PaymentPersistanceException(NO_PAYMENTS_FOUND);
+        }
+
+        return paymentEntities.stream()
                 .map(paymentQueryMapper::toView)
                 .toList();
     }
@@ -43,12 +52,15 @@ public class PaymentCosmosRepositoryAdapter implements LoadPaymentPort, SavePaym
     @Override
     public Optional<UUID> save(Payment payment) {
         Optional<PaymentEntity> paymentEntity = Optional.of(paymentCosmosRepository.save(paymentPersistanceMapper.toEntity(payment)));
-        return paymentEntity.map(PaymentEntity::getPaymentId);
+        return Optional.ofNullable(paymentEntity
+                        .orElseThrow(() -> new PaymentPersistanceException(PAYMENT_NOT_SAVED)))
+                .map(PaymentEntity::getPaymentId);
     }
 
     @Override
     public Optional<Payment> load(UUID paymentId) {
-        return paymentCosmosRepository.findById(paymentId)
+        return Optional.of(paymentCosmosRepository.findById(paymentId)
+                        .orElseThrow(() -> new PaymentPersistanceException(PAYMENT_NOT_FOUND)))
                 .map(paymentPersistanceMapper::toDomain);
     }
 }

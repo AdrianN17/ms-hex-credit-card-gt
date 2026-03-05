@@ -12,7 +12,11 @@ public class PaymentPersistanceMapperImpl implements PaymentPersistanceMapper {
 
     @Override
     public Payment toDomain(PaymentEntity paymentEntity) {
-        return Payment.create(paymentEntity.getPaymentId(),
+        return Payment.create(
+                paymentEntity.getPaymentId(),
+                paymentEntity.getStatus(),
+                paymentEntity.getCreatedDate(),
+                paymentEntity.getUpdatedDate(),
                 Amount.create(Currency.create(paymentEntity.getCurrency(), BigDecimal.ONE), paymentEntity.getAmount()),
                 paymentEntity.getPaymentDate(),
                 paymentEntity.getPaymentApprobationDate(),
@@ -33,6 +37,9 @@ public class PaymentPersistanceMapperImpl implements PaymentPersistanceMapper {
                 .category(payment.getCategory())
                 .cardId(payment.getCardId().getValue().toString())
                 .channel(payment.getChannelPayment())
+                .createdDate(payment.getCreatedDate())
+                .updatedDate(payment.getUpdatedDate())
+                .status(payment.getStatus())
                 .build();
     }
 }

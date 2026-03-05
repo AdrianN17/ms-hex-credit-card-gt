@@ -146,7 +146,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConsumptionRequest'
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/ConsumptionRequest'
+              required:
+                - data
             examples: {}
         required: true
       responses:
@@ -177,7 +182,7 @@ paths:
       summary: initiatePayment
       deprecated: false
       description: ''
-      operationId: createPayment
+      operationId: initiatePayment
       tags: []
       parameters:
         - name: cardId
@@ -656,7 +661,6 @@ components:
         - currency
         - channel
         - category
-        - pointsUsed
     ConsumptionRequest:
       type: object
       properties:
