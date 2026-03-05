@@ -24,9 +24,8 @@ public class BalanceEntity extends GenericEntity {
     @Column(name = "idBalance", nullable = false)
     private Long idBalance;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cardId", referencedColumnName = "cardId", nullable = false)
-    private CardEntity cardId;
+    @Column(name = "cardId", nullable = false)
+    private Long cardId;
 
     @Column(name = "totalAmount", precision = 19, scale = 2)
     private BigDecimal totalAmount;

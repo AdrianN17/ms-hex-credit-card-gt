@@ -34,16 +34,13 @@ public class ConsumptionCosmosRepositoryAdapter implements LoadConsumptionPort, 
     @Override
     public List<LoadConsumptionView> load(FindConsumptionByDatesAndCardIdCriteria criteria) {
 
-        List<ConsumptionEntity> consumptionEntities = consumptionCosmosRepository.findByCardIdAndConsumptionDateBetween(
-                String.valueOf(criteria.cardId()),
-                criteria.start().atStartOfDay(),
-                criteria.end().atTime(LAST_HOUR, LAST_MINUTE, LAST_SECOND));
-
-        if (consumptionEntities.isEmpty()) {
-            throw new ConsumptionPersistanceException(NO_CONSUMPTIONS_FOUND);
-        }
-
-        return consumptionEntities.stream()
+        return Optional.of(consumptionCosmosRepository.findByCardIdAndConsumptionDateBetween(
+                        String.valueOf(criteria.cardId()),
+                        criteria.start().atStartOfDay(),
+                        criteria.end().atTime(LAST_HOUR, LAST_MINUTE, LAST_SECOND)))
+                .filter(list -> !list.isEmpty())
+                .orElseThrow(() -> new ConsumptionPersistanceException(NO_CONSUMPTIONS_FOUND))
+                .stream()
                 .map(consumptionQueryMapper::toView)
                 .toList();
 
@@ -52,12 +49,11 @@ public class ConsumptionCosmosRepositoryAdapter implements LoadConsumptionPort, 
     @Override
     public Optional<UUID> save(Consumption consumption) {
 
-        Optional<ConsumptionEntity> consumptionEntity = Optional.of(consumptionCosmosRepository
-                .save(consumptionPersistanceMapper.toEntity(consumption)));
-
-        return Optional.ofNullable(consumptionEntity
-                        .orElseThrow(() -> new ConsumptionPersistanceException(CONSUMPTION_NOT_SAVED)))
-                .map(ConsumptionEntity::getConsumptionId);
+        return Optional.of(Optional.of(consumption)
+                .map(consumptionPersistanceMapper::toEntity)
+                .map(consumptionCosmosRepository::save)
+                .map(ConsumptionEntity::getConsumptionId)
+                .orElseThrow(() -> new ConsumptionPersistanceException(CONSUMPTION_NOT_SAVED)));
 
     }
 

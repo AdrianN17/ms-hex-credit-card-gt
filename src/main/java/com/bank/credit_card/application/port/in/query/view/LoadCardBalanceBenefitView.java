@@ -15,7 +15,7 @@ public record LoadCardBalanceBenefitView(
         CurrencyEnum currency,
         BigDecimal debtTax,
         CardStatusEnum cardStatus,
-        Short paymentDate,
+        Integer paymentDate,
         Integer totalPoint,
         Boolean hasDiscount,
         BigDecimal multiplierPoints,

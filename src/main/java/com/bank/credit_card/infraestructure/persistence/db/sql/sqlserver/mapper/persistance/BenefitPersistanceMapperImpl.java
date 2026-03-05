@@ -5,11 +5,12 @@ import com.bank.credit_card.domain.benefit.Point;
 import com.bank.credit_card.domain.benefit.vo.DiscountPolicy;
 import com.bank.credit_card.domain.card.vo.CardId;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.BenefitEntity;
+import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.vo.BenefitEntityVO;
 
 public class BenefitPersistanceMapperImpl implements BenefitPersistanceMapper {
 
     @Override
-    public Benefit toDomain(BenefitEntity benefitEntity) {
+    public Benefit toDomain(BenefitEntityVO benefitEntity) {
         return Benefit.create(
                 benefitEntity.getIdBenefit(),
                 benefitEntity.getStatus(),
@@ -17,7 +18,7 @@ public class BenefitPersistanceMapperImpl implements BenefitPersistanceMapper {
                 benefitEntity.getUpdatedDate(),
                 Point.create(benefitEntity.getTotalPoints()),
                 DiscountPolicy.create(benefitEntity.getHasDiscount(), benefitEntity.getMultiplierPoints()),
-                CardId.create(benefitEntity.getCardId().getCardId())
+                CardId.create(benefitEntity.getCard().getCardId())
         );
     }
 
@@ -30,6 +31,7 @@ public class BenefitPersistanceMapperImpl implements BenefitPersistanceMapper {
                 .createdDate(benefit.getCreatedDate())
                 .updatedDate(benefit.getUpdatedDate())
                 .status(benefit.getStatus())
+                .cardId(benefit.getCardId().getValue())
                 .build();
     }
 }

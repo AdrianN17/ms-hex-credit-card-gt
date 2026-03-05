@@ -1,28 +1,30 @@
 package com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.mapper.query;
 
 import com.bank.credit_card.application.port.in.query.view.LoadCardBalanceBenefitView;
-import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.CardEntity;
+import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.projection.CardSumaryProjection;
 
 public class CardQueryMapperImpl implements CardQueryMapper {
 
     @Override
-    public LoadCardBalanceBenefitView toView(CardEntity entity) {
+    public LoadCardBalanceBenefitView toView(CardSumaryProjection entity) {
+
+        //validar que no sean nulos - programacion defensiva
         return new LoadCardBalanceBenefitView(
-                entity.getTypeCard(),
-                entity.getCategoryCard(),
-                entity.getCardAccountEntity().getCreditTotal(),
-                entity.getCardAccountEntity().getCurrency(),
-                entity.getCardAccountEntity().getDebtTax(),
-                entity.getCardAccountEntity().getCardStatus(),
-                entity.getCardAccountEntity().getPaymentDate(),
-                entity.getBenefitEntity().getTotalPoints(),
-                entity.getBenefitEntity().getHasDiscount(),
-                entity.getBenefitEntity().getMultiplierPoints(),
-                entity.getBalanceEntity().getTotalAmount(),
-                entity.getBalanceEntity().getOldAmount(),
-                entity.getBalanceEntity().getStartDate(),
-                entity.getBalanceEntity().getEndDate(),
-                entity.getBalanceEntity().getAvailableAmount()
+                entity.getTypeCardEnum(),
+                entity.getCategoryCardEnum(),
+                entity.getCreditTotal(),
+                entity.getCurrencyEnum(),
+                entity.getDebtTax(),
+                entity.getCardStatusEnum(),
+                entity.getPaymentDate(),
+                entity.getTotalPoints(),
+                entity.getHasDiscount(),
+                entity.getMultiplierPoints(),
+                entity.getTotalAmount(),
+                entity.getOldAmount(),
+                entity.getStartDate(),
+                entity.getEndDate(),
+                entity.getAvailableAmount()
 
         );
     }

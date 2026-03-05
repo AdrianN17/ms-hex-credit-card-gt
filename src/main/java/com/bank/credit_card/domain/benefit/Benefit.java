@@ -1,6 +1,6 @@
 package com.bank.credit_card.domain.benefit;
 
-import com.bank.credit_card.domain.base.GenericDomain;
+import com.bank.credit_card.domain.generic.GenericDomain;
 import com.bank.credit_card.domain.base.StatusEnum;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.benefit.vo.DiscountPolicy;
@@ -46,6 +46,10 @@ public class Benefit extends GenericDomain {
 
     public DiscountPolicy getDiscountPolicy() {
         return discountPolicy;
+    }
+
+    public CardId getCardId() {
+        return cardId;
     }
 
     public static Benefit create(

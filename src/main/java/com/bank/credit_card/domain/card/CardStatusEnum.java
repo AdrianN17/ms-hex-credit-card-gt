@@ -1,5 +1,8 @@
 package com.bank.credit_card.domain.card;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 public enum CardStatusEnum {
     OPERATIVE("OPERATIVA", 1),
     OVERCHARGE("SOBREGIRADA", 2),
@@ -19,5 +22,12 @@ public enum CardStatusEnum {
 
     public int getValue() {
         return value;
+    }
+
+    public static Optional<CardStatusEnum> ofValue(Integer value) {
+        if (value == null) return Optional.empty();
+        return Arrays.stream(values())
+                .filter(c -> c.value == value)
+                .findFirst();
     }
 }

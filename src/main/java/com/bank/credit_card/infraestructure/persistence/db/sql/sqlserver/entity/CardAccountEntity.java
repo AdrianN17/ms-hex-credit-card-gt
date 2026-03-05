@@ -24,9 +24,8 @@ public class CardAccountEntity extends GenericEntity {
     @Column(name = "cardAccountId", nullable = false)
     private Long cardAccountId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cardId", referencedColumnName = "cardId", nullable = false)
-    private CardEntity cardId;
+    @Column(name = "cardId", nullable = false)
+    private Long cardId;
 
     @Column(name = "creditTotal", precision = 19, scale = 2)
     private BigDecimal creditTotal;

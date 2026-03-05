@@ -24,7 +24,6 @@ import static com.bank.credit_card.application.error.consumption.ConsumptionAppl
 
 public class SplitConsumptionService implements CardSplitConsumptionUseCase {
 
-
     private final LoadCardPort loadCardPort;
     private final SaveBenefitPort saveBenefitPort;
     private final SaveBalancePort saveBalancePort;

@@ -1,6 +1,6 @@
 package com.bank.credit_card.domain.card;
 
-import com.bank.credit_card.domain.base.GenericDomain;
+import com.bank.credit_card.domain.generic.GenericDomain;
 import com.bank.credit_card.domain.base.StatusEnum;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.base.vo.DateRange;
@@ -64,6 +64,10 @@ public class Balance extends GenericDomain<Long> {
 
     public Amount getAvailable() {
         return available;
+    }
+
+    public CardId getCardId() {
+        return cardId;
     }
 
     public static Balance create(

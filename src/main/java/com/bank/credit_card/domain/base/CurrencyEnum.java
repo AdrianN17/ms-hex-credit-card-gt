@@ -1,5 +1,8 @@
 package com.bank.credit_card.domain.base;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 public enum CurrencyEnum {
     PEN("PEN", 1),
     USD("USD", 2);
@@ -18,5 +21,12 @@ public enum CurrencyEnum {
 
     public int getValue() {
         return value;
+    }
+
+    public static Optional<CurrencyEnum> ofValue(Integer value) {
+        if (value == null) return Optional.empty();
+        return Arrays.stream(values())
+                .filter(c -> c.value == value)
+                .findFirst();
     }
 }

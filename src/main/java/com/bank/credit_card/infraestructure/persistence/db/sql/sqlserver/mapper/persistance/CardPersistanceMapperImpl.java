@@ -7,6 +7,7 @@ import com.bank.credit_card.domain.card.vo.CardAccountId;
 import com.bank.credit_card.domain.card.vo.Credit;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.CardAccountEntity;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.CardEntity;
+import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.vo.CardEntityVO;
 
 import java.math.BigDecimal;
 
@@ -21,11 +22,22 @@ public class CardPersistanceMapperImpl implements CardPersistanceMapper {
     }
 
     @Override
-    public Card toDomain(CardEntity cardEntity) {
+    public CardEntity toEntity(Card card) {
+        return CardEntity.builder()
+                .cardId(card.getId())
+                .typeCard(card.getTypeCard())
+                .categoryCard(card.getCategoryCard())
+                .createdDate(card.getCreatedDate())
+                .updatedDate(card.getUpdatedDate())
+                .status(card.getStatus())
+                .build();
+    }
 
+    @Override
+    public Card toDomain(CardEntityVO cardEntity) {
         Amount credit = Amount.create(
-                Currency.create(cardEntity.getCardAccountEntity().getCurrency(), BigDecimal.ONE),
-                cardEntity.getCardAccountEntity().getCreditTotal()
+                Currency.create(cardEntity.getCardAccount().getCurrency(), BigDecimal.ONE),
+                cardEntity.getCardAccount().getCreditTotal()
         );
 
         return Card.create(
@@ -35,40 +47,12 @@ public class CardPersistanceMapperImpl implements CardPersistanceMapper {
                 cardEntity.getUpdatedDate(),
                 cardEntity.getTypeCard(),
                 cardEntity.getCategoryCard(),
-                Credit.create(credit, cardEntity.getCardAccountEntity().getDebtTax()),
-                cardEntity.getCardAccountEntity().getCardStatus(),
-                balancePersistanceMapper.toDomain(cardEntity.getBalanceEntity()),
-                benefitPersistanceMapper.toDomain(cardEntity.getBenefitEntity()),
-                CardAccountId.create(cardEntity.getCardAccountEntity().getCardAccountId()),
-                cardEntity.getCardAccountEntity().getPaymentDate()
+                Credit.create(credit, cardEntity.getCardAccount().getDebtTax()),
+                cardEntity.getCardAccount().getCardStatus(),
+                balancePersistanceMapper.toDomain(cardEntity.getBalance()),
+                benefitPersistanceMapper.toDomain(cardEntity.getBenefit()),
+                CardAccountId.create(cardEntity.getCardAccount().getCardAccountId()),
+                cardEntity.getCardAccount().getPaymentDate()
         );
-    }
-
-    @Override
-    public CardEntity toEntity(Card card) {
-
-        CardAccountEntity cardAccountEntity = CardAccountEntity.builder()
-                .cardAccountId(card.getCardAccountId().getValue())
-                .cardStatus(card.getCardStatus())
-                .currency(card.getCredit().getCreditTotal().getCurrency().getCurrency())
-                .debtTax(card.getCredit().getDebtTax())
-                .creditTotal(card.getCredit().getCreditTotal().getAmount())
-                .paymentDate(card.getPaymentDay())
-                .createdDate(card.getCreatedDate())
-                .updatedDate(card.getUpdatedDate())
-                .status(card.getStatus())
-                .build();
-
-        return CardEntity.builder()
-                .cardId(card.getId())
-                .typeCard(card.getTypeCard())
-                .categoryCard(card.getCategoryCard())
-                .cardAccountEntity(cardAccountEntity)
-                .balanceEntity(balancePersistanceMapper.toEntity(card.getBalance()))
-                .benefitEntity(benefitPersistanceMapper.toEntity(card.getBenefit()))
-                .createdDate(card.getCreatedDate())
-                .updatedDate(card.getUpdatedDate())
-                .status(card.getStatus())
-                .build();
     }
 }

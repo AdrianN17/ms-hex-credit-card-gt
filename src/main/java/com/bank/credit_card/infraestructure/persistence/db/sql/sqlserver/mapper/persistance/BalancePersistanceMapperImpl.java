@@ -6,13 +6,14 @@ import com.bank.credit_card.domain.base.vo.DateRange;
 import com.bank.credit_card.domain.card.Balance;
 import com.bank.credit_card.domain.card.vo.CardId;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.BalanceEntity;
+import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.vo.BalanceEntityVO;
 
 import java.math.BigDecimal;
 
 public class BalancePersistanceMapperImpl implements BalancePersistanceMapper {
 
     @Override
-    public Balance toDomain(BalanceEntity balanceEntity) {
+    public Balance toDomain(BalanceEntityVO balanceEntity) {
         Currency currency = Currency.create(balanceEntity.getCurrency(), BigDecimal.ONE);
         return Balance.create(
                 balanceEntity.getIdBalance(),
@@ -23,7 +24,7 @@ public class BalancePersistanceMapperImpl implements BalancePersistanceMapper {
                 Amount.create(currency, balanceEntity.getOldAmount()),
                 DateRange.create(balanceEntity.getStartDate(), balanceEntity.getEndDate()),
                 Amount.create(currency, balanceEntity.getAvailableAmount()),
-                CardId.create(balanceEntity.getCardId().getCardId())
+                CardId.create(balanceEntity.getCard().getCardId())
         );
     }
 
@@ -39,6 +40,7 @@ public class BalancePersistanceMapperImpl implements BalancePersistanceMapper {
                 .createdDate(balance.getCreatedDate())
                 .updatedDate(balance.getUpdatedDate())
                 .status(balance.getStatus())
+                .cardId(balance.getCardId().getValue())
                 .build();
     }
 }

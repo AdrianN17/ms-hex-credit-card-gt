@@ -32,6 +32,10 @@ public class CreateCardService implements CardCreateUseCase {
     private final SaveBenefitPort saveBenefitPort;
     private final CardIdGenerator idGenerator;
 
+    //servicio web
+    //capa aop infraestructura
+    //manejo transacciones
+
     public CreateCardService(SaveCardPort saveCardPort, SaveBalancePort saveBalancePort, SaveBenefitPort saveBenefitPort, CardIdGenerator idGenerator) {
         this.saveCardPort = saveCardPort;
         this.saveBalancePort = saveBalancePort;

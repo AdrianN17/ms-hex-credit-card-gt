@@ -27,13 +27,4 @@ public class CardEntity extends GenericEntity {
 
     @Column(name = "categoryCard")
     private CategoryCardEnum categoryCard;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cardId")
-    private CardAccountEntity cardAccountEntity;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cardId")
-    private BalanceEntity balanceEntity;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cardId")
-    private BenefitEntity benefitEntity;
 }

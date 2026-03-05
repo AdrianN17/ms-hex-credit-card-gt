@@ -1,6 +1,6 @@
 package com.bank.credit_card.domain.card;
 
-import com.bank.credit_card.domain.base.GenericDomain;
+import com.bank.credit_card.domain.generic.GenericDomain;
 import com.bank.credit_card.domain.base.StatusEnum;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.benefit.Benefit;
@@ -117,7 +117,7 @@ public class Card extends GenericDomain<Long> {
         isNotNull(paymentDay, new CardException(PAYMENT_DAY_CANNOT_BE_NULL));
 
         return new Card(
-                cardIdGenerator.nextId(),
+                cardIdGenerator.nextId(),//revisar
                 ACTIVE,
                 LocalDateTime.now(),
                 null,

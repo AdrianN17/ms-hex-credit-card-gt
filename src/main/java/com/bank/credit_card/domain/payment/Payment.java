@@ -1,6 +1,6 @@
 package com.bank.credit_card.domain.payment;
 
-import com.bank.credit_card.domain.base.GenericDomain;
+import com.bank.credit_card.domain.generic.GenericDomain;
 import com.bank.credit_card.domain.base.StatusEnum;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.card.CategoryPaymentEnum;

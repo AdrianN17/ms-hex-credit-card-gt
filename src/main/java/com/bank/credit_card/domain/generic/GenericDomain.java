@@ -1,5 +1,6 @@
-package com.bank.credit_card.domain.base;
+package com.bank.credit_card.domain.generic;
 
+import com.bank.credit_card.domain.base.StatusEnum;
 import com.bank.credit_card.domain.exception.DomainException;
 
 import java.time.LocalDateTime;

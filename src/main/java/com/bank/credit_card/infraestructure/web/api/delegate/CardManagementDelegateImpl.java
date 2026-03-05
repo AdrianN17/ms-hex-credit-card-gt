@@ -16,6 +16,7 @@ import com.bank.credit_card.infraestructure.web.api.schema.response.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -88,11 +89,15 @@ public class CardManagementDelegateImpl implements CardManagementDelegate {
 
     @Override
     public ResponseEntity<DefaultResponse2xx> exchangeConsumption(Integer cardId, UUID consumptionId, ExchangeConsumptionRequest exchangeConsumptionRequest, BindingResult bindingResult) {
+
+        //splitConsumptionService.splitConsumption()
+
         return null;
     }
 
     @Override
     public ResponseEntity<DefaultResponse2xx> initiateCard(InitiateCardRequest initiateCardRequest, BindingResult bindingResult) {
+
 
         createCardService.createCard(cardApiMapperRequestCommand.toCommand(initiateCardRequest.getData()));
 

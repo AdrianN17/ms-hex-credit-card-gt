@@ -22,9 +22,8 @@ public class BenefitEntity extends GenericEntity {
     @Column(name = "idBenefit", nullable = false)
     private Long idBenefit;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cardId", referencedColumnName = "cardId", nullable = false)
-    private CardEntity cardId;
+    @Column(name = "cardId", nullable = false)
+    private Long cardId;
 
     @Column(name = "hasDiscount")
     private Boolean hasDiscount;

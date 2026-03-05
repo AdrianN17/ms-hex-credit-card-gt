@@ -1,7 +1,6 @@
 package com.bank.credit_card.infraestructure.persistence.db.generic.mapper;
 
-public interface GenericMapper<D, E> {
-    D toDomain(E entity);
-
+@FunctionalInterface
+public interface GenericEntityMapper<D, E> {
     E toEntity(D domain);
 }

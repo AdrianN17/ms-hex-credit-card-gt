@@ -1,5 +1,8 @@
 package com.bank.credit_card.domain.card;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 public enum CategoryCardEnum {
     NORMAL("NORMAL", 1),
     SILVER("SILVER", 2),
@@ -23,5 +26,12 @@ public enum CategoryCardEnum {
 
     public int getValue() {
         return value;
+    }
+
+    public static Optional<CategoryCardEnum> ofValue(Integer value) {
+        if (value == null) return Optional.empty();
+        return Arrays.stream(values())
+                .filter(c -> c.value == value)
+                .findFirst();
     }
 }

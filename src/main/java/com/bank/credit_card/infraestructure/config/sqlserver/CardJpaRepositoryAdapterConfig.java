@@ -8,6 +8,7 @@ import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.mapper.
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.mapper.query.CardQueryMapper;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.mapper.query.CardQueryMapperImpl;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.repository.CardJpaRepository;
+import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.repository.vo.CardVOJpaRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,9 +17,11 @@ public class CardJpaRepositoryAdapterConfig {
 
     @Bean
     CardJpaRepositoryAdapter cardJpaRepositoryAdapter(CardJpaRepository cardJpaRepository,
+                                                      CardVOJpaRepository cardVOJpaRepository,
                                                       CardPersistanceMapper cardPersistanceMapper,
                                                       CardQueryMapper cardQueryMapper) {
         return new CardJpaRepositoryAdapter(cardJpaRepository,
+                cardVOJpaRepository,
                 cardPersistanceMapper,
                 cardQueryMapper);
     }

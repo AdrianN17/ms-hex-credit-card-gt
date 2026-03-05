@@ -34,27 +34,24 @@ public class PaymentCosmosRepositoryAdapter implements LoadPaymentPort, SavePaym
     @Override
     public List<LoadPaymentView> load(FindPaymentByDatesAndCardIdCriteria criteria) {
 
-        List<PaymentEntity> paymentEntities = paymentCosmosRepository.findByCardIdAndPaymentDateBetween(
-                String.valueOf(criteria.cardId()),
-                criteria.start().atStartOfDay(),
-                criteria.end().atTime(LAST_HOUR, LAST_MINUTE, LAST_SECOND));
-
-
-        if (paymentEntities.isEmpty()) {
-            throw new PaymentPersistanceException(NO_PAYMENTS_FOUND);
-        }
-
-        return paymentEntities.stream()
+        return Optional.of(paymentCosmosRepository.findByCardIdAndPaymentDateBetween(
+                        String.valueOf(criteria.cardId()),
+                        criteria.start().atStartOfDay(),
+                        criteria.end().atTime(LAST_HOUR, LAST_MINUTE, LAST_SECOND)))
+                .filter(list -> !list.isEmpty())
+                .orElseThrow(() -> new PaymentPersistanceException(NO_PAYMENTS_FOUND))
+                .stream()
                 .map(paymentQueryMapper::toView)
                 .toList();
     }
 
     @Override
     public Optional<UUID> save(Payment payment) {
-        Optional<PaymentEntity> paymentEntity = Optional.of(paymentCosmosRepository.save(paymentPersistanceMapper.toEntity(payment)));
-        return Optional.ofNullable(paymentEntity
-                        .orElseThrow(() -> new PaymentPersistanceException(PAYMENT_NOT_SAVED)))
-                .map(PaymentEntity::getPaymentId);
+        return Optional.of(Optional.of(payment)
+                .map(paymentPersistanceMapper::toEntity)
+                .map(paymentCosmosRepository::save)
+                .map(PaymentEntity::getPaymentId)
+                .orElseThrow(() -> new PaymentPersistanceException(PAYMENT_NOT_SAVED)));
     }
 
     @Override
