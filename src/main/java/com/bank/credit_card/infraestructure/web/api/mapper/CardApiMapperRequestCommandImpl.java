@@ -12,8 +12,6 @@ import com.bank.credit_card.infraestructure.web.api.schema.response.CardResponse
 import com.bank.credit_card.infraestructure.web.api.schema.response.CardResponseBalance;
 import com.bank.credit_card.infraestructure.web.api.schema.response.CardResponseBenefit;
 
-import java.math.BigDecimal;
-
 public class CardApiMapperRequestCommandImpl implements CardApiMapperRequestCommand {
 
     @Override
@@ -26,8 +24,7 @@ public class CardApiMapperRequestCommandImpl implements CardApiMapperRequestComm
                 request.getBenefit().getHasDiscount(),
                 request.getBenefit().getMultiplierPoints(),
                 Short.parseShort(request.getAccount().getPaymentDate()),
-                CurrencyEnum.valueOf(request.getAccount().getCurrency()),
-                BigDecimal.ONE
+                CurrencyEnum.valueOf(request.getAccount().getCurrency())
         );
     }
 

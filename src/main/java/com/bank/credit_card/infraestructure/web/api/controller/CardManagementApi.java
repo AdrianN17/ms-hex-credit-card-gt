@@ -368,9 +368,9 @@ public interface CardManagementApi {
     /**
      * GET /CardManagement/{cardId}/Consumption/Retrieve : retrieveConsumption
      *
-     * @param cardId        (required)
-     * @param dateStart     (required)
-     * @param dateEnd       (required)
+     * @param cardId    (required)
+     * @param dateStart (required)
+     * @param dateEnd   (required)
      * @return (status code 200)
      * or  (status code 400)
      * or  (status code 404)

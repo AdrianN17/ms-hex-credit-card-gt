@@ -13,9 +13,9 @@ import java.util.UUID;
 public interface ConsumptionCosmosRepository extends GenericCosmosRespository<ConsumptionEntity, UUID> {
 
     @Query("SELECT c.consumptionId, c.cardId, c.sellerName, c.currency, c.amount, c.consumptionDate, c.consumptionApprobationDate " +
-           "FROM c " +
-           "WHERE c.cardId = @cardId " +
-           "AND c.consumptionDate >= @start " +
-           "AND c.consumptionDate <= @end")
+            "FROM c " +
+            "WHERE c.cardId = @cardId " +
+            "AND c.consumptionDate >= @start " +
+            "AND c.consumptionDate <= @end")
     List<ConsumptionEntity> findByCardIdAndConsumptionDateBetween(String cardId, LocalDateTime start, LocalDateTime end);
 }

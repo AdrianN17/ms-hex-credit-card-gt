@@ -1,3 +1,8 @@
 spring:
   application:
     name: credit-card
+
+
+api:
+  convert:
+    url: http://localhost:3001/convert/currency/

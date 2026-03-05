@@ -1,12 +1,12 @@
 package com.bank.credit_card.domain.benefit;
 
-import com.bank.credit_card.domain.generic.GenericDomain;
 import com.bank.credit_card.domain.base.StatusEnum;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.benefit.vo.DiscountPolicy;
 import com.bank.credit_card.domain.card.CategoryCardEnum;
 import com.bank.credit_card.domain.card.vo.CardId;
 import com.bank.credit_card.domain.generator.CardIdGenerator;
+import com.bank.credit_card.domain.generic.GenericDomain;
 import com.bank.credit_card.domain.payment.Payment;
 
 import java.math.BigDecimal;

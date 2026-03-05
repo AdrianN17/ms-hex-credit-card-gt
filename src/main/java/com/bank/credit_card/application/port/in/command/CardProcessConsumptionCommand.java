@@ -8,6 +8,5 @@ public record CardProcessConsumptionCommand(
         BigDecimal amount,
         CurrencyEnum currency,
         Long cardId,
-        String sellerName,
-        BigDecimal exchangeRate) {
+        String sellerName) {
 }

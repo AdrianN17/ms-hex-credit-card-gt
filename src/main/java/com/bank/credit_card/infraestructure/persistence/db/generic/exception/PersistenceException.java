@@ -1,6 +1,6 @@
 package com.bank.credit_card.infraestructure.persistence.db.generic.exception;
 
-public class PersistenceException extends RuntimeException{
+public class PersistenceException extends RuntimeException {
 
     /**
      * Constructs a new runtime exception with {@code null} as its

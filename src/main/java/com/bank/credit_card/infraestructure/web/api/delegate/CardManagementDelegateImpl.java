@@ -16,7 +16,6 @@ import com.bank.credit_card.infraestructure.web.api.schema.response.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;

@@ -7,7 +7,6 @@ import com.bank.credit_card.domain.base.CurrencyEnum;
 import com.bank.credit_card.infraestructure.web.api.schema.request.ConsumptionRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.response.ConsumptionResponse;
 
-import java.math.BigDecimal;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
@@ -18,8 +17,7 @@ public class ConsumptionApiMapperCommandImpl implements ConsumptionApiMapperComm
         return new CardProcessConsumptionCommand(request.getAmount(),
                 CurrencyEnum.valueOf(request.getCurrency()),
                 cardId,
-                request.getSellerName(),
-                BigDecimal.ONE);
+                request.getSellerName());
     }
 
     @Override

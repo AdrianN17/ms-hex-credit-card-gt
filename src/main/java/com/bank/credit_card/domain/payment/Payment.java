@@ -1,10 +1,10 @@
 package com.bank.credit_card.domain.payment;
 
-import com.bank.credit_card.domain.generic.GenericDomain;
 import com.bank.credit_card.domain.base.StatusEnum;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.card.CategoryPaymentEnum;
 import com.bank.credit_card.domain.card.vo.CardId;
+import com.bank.credit_card.domain.generic.GenericDomain;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

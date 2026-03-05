@@ -2,9 +2,12 @@ package com.bank.credit_card.infraestructure.config.application;
 
 import com.bank.credit_card.application.port.out.balance.SaveBalancePort;
 import com.bank.credit_card.application.port.out.benefit.SaveBenefitPort;
+import com.bank.credit_card.application.port.out.card.query.LoadCardCurrencyPort;
 import com.bank.credit_card.application.port.out.card.usecase.LoadCardPort;
+import com.bank.credit_card.application.port.out.consumption.query.LoadConsumptionCurrencyPort;
 import com.bank.credit_card.application.port.out.consumption.usecase.LoadConsumptionPort;
 import com.bank.credit_card.application.port.out.consumption.usecase.SaveConsumptionPort;
+import com.bank.credit_card.application.port.out.currency.LoadCurrencyPort;
 import com.bank.credit_card.application.service.usecase.CardCancelConsumptionService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,13 +21,19 @@ public class CardCancelConsumptionServiceConfig {
             LoadConsumptionPort loadConsumptionPort,
             SaveBenefitPort saveBenefitPort,
             SaveBalancePort saveBalancePort,
-            SaveConsumptionPort saveConsumptionPort) {
+            SaveConsumptionPort saveConsumptionPort,
+            LoadCurrencyPort loadCurrencyPort,
+            LoadCardCurrencyPort loadCardCurrencyPort,
+            LoadConsumptionCurrencyPort loadConsumptionCurrencyPort) {
 
         return new CardCancelConsumptionService(loadCardPort,
                 loadConsumptionPort,
                 saveBenefitPort,
                 saveBalancePort,
-                saveConsumptionPort);
+                saveConsumptionPort,
+                loadCurrencyPort,
+                loadCardCurrencyPort,
+                loadConsumptionCurrencyPort);
     }
 }
 

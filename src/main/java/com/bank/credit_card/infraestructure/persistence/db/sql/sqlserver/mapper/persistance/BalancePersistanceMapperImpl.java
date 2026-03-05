@@ -8,13 +8,10 @@ import com.bank.credit_card.domain.card.vo.CardId;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.BalanceEntity;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.vo.BalanceEntityVO;
 
-import java.math.BigDecimal;
-
 public class BalancePersistanceMapperImpl implements BalancePersistanceMapper {
 
     @Override
-    public Balance toDomain(BalanceEntityVO balanceEntity) {
-        Currency currency = Currency.create(balanceEntity.getCurrency(), BigDecimal.ONE);
+    public Balance toDomain(BalanceEntityVO balanceEntity, Currency currency) {
         return Balance.create(
                 balanceEntity.getIdBalance(),
                 balanceEntity.getStatus(),

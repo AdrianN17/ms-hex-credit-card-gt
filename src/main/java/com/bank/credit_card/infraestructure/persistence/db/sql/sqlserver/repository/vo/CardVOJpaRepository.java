@@ -1,6 +1,7 @@
 package com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.repository.vo;
 
 import com.bank.credit_card.infraestructure.persistence.db.generic.repository.GenericJpaRespository;
+import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.projection.CardCurrencyProjection;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.projection.CardSumaryProjection;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.vo.CardEntityVO;
 import org.springframework.data.jpa.repository.Query;
@@ -35,4 +36,12 @@ public interface CardVOJpaRepository extends GenericJpaRespository<CardEntityVO,
             WHERE c.cardId = :cardId
             """, nativeQuery = true)
     Optional<CardSumaryProjection> getCardAllProjectionByCardId(Long cardId);
+
+    @Query(value = """
+            SELECT
+                ca.currency            AS currency,
+            FROM Cards c
+            WHERE c.cardId = :cardId
+            """, nativeQuery = true)
+    Optional<CardCurrencyProjection> getCardCurrencyProjectionByCardId(Long cardId);
 }

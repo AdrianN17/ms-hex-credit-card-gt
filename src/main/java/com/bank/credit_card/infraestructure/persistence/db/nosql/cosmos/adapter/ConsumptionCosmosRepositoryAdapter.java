@@ -2,9 +2,12 @@ package com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.adapter
 
 import com.bank.credit_card.application.port.in.query.criteria.FindConsumptionByDatesAndCardIdCriteria;
 import com.bank.credit_card.application.port.in.query.view.LoadConsumptionView;
+import com.bank.credit_card.application.port.out.consumption.query.LoadConsumptionCurrencyPort;
 import com.bank.credit_card.application.port.out.consumption.query.LoadConsumptionsByDatesAndCardIdPort;
 import com.bank.credit_card.application.port.out.consumption.usecase.LoadConsumptionPort;
 import com.bank.credit_card.application.port.out.consumption.usecase.SaveConsumptionPort;
+import com.bank.credit_card.domain.base.CurrencyEnum;
+import com.bank.credit_card.domain.base.vo.Currency;
 import com.bank.credit_card.domain.consumption.Consumption;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.entity.ConsumptionEntity;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.exception.ConsumptionPersistanceException;
@@ -19,7 +22,7 @@ import java.util.UUID;
 import static com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.constant.TimeConstant.*;
 import static com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.exception.ConsumptionErrorMessage.*;
 
-public class ConsumptionCosmosRepositoryAdapter implements LoadConsumptionPort, SaveConsumptionPort, LoadConsumptionsByDatesAndCardIdPort {
+public class ConsumptionCosmosRepositoryAdapter implements LoadConsumptionPort, SaveConsumptionPort, LoadConsumptionsByDatesAndCardIdPort, LoadConsumptionCurrencyPort {
 
     private final ConsumptionCosmosRepository consumptionCosmosRepository;
     private final ConsumptionPersistanceMapper consumptionPersistanceMapper;
@@ -58,11 +61,18 @@ public class ConsumptionCosmosRepositoryAdapter implements LoadConsumptionPort, 
     }
 
     @Override
-    public Optional<Consumption> load(UUID consumptionId) {
+    public Optional<Consumption> load(UUID consumptionId, Currency currency) {
 
         return Optional.of(consumptionCosmosRepository.findById(consumptionId)
                         .orElseThrow(() -> new ConsumptionPersistanceException(CONSUMPTION_NOT_FOUND)))
-                .map(consumptionPersistanceMapper::toDomain);
+                .map(consumption -> consumptionPersistanceMapper.toDomain(consumption, currency));
 
+    }
+
+    @Override
+    public Optional<CurrencyEnum> load(UUID consumptionId) {
+        return Optional.of(consumptionCosmosRepository.findById(consumptionId)
+                        .orElseThrow(() -> new ConsumptionPersistanceException(CONSUMPTION_NOT_FOUND)))
+                .map(ConsumptionEntity::getCurrency);
     }
 }

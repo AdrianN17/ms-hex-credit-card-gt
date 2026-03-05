@@ -9,7 +9,6 @@ import com.bank.credit_card.domain.payment.ChannelPaymentEnum;
 import com.bank.credit_card.infraestructure.web.api.schema.request.PaymentRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.response.PaymentResponse;
 
-import java.math.BigDecimal;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
@@ -23,8 +22,7 @@ public class PaymentApiMapperCommandImpl implements PaymentApiMapperCommand {
                 CategoryPaymentEnum.valueOf(request.getCategory()),
                 cardId,
                 ChannelPaymentEnum.valueOf(request.getChannel()),
-                request.getPointsUsed(),
-                BigDecimal.ONE
+                request.getPointsUsed()
         );
     }
 

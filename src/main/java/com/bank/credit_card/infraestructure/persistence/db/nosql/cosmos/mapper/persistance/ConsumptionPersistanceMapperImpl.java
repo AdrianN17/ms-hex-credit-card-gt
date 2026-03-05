@@ -6,18 +6,16 @@ import com.bank.credit_card.domain.card.vo.CardId;
 import com.bank.credit_card.domain.consumption.Consumption;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.entity.ConsumptionEntity;
 
-import java.math.BigDecimal;
-
 public class ConsumptionPersistanceMapperImpl implements ConsumptionPersistanceMapper {
 
     @Override
-    public Consumption toDomain(ConsumptionEntity consumptionEntity) {
+    public Consumption toDomain(ConsumptionEntity consumptionEntity, Currency currency) {
         return Consumption.create(
                 consumptionEntity.getConsumptionId(),
                 consumptionEntity.getStatus(),
                 consumptionEntity.getCreatedDate(),
                 consumptionEntity.getUpdatedDate(),
-                Amount.create(Currency.create(consumptionEntity.getCurrency(), BigDecimal.ONE), consumptionEntity.getAmount()),
+                Amount.create(currency, consumptionEntity.getAmount()),
                 consumptionEntity.getConsumptionDate(),
                 consumptionEntity.getConsumptionApprobationDate(),
                 CardId.create(consumptionEntity.getCardId()),

@@ -8,6 +8,7 @@ import com.bank.credit_card.application.port.in.usecase.CardCreateUseCase;
 import com.bank.credit_card.application.port.out.balance.SaveBalancePort;
 import com.bank.credit_card.application.port.out.benefit.SaveBenefitPort;
 import com.bank.credit_card.application.port.out.card.usecase.SaveCardPort;
+import com.bank.credit_card.application.port.out.currency.LoadCurrencyPort;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.base.vo.Currency;
 import com.bank.credit_card.domain.base.vo.DateRange;
@@ -23,6 +24,7 @@ import java.util.Optional;
 
 import static com.bank.credit_card.application.error.balance.BalanceApplicationErrorMessage.FAILED_TO_CREATE_BALANCE;
 import static com.bank.credit_card.application.error.benefit.BenefitApplicationErrorMessage.FAILED_TO_CREATE_BENEFIT;
+import static com.bank.credit_card.application.error.card.CardApplicationErrorMessage.CARD_CURRENCY_NOT_FOUND;
 import static com.bank.credit_card.application.error.card.CardApplicationErrorMessage.FAILED_TO_CREATE_CARD;
 
 public class CreateCardService implements CardCreateUseCase {
@@ -31,23 +33,25 @@ public class CreateCardService implements CardCreateUseCase {
     private final SaveBalancePort saveBalancePort;
     private final SaveBenefitPort saveBenefitPort;
     private final CardIdGenerator idGenerator;
+    private final LoadCurrencyPort loadCurrencyPort;
 
     //servicio web
     //capa aop infraestructura
     //manejo transacciones
 
-    public CreateCardService(SaveCardPort saveCardPort, SaveBalancePort saveBalancePort, SaveBenefitPort saveBenefitPort, CardIdGenerator idGenerator) {
+    public CreateCardService(SaveCardPort saveCardPort, SaveBalancePort saveBalancePort, SaveBenefitPort saveBenefitPort, CardIdGenerator idGenerator, LoadCurrencyPort loadCurrencyPort) {
         this.saveCardPort = saveCardPort;
         this.saveBalancePort = saveBalancePort;
         this.saveBenefitPort = saveBenefitPort;
         this.idGenerator = idGenerator;
+        this.loadCurrencyPort = loadCurrencyPort;
     }
 
     @Override
     public Card createCard(CardCreateCommand cardCreateCommand) {
 
-        Currency currency = Currency.create(cardCreateCommand.currency(),
-                cardCreateCommand.exchangeRate());
+        Currency currency = loadCurrencyPort.load(cardCreateCommand.currency())
+                .orElseThrow(() -> new ApplicationCardException(CARD_CURRENCY_NOT_FOUND));
 
         Card card = Card.create(
                 idGenerator,

@@ -13,10 +13,10 @@ import java.util.UUID;
 public interface PaymentCosmosRepository extends GenericCosmosRespository<PaymentEntity, UUID> {
 
     @Query("SELECT c.paymentId, c.cardId, c.amount, c.currency, c.paymentDate, c.paymentApprobationDate, c.channel, c.category " +
-           "FROM c " +
-           "WHERE c.cardId = @cardId " +
-           "AND c.paymentDate >= @start " +
-           "AND c.paymentDate <= @end")
+            "FROM c " +
+            "WHERE c.cardId = @cardId " +
+            "AND c.paymentDate >= @start " +
+            "AND c.paymentDate <= @end")
     List<PaymentEntity> findByCardIdAndPaymentDateBetween(String cardId, LocalDateTime start, LocalDateTime end);
 }
 

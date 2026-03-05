@@ -2,10 +2,14 @@ package com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.adapte
 
 import com.bank.credit_card.application.port.in.query.view.LoadCardBalanceBenefitView;
 import com.bank.credit_card.application.port.out.card.query.LoadCardBalanceBenefitPort;
+import com.bank.credit_card.application.port.out.card.query.LoadCardCurrencyPort;
 import com.bank.credit_card.application.port.out.card.usecase.LoadCardPort;
 import com.bank.credit_card.application.port.out.card.usecase.SaveCardPort;
+import com.bank.credit_card.domain.base.CurrencyEnum;
+import com.bank.credit_card.domain.base.vo.Currency;
 import com.bank.credit_card.domain.card.Card;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.CardEntity;
+import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.projection.CardCurrencyProjection;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.exception.CardPersistanceException;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.mapper.persistance.CardPersistanceMapper;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.mapper.query.CardQueryMapper;
@@ -16,7 +20,7 @@ import java.util.Optional;
 
 import static com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.exception.CardErrorMessage.*;
 
-public class CardJpaRepositoryAdapter implements LoadCardPort, SaveCardPort, LoadCardBalanceBenefitPort {
+public class CardJpaRepositoryAdapter implements LoadCardPort, SaveCardPort, LoadCardBalanceBenefitPort, LoadCardCurrencyPort {
 
     private final CardJpaRepository cardJpaRepository;
     private final CardVOJpaRepository cardVOJpaRepository;
@@ -32,10 +36,10 @@ public class CardJpaRepositoryAdapter implements LoadCardPort, SaveCardPort, Loa
 
 
     @Override
-    public Optional<Card> load(Long cardId) {
+    public Optional<Card> load(Long cardId, Currency currency) {
         return Optional.of(cardVOJpaRepository.findById(cardId)
                         .orElseThrow(() -> new CardPersistanceException(CARD_NOT_FOUND)))
-                .map(cardPersistanceMapper::toDomain);
+                .map(cardVO -> cardPersistanceMapper.toDomain(cardVO, currency));
     }
 
     @Override
@@ -52,5 +56,12 @@ public class CardJpaRepositoryAdapter implements LoadCardPort, SaveCardPort, Loa
         return Optional.of(cardVOJpaRepository.getCardAllProjectionByCardId(cardId)
                         .orElseThrow(() -> new CardPersistanceException(NO_CARD_AND_BALANCE_AND_BENEFIT_FOUND)))
                 .map(cardQueryMapper::toView);
+    }
+
+    @Override
+    public Optional<CurrencyEnum> load(Long cardId) {
+        return Optional.of(cardVOJpaRepository.getCardCurrencyProjectionByCardId(cardId)
+                        .orElseThrow(() -> new CardPersistanceException(CARD_NOT_FOUND)))
+                .map(CardCurrencyProjection::getCurrencyEnum);
     }
 }

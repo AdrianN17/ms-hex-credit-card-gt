@@ -13,6 +13,5 @@ public record CardCreateCommand(TypeCardEnum typeCard,
                                 Boolean hasDiscount,
                                 BigDecimal multiplierPoints,
                                 Short paymentDay,
-                                CurrencyEnum currency,
-                                BigDecimal exchangeRate) {
+                                CurrencyEnum currency) {
 }

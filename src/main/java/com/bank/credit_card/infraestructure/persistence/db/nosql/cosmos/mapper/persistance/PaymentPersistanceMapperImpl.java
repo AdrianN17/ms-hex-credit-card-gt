@@ -6,18 +6,16 @@ import com.bank.credit_card.domain.card.vo.CardId;
 import com.bank.credit_card.domain.payment.Payment;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.entity.PaymentEntity;
 
-import java.math.BigDecimal;
-
 public class PaymentPersistanceMapperImpl implements PaymentPersistanceMapper {
 
     @Override
-    public Payment toDomain(PaymentEntity paymentEntity) {
+    public Payment toDomain(PaymentEntity paymentEntity, Currency currency) {
         return Payment.create(
                 paymentEntity.getPaymentId(),
                 paymentEntity.getStatus(),
                 paymentEntity.getCreatedDate(),
                 paymentEntity.getUpdatedDate(),
-                Amount.create(Currency.create(paymentEntity.getCurrency(), BigDecimal.ONE), paymentEntity.getAmount()),
+                Amount.create(currency, paymentEntity.getAmount()),
                 paymentEntity.getPaymentDate(),
                 paymentEntity.getPaymentApprobationDate(),
                 paymentEntity.getCategory(),

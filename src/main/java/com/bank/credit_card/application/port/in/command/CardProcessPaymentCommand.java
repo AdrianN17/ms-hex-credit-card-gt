@@ -12,7 +12,6 @@ public record CardProcessPaymentCommand(
         CategoryPaymentEnum category,
         Long cardId,
         ChannelPaymentEnum channelPayment,
-        Integer pointsUsed,
-        BigDecimal exchangeRate
+        Integer pointsUsed
 ) {
 }

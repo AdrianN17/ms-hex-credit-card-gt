@@ -1,7 +1,5 @@
 package com.bank.credit_card.domain.payment;
 
-import com.bank.credit_card.domain.card.CardStatusEnum;
-
 import java.util.Arrays;
 import java.util.Optional;
 

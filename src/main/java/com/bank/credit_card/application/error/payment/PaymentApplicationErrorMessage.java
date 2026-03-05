@@ -4,4 +4,5 @@ public interface PaymentApplicationErrorMessage {
     String PAYMENT_NOT_FOUND = "Payment not found";
     String FAILED_TO_CREATE_PAYMENT = "Failed to create payment";
     String FAILED_TO_UPDATE_PAYMENT = "Failed to update payment";
+    String PAYMENT_CURRENCY_NOT_FOUND = "Currency not found";
 }
