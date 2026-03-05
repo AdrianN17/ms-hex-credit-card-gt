@@ -11,8 +11,10 @@ import com.bank.credit_card.domain.card.Card;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.CardEntity;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.projection.CardCurrencyProjection;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.exception.CardPersistanceException;
+import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.mapper.persistance.CardAccountPersistanceMapper;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.mapper.persistance.CardPersistanceMapper;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.mapper.query.CardQueryMapper;
+import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.repository.CardAccountJpaRepository;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.repository.CardJpaRepository;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.repository.vo.CardVOJpaRepository;
 
@@ -25,12 +27,21 @@ public class CardJpaRepositoryAdapter implements LoadCardPort, SaveCardPort, Loa
     private final CardJpaRepository cardJpaRepository;
     private final CardVOJpaRepository cardVOJpaRepository;
     private final CardPersistanceMapper cardPersistanceMapper;
+    private final CardAccountJpaRepository cardAccountJpaRepository;
+    private final CardAccountPersistanceMapper cardAccountPersistanceMapper;
     private final CardQueryMapper cardQueryMapper;
 
-    public CardJpaRepositoryAdapter(CardJpaRepository cardJpaRepository, CardVOJpaRepository cardVOJpaRepository, CardPersistanceMapper cardPersistanceMapper, CardQueryMapper cardQueryMapper) {
+    public CardJpaRepositoryAdapter(CardJpaRepository cardJpaRepository,
+                                    CardVOJpaRepository cardVOJpaRepository,
+                                    CardPersistanceMapper cardPersistanceMapper,
+                                    CardAccountJpaRepository cardAccountJpaRepository,
+                                    CardAccountPersistanceMapper cardAccountPersistanceMapper,
+                                    CardQueryMapper cardQueryMapper) {
         this.cardJpaRepository = cardJpaRepository;
         this.cardVOJpaRepository = cardVOJpaRepository;
         this.cardPersistanceMapper = cardPersistanceMapper;
+        this.cardAccountJpaRepository = cardAccountJpaRepository;
+        this.cardAccountPersistanceMapper = cardAccountPersistanceMapper;
         this.cardQueryMapper = cardQueryMapper;
     }
 
@@ -44,11 +55,15 @@ public class CardJpaRepositoryAdapter implements LoadCardPort, SaveCardPort, Loa
 
     @Override
     public Optional<Long> save(Card card) {
-        return Optional.of(Optional.of(card)
+        return Optional.of(Optional.ofNullable(card)
+                .map(c -> {
+                    cardAccountJpaRepository.save(cardAccountPersistanceMapper.toEntity(c));
+                    return c;
+                })
                 .map(cardPersistanceMapper::toEntity)
                 .map(cardJpaRepository::save)
-                .map(CardEntity::getCardId)
-                .orElseThrow(() -> new CardPersistanceException(CARD_NOT_SAVED)));
+                .map(CardEntity::getCardId))
+                .orElseThrow(() -> new CardPersistanceException(CARD_NOT_SAVED));
     }
 
     @Override

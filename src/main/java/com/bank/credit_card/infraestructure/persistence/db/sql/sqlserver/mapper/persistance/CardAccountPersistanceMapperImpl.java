@@ -5,7 +5,6 @@ import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.
 
 public class CardAccountPersistanceMapperImpl implements CardAccountPersistanceMapper {
 
-
     @Override
     public CardAccountEntity toEntity(Card card) {
         return CardAccountEntity.builder()

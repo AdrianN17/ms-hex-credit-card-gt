@@ -5,11 +5,11 @@ import com.bank.credit_card.infraestructure.ws.dto.CurrencyDto;
 import com.bank.credit_card.infraestructure.ws.exception.ConverterWSClientException;
 import org.springframework.web.client.RestClient;
 
-public class DoctorJsonServerWSRepository {
+public class CurrencyJsonServerWSRepository {
 
     private final RestClient restClient;
 
-    public DoctorJsonServerWSRepository(RestClient restClient) {
+    public CurrencyJsonServerWSRepository(RestClient restClient) {
         this.restClient = restClient;
     }
 
