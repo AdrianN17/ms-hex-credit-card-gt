@@ -16,8 +16,8 @@ spring:
       # Sin autenticación (local)
       uri: mongodb://localhost:27017/credit_card_db
       # Con autenticación (descomentar y quitar uri de arriba)
-      # host: localhost
-      # port: 27017
-      # database: credit_card_db
-      # username: your_user
-      # password: your_password
+      host: localhost
+      port: 27017
+      database: credit_card_db
+      username: your_user
+      password: your_password
