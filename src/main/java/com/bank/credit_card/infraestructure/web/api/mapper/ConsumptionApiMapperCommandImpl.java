@@ -2,10 +2,12 @@ package com.bank.credit_card.infraestructure.web.api.mapper;
 
 import com.bank.credit_card.application.port.in.command.CardCancelConsumptionCommand;
 import com.bank.credit_card.application.port.in.command.CardProcessConsumptionCommand;
+import com.bank.credit_card.application.port.in.command.CardSplitConsumptionCommand;
 import com.bank.credit_card.application.port.in.query.view.LoadConsumptionView;
 import com.bank.credit_card.domain.base.CurrencyEnum;
 import com.bank.credit_card.infraestructure.web.api.schema.request.ConsumptionRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.response.ConsumptionResponse;
+import com.bank.credit_card.infraestructure.web.api.schema.response.ExchangeConsumptionRequestData;
 
 import java.time.ZoneOffset;
 import java.util.UUID;
@@ -33,6 +35,16 @@ public class ConsumptionApiMapperCommandImpl implements ConsumptionApiMapperComm
                 view.amount(),
                 view.consumptionDate().atOffset(ZoneOffset.UTC),
                 view.consumptionApprobationDate().atOffset(ZoneOffset.UTC)
+        );
+    }
+
+
+    @Override
+    public CardSplitConsumptionCommand toCommandIdR(UUID uuid, Long subId, ExchangeConsumptionRequestData re) {
+        return new CardSplitConsumptionCommand(
+                uuid,
+                re.getInstallments(),
+                subId
         );
     }
 }

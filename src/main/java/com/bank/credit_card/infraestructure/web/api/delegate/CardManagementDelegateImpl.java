@@ -13,10 +13,12 @@ import com.bank.credit_card.infraestructure.web.api.schema.request.InitiateCardR
 import com.bank.credit_card.infraestructure.web.api.schema.request.InitiateConsumptionRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.request.InitiatePaymentRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.response.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +40,19 @@ public class CardManagementDelegateImpl implements CardManagementDelegate {
     private final ConsumptionApiMapperCommand consumptionApiMapperCommand;
     private final PaymentApiMapperCommand paymentApiMapperCommand;
 
-    public CardManagementDelegateImpl(CreateCardService createCardService, CardCancelPaymentService cardCancelPaymentService, CardCancelConsumptionService cardCancelConsumptionService, CardCloseService cardCloseService, CardConsumptionService cardConsumptionService, CardPaymentService cardPaymentService, SplitConsumptionService splitConsumptionService, LoadConsumptionByDatesAndCardIdService loadConsumptionByDatesAndCardIdService, LoadPaymentByDatesAndCardIdService loadPaymentByDatesAndCardIdService, LoadCardByIdService loadCardByIdService, CardApiMapperRequestCommand cardApiMapperRequestCommand, ConsumptionApiMapperCommand consumptionApiMapperCommand, PaymentApiMapperCommand paymentApiMapperCommand) {
+    public CardManagementDelegateImpl(CreateCardService createCardService,
+                                      CardCancelPaymentService cardCancelPaymentService,
+                                      CardCancelConsumptionService cardCancelConsumptionService,
+                                      CardCloseService cardCloseService,
+                                      CardConsumptionService cardConsumptionService,
+                                      CardPaymentService cardPaymentService,
+                                      SplitConsumptionService splitConsumptionService,
+                                      LoadConsumptionByDatesAndCardIdService loadConsumptionByDatesAndCardIdService,
+                                      LoadPaymentByDatesAndCardIdService loadPaymentByDatesAndCardIdService,
+                                      LoadCardByIdService loadCardByIdService,
+                                      CardApiMapperRequestCommand cardApiMapperRequestCommand,
+                                      ConsumptionApiMapperCommand consumptionApiMapperCommand,
+                                      PaymentApiMapperCommand paymentApiMapperCommand) {
         this.createCardService = createCardService;
         this.cardCancelPaymentService = cardCancelPaymentService;
         this.cardCancelConsumptionService = cardCancelConsumptionService;
@@ -55,60 +69,45 @@ public class CardManagementDelegateImpl implements CardManagementDelegate {
     }
 
     @Override
-    public ResponseEntity<DefaultResponse2xx> controlCard(Long cardId) {
-
+    public ResponseEntity<ControlCard202Response> controlCard(Long cardId) {
         cardCloseService.closeCard(cardApiMapperRequestCommand.toCommandId(cardId));
-
-        return null;
+        return getControlCard202Response();
     }
 
     @Override
-    public ResponseEntity<DefaultResponse2xx> controlConsumption(Long cardId, UUID consumptionId) {
-
+    public ResponseEntity<ControlCard202Response> controlConsumption(Long cardId, UUID consumptionId) {
         cardCancelConsumptionService.cancelConsumption(consumptionApiMapperCommand.toCommandId(consumptionId, cardId));
-
-        return null;
+        return getControlCard202Response();
     }
 
     @Override
-    public ResponseEntity<DefaultResponse2xx> controlPayment(Long cardId, UUID paymentId) {
-
+    public ResponseEntity<ControlCard202Response> controlPayment(Long cardId, UUID paymentId) {
         cardCancelPaymentService.cancelPayment(paymentApiMapperCommand.toCommandId(paymentId, cardId));
-
-        return null;
+        return getControlCard202Response();
     }
 
     @Override
-    public ResponseEntity<DefaultResponse2xx> initiatePayment(Long cardId, InitiatePaymentRequest initiatePaymentRequest, BindingResult bindingResult) {
-
+    public ResponseEntity<ControlCard202Response> initiatePayment(Long cardId, InitiatePaymentRequest initiatePaymentRequest, BindingResult bindingResult) {
         cardPaymentService.processPayment(paymentApiMapperCommand.toCommand(initiatePaymentRequest.getData(), cardId));
-
-        return null;
+        return getControlCard202Response();
     }
 
     @Override
-    public ResponseEntity<DefaultResponse2xx> exchangeConsumption(Integer cardId, UUID consumptionId, ExchangeConsumptionRequest exchangeConsumptionRequest, BindingResult bindingResult) {
-
-        //splitConsumptionService.splitConsumption()
-
-        return null;
+    public ResponseEntity<ControlCard202Response> exchangeConsumption(Long cardId, UUID consumptionId, ExchangeConsumptionRequest exchangeConsumptionRequest, BindingResult bindingResult) {
+        splitConsumptionService.splitConsumption(consumptionApiMapperCommand.toCommandIdR(consumptionId, cardId, exchangeConsumptionRequest.getData()));
+        return getControlCard202Response();
     }
 
     @Override
-    public ResponseEntity<DefaultResponse2xx> initiateCard(InitiateCardRequest initiateCardRequest, BindingResult bindingResult) {
-
-
+    public ResponseEntity<ControlCard202Response> initiateCard(InitiateCardRequest initiateCardRequest, BindingResult bindingResult) {
         createCardService.createCard(cardApiMapperRequestCommand.toCommand(initiateCardRequest.getData()));
-
-        return null;
+        return getControlCard202Response();
     }
 
     @Override
-    public ResponseEntity<DefaultResponse2xx> initiateConsumption(Long cardId, InitiateConsumptionRequest initiateConsumptionRequest, BindingResult bindingResult) {
-
+    public ResponseEntity<ControlCard202Response> initiateConsumption(Long cardId, InitiateConsumptionRequest initiateConsumptionRequest, BindingResult bindingResult) {
         cardConsumptionService.processConsumption(consumptionApiMapperCommand.toCommand(initiateConsumptionRequest.getData(), cardId));
-
-        return null;
+        return getControlCard202Response();
     }
 
     @Override
@@ -116,19 +115,17 @@ public class CardManagementDelegateImpl implements CardManagementDelegate {
 
         CardResponse cardResponse = cardApiMapperRequestCommand.toResponse(loadCardByIdService.findById(cardId));
 
-        return null;
+        return getRetrieveBalance(cardResponse);
     }
 
     @Override
     public ResponseEntity<RetrieveConsumption200Response> retrieveConsumption(Long cardId, LocalDate dateStart, LocalDate dateEnd) {
-
         List<ConsumptionResponse> responseConsumptions = loadConsumptionByDatesAndCardIdService.findByDatesAndCardId(new FindConsumptionByDatesAndCardIdCriteria(
                 dateStart,
                 dateEnd,
                 cardId
         )).stream().map(consumptionApiMapperCommand::toResponse).toList();
-
-        return null;
+        return getConsumptionResponse(responseConsumptions);
     }
 
     @Override
@@ -138,7 +135,22 @@ public class CardManagementDelegateImpl implements CardManagementDelegate {
                 dateEnd,
                 cardId
         )).stream().map(paymentApiMapperCommand::toResponse).toList();
+        return getPaymentResponse(responsePayments);
+    }
 
-        return null;
+    private ResponseEntity<ControlCard202Response> getControlCard202Response() {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ControlCard202Response(new Tracking(UUID.randomUUID(), OffsetDateTime.now())));
+    }
+
+    private ResponseEntity<RetrieveBalance200Response> getRetrieveBalance(CardResponse response) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new RetrieveBalance200Response(response, new Tracking(UUID.randomUUID(), OffsetDateTime.now())));
+    }
+
+    private ResponseEntity<RetrievePayment200Response> getPaymentResponse(List<PaymentResponse> response) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new RetrievePayment200Response(new Tracking(UUID.randomUUID(), OffsetDateTime.now()), response));
+    }
+
+    private ResponseEntity<RetrieveConsumption200Response> getConsumptionResponse(List<ConsumptionResponse> response) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new RetrieveConsumption200Response(new Tracking(UUID.randomUUID(), OffsetDateTime.now()), response));
     }
 }

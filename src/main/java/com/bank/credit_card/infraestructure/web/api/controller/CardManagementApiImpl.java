@@ -20,37 +20,37 @@ public class CardManagementApiImpl implements CardManagementApi {
     }
 
     @Override
-    public ResponseEntity<DefaultResponse2xx> controlCard(Long cardId) {
+    public ResponseEntity<ControlCard202Response> controlCard(Long cardId) {
         return cardManagementDelegate.controlCard(cardId);
     }
 
     @Override
-    public ResponseEntity<DefaultResponse2xx> controlConsumption(Long cardId, UUID consumptionId) {
+    public ResponseEntity<ControlCard202Response> controlConsumption(Long cardId, UUID consumptionId) {
         return cardManagementDelegate.controlConsumption(cardId, consumptionId);
     }
 
     @Override
-    public ResponseEntity<DefaultResponse2xx> controlPayment(Long cardId, UUID paymentId) {
+    public ResponseEntity<ControlCard202Response> controlPayment(Long cardId, UUID paymentId) {
         return cardManagementDelegate.controlPayment(cardId, paymentId);
     }
 
     @Override
-    public ResponseEntity<DefaultResponse2xx> initiatePayment(Long cardId, InitiatePaymentRequest initiatePaymentRequest, BindingResult bindingResult) {
+    public ResponseEntity<ControlCard202Response> initiatePayment(Long cardId, InitiatePaymentRequest initiatePaymentRequest, BindingResult bindingResult) {
         return cardManagementDelegate.initiatePayment(cardId, initiatePaymentRequest, bindingResult);
     }
 
     @Override
-    public ResponseEntity<DefaultResponse2xx> exchangeConsumption(Integer cardId, UUID consumptionId, ExchangeConsumptionRequest exchangeConsumptionRequest, BindingResult bindingResult) {
+    public ResponseEntity<ControlCard202Response> exchangeConsumption(Long cardId, UUID consumptionId, ExchangeConsumptionRequest exchangeConsumptionRequest, BindingResult bindingResult) {
         return cardManagementDelegate.exchangeConsumption(cardId, consumptionId, exchangeConsumptionRequest, bindingResult);
     }
 
     @Override
-    public ResponseEntity<DefaultResponse2xx> initiateCard(InitiateCardRequest initiateCardRequest, BindingResult bindingResult) {
+    public ResponseEntity<ControlCard202Response> initiateCard(InitiateCardRequest initiateCardRequest, BindingResult bindingResult) {
         return cardManagementDelegate.initiateCard(initiateCardRequest, bindingResult);
     }
 
     @Override
-    public ResponseEntity<DefaultResponse2xx> initiateConsumption(Long cardId, InitiateConsumptionRequest initiateConsumptionRequest, BindingResult bindingResult) {
+    public ResponseEntity<ControlCard202Response> initiateConsumption(Long cardId, InitiateConsumptionRequest initiateConsumptionRequest, BindingResult bindingResult) {
         return cardManagementDelegate.initiateConsumption(cardId, initiateConsumptionRequest, bindingResult);
     }
 
