@@ -1,0 +1,22 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: credit-card
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=credit_card_db;encrypt=false;trustServerCertificate=true
+    username: sa
+    password: your_password
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  cloud:
+    azure:
+      cosmos:
+        endpoint: https://your-cosmos-account.documents.azure.com:443/
+        key: your_cosmos_key
+        database: credit_card_cosmos_db
+        populate-query-metrics: false
+api:
+  convert:
+    url: http://localhost:3001/convert/currency/

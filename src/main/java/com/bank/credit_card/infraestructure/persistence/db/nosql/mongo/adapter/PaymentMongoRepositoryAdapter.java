@@ -1,4 +1,4 @@
-package com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.adapter;
+package com.bank.credit_card.infraestructure.persistence.db.nosql.mongo.adapter;
 
 import com.bank.credit_card.application.port.in.query.criteria.FindPaymentByDatesAndCardIdCriteria;
 import com.bank.credit_card.application.port.in.query.view.LoadPaymentView;
@@ -9,11 +9,11 @@ import com.bank.credit_card.application.port.out.payment.usecase.SavePaymentPort
 import com.bank.credit_card.domain.base.CurrencyEnum;
 import com.bank.credit_card.domain.base.vo.Currency;
 import com.bank.credit_card.domain.payment.Payment;
-import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.entity.PaymentEntityCosmos;
+import com.bank.credit_card.infraestructure.persistence.db.nosql.mongo.entity.PaymentEntityMongo;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.common.exception.PaymentPersistanceException;
-import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.mapper.persistance.PaymentPersistanceMapperCosmos;
-import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.mapper.query.PaymentQueryMapperCosmos;
-import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.repository.PaymentCosmosRepository;
+import com.bank.credit_card.infraestructure.persistence.db.nosql.mongo.mapper.persistance.PaymentPersistanceMapperMongo;
+import com.bank.credit_card.infraestructure.persistence.db.nosql.mongo.mapper.query.PaymentQueryMapperMongo;
+import com.bank.credit_card.infraestructure.persistence.db.nosql.mongo.repository.PaymentMongoRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,52 +22,52 @@ import java.util.UUID;
 import static com.bank.credit_card.infraestructure.persistence.db.nosql.common.constant.TimeConstant.*;
 import static com.bank.credit_card.infraestructure.persistence.db.nosql.common.exception.PaymentErrorMessage.*;
 
-public class PaymentCosmosRepositoryAdapter implements LoadPaymentPort, SavePaymentPort, LoadPaymentsByDatesAndCardIdPort, LoadPaymentCurrencyPort {
+public class PaymentMongoRepositoryAdapter implements LoadPaymentPort, SavePaymentPort, LoadPaymentsByDatesAndCardIdPort, LoadPaymentCurrencyPort {
 
-    private final PaymentCosmosRepository paymentCosmosRepository;
-    private final PaymentPersistanceMapperCosmos paymentPersistanceMapperCosmos;
-    private final PaymentQueryMapperCosmos paymentQueryMapperCosmos;
+    private final PaymentMongoRepository paymentMongoRepository;
+    private final PaymentPersistanceMapperMongo paymentPersistanceMapperMongo;
+    private final PaymentQueryMapperMongo paymentQueryMapperMongo;
 
-    public PaymentCosmosRepositoryAdapter(PaymentCosmosRepository paymentCosmosRepository, PaymentPersistanceMapperCosmos paymentPersistanceMapperCosmos, PaymentQueryMapperCosmos paymentQueryMapperCosmos) {
-        this.paymentCosmosRepository = paymentCosmosRepository;
-        this.paymentPersistanceMapperCosmos = paymentPersistanceMapperCosmos;
-        this.paymentQueryMapperCosmos = paymentQueryMapperCosmos;
+    public PaymentMongoRepositoryAdapter(PaymentMongoRepository paymentMongoRepository, PaymentPersistanceMapperMongo paymentPersistanceMapperMongo, PaymentQueryMapperMongo paymentQueryMapperMongo) {
+        this.paymentMongoRepository = paymentMongoRepository;
+        this.paymentPersistanceMapperMongo = paymentPersistanceMapperMongo;
+        this.paymentQueryMapperMongo = paymentQueryMapperMongo;
     }
 
     @Override
     public List<LoadPaymentView> load(FindPaymentByDatesAndCardIdCriteria criteria) {
 
-        return Optional.of(paymentCosmosRepository.findByCardIdAndPaymentDateBetween(
+        return Optional.of(paymentMongoRepository.findByCardIdAndPaymentDateBetween(
                         String.valueOf(criteria.cardId()),
                         criteria.start().atStartOfDay(),
                         criteria.end().atTime(LAST_HOUR, LAST_MINUTE, LAST_SECOND)))
                 .filter(list -> !list.isEmpty())
                 .orElseThrow(() -> new PaymentPersistanceException(NO_PAYMENTS_FOUND))
                 .stream()
-                .map(paymentQueryMapperCosmos::toView)
+                .map(paymentQueryMapperMongo::toView)
                 .toList();
     }
 
     @Override
     public Optional<UUID> save(Payment payment) {
         return Optional.of(Optional.of(payment)
-                .map(paymentPersistanceMapperCosmos::toEntity)
-                .map(paymentCosmosRepository::save)
-                .map(PaymentEntityCosmos::getPaymentId)
+                .map(paymentPersistanceMapperMongo::toEntity)
+                .map(paymentMongoRepository::save)
+                .map(PaymentEntityMongo::getPaymentId)
                 .orElseThrow(() -> new PaymentPersistanceException(PAYMENT_NOT_SAVED)));
     }
 
     @Override
     public Optional<Payment> load(UUID paymentId, Currency currency) {
-        return Optional.of(paymentCosmosRepository.findById(paymentId)
+        return Optional.of(paymentMongoRepository.findById(paymentId)
                         .orElseThrow(() -> new PaymentPersistanceException(PAYMENT_NOT_FOUND)))
-                .map(payment -> paymentPersistanceMapperCosmos.toDomain(payment, currency));
+                .map(payment -> paymentPersistanceMapperMongo.toDomain(payment, currency));
     }
 
     @Override
     public Optional<CurrencyEnum> load(UUID paymentId) {
-        return Optional.of(paymentCosmosRepository.findById(paymentId)
+        return Optional.of(paymentMongoRepository.findById(paymentId)
                         .orElseThrow(() -> new PaymentPersistanceException(PAYMENT_NOT_FOUND)))
-                .map(PaymentEntityCosmos::getCurrency);
+                .map(PaymentEntityMongo::getCurrency);
     }
 }

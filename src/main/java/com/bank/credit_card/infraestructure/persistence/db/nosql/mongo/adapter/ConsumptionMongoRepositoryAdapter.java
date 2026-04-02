@@ -1,4 +1,4 @@
-package com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.adapter;
+package com.bank.credit_card.infraestructure.persistence.db.nosql.mongo.adapter;
 
 import com.bank.credit_card.application.port.in.query.criteria.FindConsumptionByDatesAndCardIdCriteria;
 import com.bank.credit_card.application.port.in.query.view.LoadConsumptionView;
@@ -9,11 +9,11 @@ import com.bank.credit_card.application.port.out.consumption.usecase.SaveConsump
 import com.bank.credit_card.domain.base.CurrencyEnum;
 import com.bank.credit_card.domain.base.vo.Currency;
 import com.bank.credit_card.domain.consumption.Consumption;
-import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.entity.ConsumptionEntityCosmos;
+import com.bank.credit_card.infraestructure.persistence.db.nosql.mongo.entity.ConsumptionEntityMongo;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.common.exception.ConsumptionPersistanceException;
-import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.mapper.persistance.ConsumptionPersistanceMapperCosmos;
-import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.mapper.query.ConsumptionQueryMapperCosmos;
-import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.repository.ConsumptionCosmosRepository;
+import com.bank.credit_card.infraestructure.persistence.db.nosql.mongo.mapper.persistance.ConsumptionPersistanceMapperMongo;
+import com.bank.credit_card.infraestructure.persistence.db.nosql.mongo.mapper.query.ConsumptionQueryMapperMongo;
+import com.bank.credit_card.infraestructure.persistence.db.nosql.mongo.repository.ConsumptionMongoRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,29 +22,29 @@ import java.util.UUID;
 import static com.bank.credit_card.infraestructure.persistence.db.nosql.common.constant.TimeConstant.*;
 import static com.bank.credit_card.infraestructure.persistence.db.nosql.common.exception.ConsumptionErrorMessage.*;
 
-public class ConsumptionCosmosRepositoryAdapter implements LoadConsumptionPort, SaveConsumptionPort, LoadConsumptionsByDatesAndCardIdPort, LoadConsumptionCurrencyPort {
+public class ConsumptionMongoRepositoryAdapter implements LoadConsumptionPort, SaveConsumptionPort, LoadConsumptionsByDatesAndCardIdPort, LoadConsumptionCurrencyPort {
 
-    private final ConsumptionCosmosRepository consumptionCosmosRepository;
-    private final ConsumptionPersistanceMapperCosmos consumptionPersistanceMapperCosmos;
-    private final ConsumptionQueryMapperCosmos consumptionQueryMapperCosmos;
+    private final ConsumptionMongoRepository consumptionMongoRepository;
+    private final ConsumptionPersistanceMapperMongo consumptionPersistanceMapperMongo;
+    private final ConsumptionQueryMapperMongo consumptionQueryMapperMongo;
 
-    public ConsumptionCosmosRepositoryAdapter(ConsumptionCosmosRepository consumptionCosmosRepository, ConsumptionPersistanceMapperCosmos consumptionPersistanceMapperCosmos, ConsumptionQueryMapperCosmos consumptionQueryMapperCosmos) {
-        this.consumptionCosmosRepository = consumptionCosmosRepository;
-        this.consumptionPersistanceMapperCosmos = consumptionPersistanceMapperCosmos;
-        this.consumptionQueryMapperCosmos = consumptionQueryMapperCosmos;
+    public ConsumptionMongoRepositoryAdapter(ConsumptionMongoRepository consumptionMongoRepository, ConsumptionPersistanceMapperMongo consumptionPersistanceMapperMongo, ConsumptionQueryMapperMongo consumptionQueryMapperMongo) {
+        this.consumptionMongoRepository = consumptionMongoRepository;
+        this.consumptionPersistanceMapperMongo = consumptionPersistanceMapperMongo;
+        this.consumptionQueryMapperMongo = consumptionQueryMapperMongo;
     }
 
     @Override
     public List<LoadConsumptionView> load(FindConsumptionByDatesAndCardIdCriteria criteria) {
 
-        return Optional.of(consumptionCosmosRepository.findByCardIdAndConsumptionDateBetween(
+        return Optional.of(consumptionMongoRepository.findByCardIdAndConsumptionDateBetween(
                         String.valueOf(criteria.cardId()),
                         criteria.start().atStartOfDay(),
                         criteria.end().atTime(LAST_HOUR, LAST_MINUTE, LAST_SECOND)))
                 .filter(list -> !list.isEmpty())
                 .orElseThrow(() -> new ConsumptionPersistanceException(NO_CONSUMPTIONS_FOUND))
                 .stream()
-                .map(consumptionQueryMapperCosmos::toView)
+                .map(consumptionQueryMapperMongo::toView)
                 .toList();
 
     }
@@ -53,9 +53,9 @@ public class ConsumptionCosmosRepositoryAdapter implements LoadConsumptionPort, 
     public Optional<UUID> save(Consumption consumption) {
 
         return Optional.of(Optional.of(consumption)
-                .map(consumptionPersistanceMapperCosmos::toEntity)
-                .map(consumptionCosmosRepository::save)
-                .map(ConsumptionEntityCosmos::getConsumptionId)
+                .map(consumptionPersistanceMapperMongo::toEntity)
+                .map(consumptionMongoRepository::save)
+                .map(ConsumptionEntityMongo::getConsumptionId)
                 .orElseThrow(() -> new ConsumptionPersistanceException(CONSUMPTION_NOT_SAVED)));
 
     }
@@ -63,16 +63,16 @@ public class ConsumptionCosmosRepositoryAdapter implements LoadConsumptionPort, 
     @Override
     public Optional<Consumption> load(UUID consumptionId, Currency currency) {
 
-        return Optional.of(consumptionCosmosRepository.findById(consumptionId)
+        return Optional.of(consumptionMongoRepository.findById(consumptionId)
                         .orElseThrow(() -> new ConsumptionPersistanceException(CONSUMPTION_NOT_FOUND)))
-                .map(consumption -> consumptionPersistanceMapperCosmos.toDomain(consumption, currency));
+                .map(consumption -> consumptionPersistanceMapperMongo.toDomain(consumption, currency));
 
     }
 
     @Override
     public Optional<CurrencyEnum> load(UUID consumptionId) {
-        return Optional.of(consumptionCosmosRepository.findById(consumptionId)
+        return Optional.of(consumptionMongoRepository.findById(consumptionId)
                         .orElseThrow(() -> new ConsumptionPersistanceException(CONSUMPTION_NOT_FOUND)))
-                .map(ConsumptionEntityCosmos::getCurrency);
+                .map(ConsumptionEntityMongo::getCurrency);
     }
 }

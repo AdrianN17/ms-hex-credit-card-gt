@@ -1,0 +1,23 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: credit-card
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=credit_card_db;encrypt=false;trustServerCertificate=true
+    username: sa
+    password: your_password
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/credit_card_db
+      host: localhost
+      port: 27017
+      database: credit_card_db
+      username: your_user
+      password: your_password
+api:
+  convert:
+    url: http://localhost:3001/convert/currency/
