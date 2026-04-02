@@ -8,7 +8,6 @@ import com.bank.credit_card.domain.card.vo.CardAccountId;
 import com.bank.credit_card.domain.card.vo.Credit;
 import com.bank.credit_card.domain.consumption.Consumption;
 import com.bank.credit_card.domain.consumption.ConsumptionException;
-import com.bank.credit_card.domain.generator.CardIdGenerator;
 import com.bank.credit_card.domain.generic.GenericDomain;
 import com.bank.credit_card.domain.payment.Payment;
 
@@ -19,7 +18,7 @@ import java.util.Objects;
 import static com.bank.credit_card.domain.base.StatusEnum.ACTIVE;
 import static com.bank.credit_card.domain.card.BalanceErrorMessage.*;
 import static com.bank.credit_card.domain.card.CardErrorMessage.*;
-import static com.bank.credit_card.domain.card.CardErrorMessage.CARD_GENERATOR_CANNOT_BE_NULL;
+import static com.bank.credit_card.domain.card.CardErrorMessage.ID_CANNOT_BE_NULL;
 import static com.bank.credit_card.domain.card.CardStatusEnum.IN_DEBT;
 import static com.bank.credit_card.domain.card.CardStatusEnum.OPERATIVE;
 import static com.bank.credit_card.domain.card.CategoryPaymentEnum.ADELANTADO;
@@ -103,21 +102,22 @@ public class Card extends GenericDomain<Long> {
     }
 
     public static Card create(
-            CardIdGenerator cardIdGenerator,
+            Long id,
+            CardAccountId cardAccountId,
             TypeCardEnum typeCard,
             CategoryCardEnum categoryCard,
             Credit credit,
             Short paymentDay) {
 
-        isNotNull(cardIdGenerator, new CardException(CARD_GENERATOR_CANNOT_BE_NULL));
-
+        isNotNull(id, new CardException(ID_CANNOT_BE_NULL));
+        isNotNull(cardAccountId, new CardException(CARD_ACCOUNTID_CANNOT_BE_NULL));
         isNotNull(typeCard, new CardException(TYPE_CARD_CANNOT_BE_NULL));
         isNotNull(categoryCard, new CardException(CATEGORY_CARD_CANNOT_BE_NULL));
         isNotNull(credit, new CardException(CREDIT_CANNOT_BE_NULL));
         isNotNull(paymentDay, new CardException(PAYMENT_DAY_CANNOT_BE_NULL));
 
         return new Card(
-                cardIdGenerator.nextId(),//revisar
+                id,
                 ACTIVE,
                 LocalDateTime.now(),
                 null,
@@ -127,7 +127,7 @@ public class Card extends GenericDomain<Long> {
                 OPERATIVE,
                 null,
                 null,
-                CardAccountId.create(),
+                cardAccountId,
                 paymentDay);
     }
 

@@ -4,9 +4,8 @@ import com.bank.credit_card.application.port.out.balance.SaveBalancePort;
 import com.bank.credit_card.application.port.out.benefit.SaveBenefitPort;
 import com.bank.credit_card.application.port.out.card.usecase.SaveCardPort;
 import com.bank.credit_card.application.port.out.currency.LoadCurrencyPort;
+import com.bank.credit_card.application.port.out.generator.LoadIdPort;
 import com.bank.credit_card.application.service.usecase.CreateCardService;
-import com.bank.credit_card.domain.generator.CardIdGenerator;
-import com.bank.credit_card.infraestructure.generator.SnowflakeIdGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,18 +18,13 @@ public class CreateCardServiceConfig {
             SaveCardPort saveCardPort,
             SaveBalancePort saveBalancePort,
             SaveBenefitPort saveBenefitPort,
-            CardIdGenerator idGenerator,
+            LoadIdPort loadIdPort,
             LoadCurrencyPort loadCurrencyPort) {
 
         return new CreateCardService(saveCardPort,
                 saveBalancePort,
                 saveBenefitPort,
-                idGenerator,
+                loadIdPort,
                 loadCurrencyPort);
-    }
-
-    @Bean
-    CardIdGenerator cardIdGenerator() {
-        return new SnowflakeIdGenerator();
     }
 }

@@ -6,9 +6,9 @@ import com.bank.credit_card.application.service.query.LoadCardByIdService;
 import com.bank.credit_card.application.service.query.LoadConsumptionByDatesAndCardIdService;
 import com.bank.credit_card.application.service.query.LoadPaymentByDatesAndCardIdService;
 import com.bank.credit_card.application.service.usecase.*;
-import com.bank.credit_card.infraestructure.web.api.mapper.CardApiMapperRequestCommand;
-import com.bank.credit_card.infraestructure.web.api.mapper.ConsumptionApiMapperRequestCommand;
-import com.bank.credit_card.infraestructure.web.api.mapper.PaymentApiMapperRequestCommand;
+import com.bank.credit_card.infraestructure.web.api.mapper.command.CardApiMapperRequestCommand;
+import com.bank.credit_card.infraestructure.web.api.mapper.command.ConsumptionApiMapperRequestCommand;
+import com.bank.credit_card.infraestructure.web.api.mapper.command.PaymentApiMapperRequestCommand;
 import com.bank.credit_card.infraestructure.web.api.schema.request.InitiateCardRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.request.InitiateConsumptionRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.request.InitiatePaymentRequest;
@@ -21,6 +21,8 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
+
+import static com.bank.credit_card.infraestructure.web.api.util.MapperResponse.*;
 
 public class CardManagementDelegateImpl implements CardManagementDelegate {
 
@@ -136,21 +138,5 @@ public class CardManagementDelegateImpl implements CardManagementDelegate {
                 cardId
         )).stream().map(paymentApiMapperRequestCommand::toResponse).toList();
         return getPaymentResponse(responsePayments);
-    }
-
-    private ResponseEntity<ControlCard202Response> getControlCard202Response() {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ControlCard202Response(new Tracking(UUID.randomUUID(), OffsetDateTime.now())));
-    }
-
-    private ResponseEntity<RetrieveBalance200Response> getRetrieveBalance(CardResponse response) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new RetrieveBalance200Response(response, new Tracking(UUID.randomUUID(), OffsetDateTime.now())));
-    }
-
-    private ResponseEntity<RetrievePayment200Response> getPaymentResponse(List<PaymentResponse> response) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new RetrievePayment200Response(new Tracking(UUID.randomUUID(), OffsetDateTime.now()), response));
-    }
-
-    private ResponseEntity<RetrieveConsumption200Response> getConsumptionResponse(List<ConsumptionResponse> response) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new RetrieveConsumption200Response(new Tracking(UUID.randomUUID(), OffsetDateTime.now()), response));
     }
 }

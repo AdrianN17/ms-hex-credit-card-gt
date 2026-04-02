@@ -1,15 +1,16 @@
 package com.bank.credit_card.infraestructure.generator;
 
-import com.bank.credit_card.domain.generator.CardIdGenerator;
+import com.bank.credit_card.application.port.out.generator.LoadIdPort;
 
-public class SnowflakeIdGenerator implements CardIdGenerator {
+import java.util.Optional;
+
+public class SnowflakeGenerator implements LoadIdPort {
 
     private final long machineId = 1L;
     private long sequence = 0L;
     private long lastTimestamp = -1L;
 
-    @Override
-    public synchronized Long nextId() {
+    private synchronized Long nextId() {
 
         long timestamp = System.currentTimeMillis();
 
@@ -24,5 +25,10 @@ public class SnowflakeIdGenerator implements CardIdGenerator {
         return (timestamp << 22)
                 | (machineId << 12)
                 | sequence;
+    }
+
+    @Override
+    public Optional<Long> load() {
+        return Optional.of(nextId());
     }
 }

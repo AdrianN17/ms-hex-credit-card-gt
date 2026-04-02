@@ -22,7 +22,6 @@ import java.math.BigDecimal;
 public class CardAccountEntity extends GenericEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cardAccountId", nullable = false)
     private Long cardAccountId;
 

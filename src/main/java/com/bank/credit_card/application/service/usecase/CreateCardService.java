@@ -3,12 +3,14 @@ package com.bank.credit_card.application.service.usecase;
 import com.bank.credit_card.application.error.balance.ApplicationBalanceException;
 import com.bank.credit_card.application.error.benefit.ApplicationBenefitException;
 import com.bank.credit_card.application.error.card.ApplicationCardException;
+import com.bank.credit_card.application.error.generator.ApplicationGeneratorException;
 import com.bank.credit_card.application.port.in.command.CardCreateCommand;
 import com.bank.credit_card.application.port.in.usecase.CardCreateUseCase;
 import com.bank.credit_card.application.port.out.balance.SaveBalancePort;
 import com.bank.credit_card.application.port.out.benefit.SaveBenefitPort;
 import com.bank.credit_card.application.port.out.card.usecase.SaveCardPort;
 import com.bank.credit_card.application.port.out.currency.LoadCurrencyPort;
+import com.bank.credit_card.application.port.out.generator.LoadIdPort;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.base.vo.Currency;
 import com.bank.credit_card.domain.base.vo.DateRange;
@@ -16,9 +18,9 @@ import com.bank.credit_card.domain.benefit.Benefit;
 import com.bank.credit_card.domain.benefit.vo.DiscountPolicy;
 import com.bank.credit_card.domain.card.Balance;
 import com.bank.credit_card.domain.card.Card;
+import com.bank.credit_card.domain.card.vo.CardAccountId;
 import com.bank.credit_card.domain.card.vo.CardId;
 import com.bank.credit_card.domain.card.vo.Credit;
-import com.bank.credit_card.domain.generator.CardIdGenerator;
 
 import java.util.Optional;
 
@@ -26,35 +28,42 @@ import static com.bank.credit_card.application.error.balance.BalanceApplicationE
 import static com.bank.credit_card.application.error.benefit.BenefitApplicationErrorMessage.FAILED_TO_CREATE_BENEFIT;
 import static com.bank.credit_card.application.error.card.CardApplicationErrorMessage.CARD_CURRENCY_NOT_FOUND;
 import static com.bank.credit_card.application.error.card.CardApplicationErrorMessage.FAILED_TO_CREATE_CARD;
+import static com.bank.credit_card.application.error.generator.GeneratorApplicationErrorMessage.*;
 
 public class CreateCardService implements CardCreateUseCase {
 
     private final SaveCardPort saveCardPort;
     private final SaveBalancePort saveBalancePort;
     private final SaveBenefitPort saveBenefitPort;
-    private final CardIdGenerator idGenerator;
+    private final LoadIdPort loadIdPort;
     private final LoadCurrencyPort loadCurrencyPort;
 
     //servicio web
     //capa aop infraestructura
     //manejo transacciones
 
-    public CreateCardService(SaveCardPort saveCardPort, SaveBalancePort saveBalancePort, SaveBenefitPort saveBenefitPort, CardIdGenerator idGenerator, LoadCurrencyPort loadCurrencyPort) {
+    public CreateCardService(SaveCardPort saveCardPort, SaveBalancePort saveBalancePort, SaveBenefitPort saveBenefitPort, LoadIdPort loadIdPort, LoadCurrencyPort loadCurrencyPort) {
         this.saveCardPort = saveCardPort;
         this.saveBalancePort = saveBalancePort;
         this.saveBenefitPort = saveBenefitPort;
-        this.idGenerator = idGenerator;
+        this.loadIdPort = loadIdPort;
         this.loadCurrencyPort = loadCurrencyPort;
     }
 
     @Override
     public Card createCard(CardCreateCommand cardCreateCommand) {
 
+        Long idCard = loadIdPort.load().orElseThrow(() -> new ApplicationGeneratorException(CARD_ID_GENERATION_ERROR));
+        Long idCardAccount = loadIdPort.load().orElseThrow(() -> new ApplicationGeneratorException(CARD_ACCOUNT_ID_GENERATION_ERROR));
+        Long idBenefit = loadIdPort.load().orElseThrow(() -> new ApplicationGeneratorException(BENEFIT_ID_GENERATION_ERROR));
+        Long idBalance = loadIdPort.load().orElseThrow(() -> new ApplicationGeneratorException(BALANCE_ID_GENERATION_ERROR));
+
         Currency currency = loadCurrencyPort.load(cardCreateCommand.currency())
                 .orElseThrow(() -> new ApplicationCardException(CARD_CURRENCY_NOT_FOUND));
 
         Card card = Card.create(
-                idGenerator,
+                idCard,
+                CardAccountId.create(idCardAccount),
                 cardCreateCommand.typeCard(),
                 cardCreateCommand.categoryCard(),
                 Credit.create(
@@ -70,14 +79,14 @@ public class CreateCardService implements CardCreateUseCase {
                 .orElseThrow(() -> new ApplicationCardException(FAILED_TO_CREATE_CARD));
 
         Balance balance = Balance.create(
-                idGenerator,
+                idBalance,
                 Amount.create(
                         currency,
                         cardCreateCommand.creditTotal()),
                 DateRange.create(cardCreateCommand.paymentDay()), cardId);
 
         Benefit benefit = Benefit.create(
-                idGenerator,
+                idBenefit,
                 DiscountPolicy.create(cardCreateCommand.hasDiscount(),
                         cardCreateCommand.multiplierPoints()),
                 cardId);

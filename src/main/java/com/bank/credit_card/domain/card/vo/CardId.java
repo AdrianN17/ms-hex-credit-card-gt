@@ -30,8 +30,4 @@ public class CardId {
     public static boolean isIntData(String valor) {
         return valor.matches("-?\\d+");
     }
-
-    public static CardId create() {
-        return new CardId(-1L);
-    }
 }

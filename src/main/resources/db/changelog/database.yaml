@@ -18,8 +18,8 @@ databaseChangeLog:
             columns:
               - column:
                   name: cardId
-                  type: INT
-                  autoIncrement: true
+                  type: BIGINT
+                  autoIncrement: false
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -48,14 +48,14 @@ databaseChangeLog:
             columns:
               - column:
                   name: cardAccountId
-                  type: INT
-                  autoIncrement: true
+                  type: BIGINT
+                  autoIncrement: false
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: cardId
-                  type: INT
+                  type: BIGINT
                   constraints:
                     nullable: false
               - column:
@@ -94,14 +94,14 @@ databaseChangeLog:
             columns:
               - column:
                   name: idBalance
-                  type: INT
-                  autoIncrement: true
+                  type: BIGINT
+                  autoIncrement: false
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: cardId
-                  type: INT
+                  type: BIGINT
                   constraints:
                     nullable: false
               - column:
@@ -143,14 +143,14 @@ databaseChangeLog:
             columns:
               - column:
                   name: idBenefit
-                  type: INT
-                  autoIncrement: true
+                  type: BIGINT
+                  autoIncrement: false
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: cardId
-                  type: INT
+                  type: BIGINT
                   constraints:
                     nullable: false
               - column:
@@ -205,3 +205,4 @@ databaseChangeLog:
             referencedTableName: Cards
             referencedColumnNames: cardId
             constraintName: fk_benefits_cardid
+

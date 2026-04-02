@@ -5,7 +5,6 @@ import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.benefit.vo.DiscountPolicy;
 import com.bank.credit_card.domain.card.CategoryCardEnum;
 import com.bank.credit_card.domain.card.vo.CardId;
-import com.bank.credit_card.domain.generator.CardIdGenerator;
 import com.bank.credit_card.domain.generic.GenericDomain;
 import com.bank.credit_card.domain.payment.Payment;
 
@@ -19,7 +18,7 @@ import static com.bank.credit_card.domain.benefit.BenefitErrorMessage.*;
 import static com.bank.credit_card.domain.util.Validation.isNotConditional;
 import static com.bank.credit_card.domain.util.Validation.isNotNull;
 
-public class Benefit extends GenericDomain {
+public class Benefit extends GenericDomain<Long> {
 
     private Point totalPoints;
     private final DiscountPolicy discountPolicy;
@@ -76,15 +75,16 @@ public class Benefit extends GenericDomain {
     }
 
     public static Benefit create(
-            CardIdGenerator cardIdGenerator,
+            Long id,
             DiscountPolicy discountPolicy,
             CardId cardId) {
 
+        isNotNull(id, new BenefitException(ID_CANNOT_BE_NULL));
         isNotNull(cardId, new BenefitException(CARD_ID_NOT_NULL));
         isNotNull(discountPolicy, new BenefitException(DISCUOUNT_POLICY_NOT_NULL));
 
         return new Benefit(
-                cardIdGenerator.nextId(),
+                id,
                 ACTIVE,
                 LocalDateTime.now(),
                 null,

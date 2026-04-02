@@ -13,6 +13,11 @@ spring:
     username: adrian
     password: ${SQLSERVER_PASSWORD}
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
   liquibase:
     change-log: classpath:db/changelog/database.yaml
     enabled: true

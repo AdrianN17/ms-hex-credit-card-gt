@@ -5,7 +5,6 @@ import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.base.vo.DateRange;
 import com.bank.credit_card.domain.card.vo.CardId;
 import com.bank.credit_card.domain.consumption.Consumption;
-import com.bank.credit_card.domain.generator.CardIdGenerator;
 import com.bank.credit_card.domain.generic.GenericDomain;
 import com.bank.credit_card.domain.payment.Payment;
 
@@ -71,19 +70,19 @@ public class Balance extends GenericDomain<Long> {
     }
 
     public static Balance create(
-            CardIdGenerator cardIdGenerator,
+            Long id,
             Amount total,
             DateRange dateRange,
             CardId cardId) {
 
-        isNotNull(cardIdGenerator, new BalanceException(CARD_GENERATOR_CANNOT_BE_NULL));
+        isNotNull(id, new BalanceException(ID_CANNOT_BE_NULL));
 
         isNotNull(total, new BalanceException(TOTAL_AMOUNT_CANNOT_BE_NULL));
         isNotNull(dateRange, new BalanceException(DATE_RANGE_CANNOT_BE_NULL));
         isNotNull(cardId, new BalanceException(CARD_ID_CANNOT_BE_NULL));
 
         return new Balance(
-                cardIdGenerator.nextId(),
+                id,
                 ACTIVE,
                 LocalDateTime.now(),
                 null,

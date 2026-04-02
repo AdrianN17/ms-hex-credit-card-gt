@@ -20,7 +20,6 @@ import java.math.BigDecimal;
 public class BenefitEntity extends GenericEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idBenefit", nullable = false)
     private Long idBenefit;
 

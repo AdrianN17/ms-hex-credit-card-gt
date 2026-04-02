@@ -22,7 +22,6 @@ import java.time.LocalDate;
 public class BalanceEntity extends GenericEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idBalance", nullable = false)
     private Long idBalance;
 

@@ -18,8 +18,4 @@ public class CardAccountId {
         isNotNull(value, new CardIdException(CARD_ID_CANNOT_BE_NULL));
         return new CardAccountId(value);
     }
-
-    public static CardAccountId create() {
-        return new CardAccountId(-1L);
-    }
 }

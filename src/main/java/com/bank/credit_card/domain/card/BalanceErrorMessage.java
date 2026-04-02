@@ -13,5 +13,5 @@ public interface BalanceErrorMessage {
     String CONSUMPTIONS_CANNOT_BE_EMPTY = "Consumptions cannot be empty";
     String CARD_ID_CANNOT_BE_NULL = "Card ID cannot be null";
 
-    String CARD_GENERATOR_CANNOT_BE_NULL = "Card generator cannot be null";
+    String ID_CANNOT_BE_NULL = "ID cannot be null";
 }

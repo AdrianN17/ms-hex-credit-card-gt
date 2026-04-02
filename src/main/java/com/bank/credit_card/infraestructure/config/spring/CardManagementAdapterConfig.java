@@ -4,16 +4,14 @@ import com.bank.credit_card.application.service.query.LoadCardByIdService;
 import com.bank.credit_card.application.service.query.LoadConsumptionByDatesAndCardIdService;
 import com.bank.credit_card.application.service.query.LoadPaymentByDatesAndCardIdService;
 import com.bank.credit_card.application.service.usecase.*;
-import com.bank.credit_card.infraestructure.web.api.controller.CardManagementApi;
-import com.bank.credit_card.infraestructure.web.api.controller.CardManagementApiImpl;
 import com.bank.credit_card.infraestructure.web.api.delegate.CardManagementDelegate;
 import com.bank.credit_card.infraestructure.web.api.delegate.CardManagementDelegateImpl;
-import com.bank.credit_card.infraestructure.web.api.mapper.CardApiMapperRequestCommand;
-import com.bank.credit_card.infraestructure.web.api.mapper.ConsumptionApiMapperRequestCommand;
-import com.bank.credit_card.infraestructure.web.api.mapper.PaymentApiMapperRequestCommand;
-import com.bank.credit_card.infraestructure.web.api.mapper.CardApiMapperRequestCommandImpl;
-import com.bank.credit_card.infraestructure.web.api.mapper.ConsumptionApiMapperRequestCommandImpl;
-import com.bank.credit_card.infraestructure.web.api.mapper.PaymentApiMapperRequestCommandImpl;
+import com.bank.credit_card.infraestructure.web.api.mapper.command.CardApiMapperRequestCommand;
+import com.bank.credit_card.infraestructure.web.api.mapper.command.ConsumptionApiMapperRequestCommand;
+import com.bank.credit_card.infraestructure.web.api.mapper.command.PaymentApiMapperRequestCommand;
+import com.bank.credit_card.infraestructure.web.api.mapper.command.CardApiMapperRequestCommandImpl;
+import com.bank.credit_card.infraestructure.web.api.mapper.command.ConsumptionApiMapperRequestCommandImpl;
+import com.bank.credit_card.infraestructure.web.api.mapper.command.PaymentApiMapperRequestCommandImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,10 +33,6 @@ public class CardManagementAdapterConfig {
         return new PaymentApiMapperRequestCommandImpl();
     }
 
-    @Bean
-    CardManagementApi cardManagementApi(CardManagementDelegate cardManagementDelegate) {
-        return new CardManagementApiImpl(cardManagementDelegate);
-    }
 
     @Bean
     CardManagementDelegate cardManagementDelegate(CreateCardService createCardService,

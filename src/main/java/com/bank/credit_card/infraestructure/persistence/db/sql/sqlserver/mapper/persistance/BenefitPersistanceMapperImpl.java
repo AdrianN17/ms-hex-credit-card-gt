@@ -25,6 +25,7 @@ public class BenefitPersistanceMapperImpl implements BenefitPersistanceMapper {
     @Override
     public BenefitEntity toEntity(Benefit benefit) {
         return BenefitEntity.builder()
+                .idBenefit(benefit.getId())
                 .totalPoints(benefit.getTotalPoints().getPointEarned())
                 .hasDiscount(benefit.getDiscountPolicy().getHasDiscount())
                 .multiplierPoints(benefit.getDiscountPolicy().getMultiplierPoints())

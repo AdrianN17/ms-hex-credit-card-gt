@@ -20,7 +20,6 @@ import lombok.experimental.SuperBuilder;
 public class CardEntity extends GenericEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cardId", nullable = false)
     private Long cardId;
 

@@ -9,4 +9,6 @@ public interface BenefitErrorMessage {
     String CARD_ID_NOT_NULL = "Card ID cannot be null";
     String DISCUOUNT_POLICY_NOT_NULL = "Discount policy cannot be null";
 
+    String ID_CANNOT_BE_NULL = "ID cannot be null";
+
 }

@@ -56,12 +56,12 @@ public class CardJpaRepositoryAdapter implements LoadCardPort, SaveCardPort, Loa
     @Override
     public Optional<Long> save(Card card) {
         return Optional.of(Optional.ofNullable(card)
-                .map(c -> {
-                    cardAccountJpaRepository.save(cardAccountPersistanceMapper.toEntity(c));
-                    return c;
-                })
                 .map(cardPersistanceMapper::toEntity)
                 .map(cardJpaRepository::save)
+                .map(cardEntity -> {
+                    cardAccountJpaRepository.save(cardAccountPersistanceMapper.toEntity(card));
+                    return cardEntity;
+                })
                 .map(CardEntity::getCardId))
                 .orElseThrow(() -> new CardPersistanceException(CARD_NOT_SAVED));
     }
