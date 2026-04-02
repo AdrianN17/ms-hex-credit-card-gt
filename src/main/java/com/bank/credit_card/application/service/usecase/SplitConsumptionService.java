@@ -55,7 +55,7 @@ public class SplitConsumptionService implements CardSplitConsumptionUseCase {
         CurrencyEnum cardCurrencyEnum = loadCardCurrencyPort.load(cardSplitConsumptionCommand.cardId())
                 .orElseThrow(() -> new ApplicationCardException(CARD_NOT_FOUND));
 
-        CurrencyEnum consumptionCurrencyEnum = loadConsumptionCurrencyPort.load(cardSplitConsumptionCommand.consumptionId())
+        CurrencyEnum consumptionCurrencyEnum = loadConsumptionCurrencyPort.load(cardSplitConsumptionCommand.consumptionId(), cardSplitConsumptionCommand.cardId().toString())
                 .orElseThrow(() -> new ApplicationConsumptionException(CONSUMPTION_NOT_FOUND));
 
         Currency cardCurrency = loadCurrencyPort.load(cardCurrencyEnum)
@@ -65,7 +65,7 @@ public class SplitConsumptionService implements CardSplitConsumptionUseCase {
                 .orElseThrow(() -> new ApplicationConsumptionException(CONSUMPTION_CURRENCY_NOT_FOUND));
 
         Consumption consumption = loadConsumptionPort
-                .load(cardSplitConsumptionCommand.consumptionId(), consumptionCurrency)
+                .load(cardSplitConsumptionCommand.consumptionId(), cardSplitConsumptionCommand.cardId().toString(), consumptionCurrency)
                 .orElseThrow(() -> new ApplicationConsumptionException(CONSUMPTION_NOT_FOUND));
         Card card = loadCardPort
                 .load(cardSplitConsumptionCommand.cardId(), cardCurrency)

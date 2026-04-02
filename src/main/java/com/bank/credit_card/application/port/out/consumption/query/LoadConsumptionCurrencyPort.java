@@ -6,5 +6,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface LoadConsumptionCurrencyPort {
-    Optional<CurrencyEnum> load(UUID consumptionId);
+    Optional<CurrencyEnum> load(UUID consumptionId, String cardId);
 }

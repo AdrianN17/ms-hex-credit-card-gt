@@ -23,11 +23,16 @@ public class CardId {
 
     public static CardId create(String value) {
         isNotNull(value, new CardIdException(CARD_ID_CANNOT_BE_NULL));
-        isNotConditional(isIntData(value), new CardIdException(CARD_ID_MUST_BE_NUMERIC));
+        isNotConditional(isNotLongData(value), new CardIdException(CARD_ID_MUST_BE_NUMERIC));
         return new CardId(Long.valueOf(value));
     }
 
-    public static boolean isIntData(String valor) {
-        return valor.matches("-?\\d+");
+    public static boolean isNotLongData(String valor) {
+        try {
+            Long.parseLong(valor);
+            return false;
+        } catch (NumberFormatException e) {
+            return true;
+        }
     }
 }

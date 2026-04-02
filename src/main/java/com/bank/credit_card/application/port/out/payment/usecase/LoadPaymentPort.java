@@ -8,5 +8,5 @@ import java.util.UUID;
 
 @FunctionalInterface
 public interface LoadPaymentPort {
-    Optional<Payment> load(UUID paymentId, Currency currency);
+    Optional<Payment> load(UUID paymentId, String cardId, Currency currency);
 }

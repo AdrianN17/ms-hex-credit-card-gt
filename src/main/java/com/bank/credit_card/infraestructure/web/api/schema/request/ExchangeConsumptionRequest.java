@@ -1,4 +1,4 @@
-package com.bank.credit_card.infraestructure.web.api.schema.response;
+package com.bank.credit_card.infraestructure.web.api.schema.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;

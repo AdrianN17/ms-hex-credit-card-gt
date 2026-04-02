@@ -61,7 +61,7 @@ public class CardCancelPaymentService implements CardCancelPaymentUseCase {
         CurrencyEnum cardCurrencyEnum = loadCardCurrencyPort.load(cardCancelPaymentCommand.cardId())
                 .orElseThrow(() -> new ApplicationCardException(CARD_NOT_FOUND));
 
-        CurrencyEnum paymentCurrencyEnum = loadConsumptionCurrencyPort.load(cardCancelPaymentCommand.paymentId())
+        CurrencyEnum paymentCurrencyEnum = loadConsumptionCurrencyPort.load(cardCancelPaymentCommand.paymentId(), cardCancelPaymentCommand.cardId().toString())
                 .orElseThrow(() -> new ApplicationPaymentException(PAYMENT_CURRENCY_NOT_FOUND));
 
         Currency cardCurrency = loadCurrencyPort.load(cardCurrencyEnum)
@@ -71,7 +71,7 @@ public class CardCancelPaymentService implements CardCancelPaymentUseCase {
                 .orElseThrow(() -> new ApplicationPaymentException(PAYMENT_CURRENCY_NOT_FOUND));
 
         Payment payment = loadPaymentPort
-                .load(cardCancelPaymentCommand.paymentId(), paymentCurrency)
+                .load(cardCancelPaymentCommand.paymentId(), cardCancelPaymentCommand.cardId().toString(), paymentCurrency)
                 .orElseThrow(() -> new ApplicationPaymentException(PAYMENT_NOT_FOUND));
 
         Card card = loadCardPort

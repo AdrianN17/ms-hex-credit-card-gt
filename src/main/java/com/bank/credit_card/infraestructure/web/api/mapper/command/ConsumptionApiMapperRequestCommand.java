@@ -6,7 +6,7 @@ import com.bank.credit_card.application.port.in.command.CardSplitConsumptionComm
 import com.bank.credit_card.application.port.in.query.view.LoadConsumptionView;
 import com.bank.credit_card.infraestructure.web.api.schema.request.ConsumptionRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.response.ConsumptionResponse;
-import com.bank.credit_card.infraestructure.web.api.schema.response.ExchangeConsumptionRequestData;
+import com.bank.credit_card.infraestructure.web.api.schema.request.ExchangeConsumptionRequestData;
 import com.bank.credit_card.infraestructure.web.generic.mapper.GenericMapperCommandIds;
 import com.bank.credit_card.infraestructure.web.generic.mapper.GenericMapperCommandIdsR;
 import com.bank.credit_card.infraestructure.web.generic.mapper.GenericMapperRequestId;

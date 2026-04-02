@@ -133,8 +133,8 @@ public class Consumption extends GenericDomain<UUID> {
         return sellerName;
     }
 
-    public String getSplitSellerName() {
-        return getSellerName() + CONSUMPTION_SPLIT;
+    public String getSplitSellerName(int count) {
+        return getSellerName() + CONSUMPTION_SPLIT + " " + count;
     }
 
     public List<Consumption> split(Integer quantity,
@@ -147,13 +147,8 @@ public class Consumption extends GenericDomain<UUID> {
         return IntStream.rangeClosed(1, quantity).mapToObj(value -> {
             var newDate = getConsumptionDate().plusMonths(value);
 
-            return Consumption.create(amount, newDate, getCardId(), getSplitSellerName());
+            return Consumption.create(amount, newDate, getCardId(), getSplitSellerName(value));
         }).toList();
-    }
-
-    public Consumption create(Amount amount,
-                              LocalDateTime newDate) {
-        return Consumption.create(amount, newDate, getCardId(), getSplitSellerName());
     }
 
     public void validateIfConsumptionIsInApprobation() {

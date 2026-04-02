@@ -1,15 +1,14 @@
 package com.bank.credit_card.infraestructure.persistence.db.generic.repository;
 
-import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import com.bank.credit_card.domain.base.StatusEnum;
 import com.bank.credit_card.infraestructure.persistence.db.generic.entity.GenericEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
-import java.io.Serializable;
 import java.util.Optional;
 
 @NoRepositoryBean
-public interface GenericCosmosRespository<T, ID extends Serializable> extends CosmosRepository<T, ID> {
+public interface GenericJpaRepository<T, ID> extends JpaRepository<T, ID> {
 
     default Optional<T> findActiveById(ID id) {
         return findById(id).filter(e -> {

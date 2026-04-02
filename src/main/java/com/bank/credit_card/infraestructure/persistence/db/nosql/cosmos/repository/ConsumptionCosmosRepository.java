@@ -1,7 +1,7 @@
 package com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.repository;
 
 import com.azure.spring.data.cosmos.repository.Query;
-import com.bank.credit_card.infraestructure.persistence.db.generic.repository.GenericCosmosRespository;
+import com.bank.credit_card.infraestructure.persistence.db.generic.repository.GenericCosmosRepository;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.entity.ConsumptionEntityCosmos;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface ConsumptionCosmosRepository extends GenericCosmosRespository<ConsumptionEntityCosmos, UUID> {
+public interface ConsumptionCosmosRepository extends GenericCosmosRepository<ConsumptionEntityCosmos, UUID> {
 
     @Query("SELECT c.consumptionId, c.cardId, c.sellerName, c.currency, c.amount, c.consumptionDate, c.consumptionApprobationDate " +
             "FROM c " +

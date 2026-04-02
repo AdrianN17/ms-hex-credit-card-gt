@@ -8,5 +8,5 @@ import java.util.UUID;
 
 @FunctionalInterface
 public interface LoadConsumptionPort {
-    Optional<Consumption> load(UUID consumptonId, Currency currency);
+    Optional<Consumption> load(UUID consumptonId, String cardId, Currency currency);
 }

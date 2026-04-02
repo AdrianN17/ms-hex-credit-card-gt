@@ -1,6 +1,6 @@
 package com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.repository.vo;
 
-import com.bank.credit_card.infraestructure.persistence.db.generic.repository.GenericJpaRespository;
+import com.bank.credit_card.infraestructure.persistence.db.generic.repository.GenericJpaRepository;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.projection.CardCurrencyProjection;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.projection.CardSumaryProjection;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.vo.CardEntityVO;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface CardVOJpaRepository extends GenericJpaRespository<CardEntityVO, Long> {
+public interface CardVOJpaRepository extends GenericJpaRepository<CardEntityVO, Long> {
 
     @Query(value = """
             SELECT

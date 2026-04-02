@@ -9,16 +9,15 @@ import com.bank.credit_card.application.service.usecase.*;
 import com.bank.credit_card.infraestructure.web.api.mapper.command.CardApiMapperRequestCommand;
 import com.bank.credit_card.infraestructure.web.api.mapper.command.ConsumptionApiMapperRequestCommand;
 import com.bank.credit_card.infraestructure.web.api.mapper.command.PaymentApiMapperRequestCommand;
+import com.bank.credit_card.infraestructure.web.api.schema.request.ExchangeConsumptionRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.request.InitiateCardRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.request.InitiateConsumptionRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.request.InitiatePaymentRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.response.*;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 

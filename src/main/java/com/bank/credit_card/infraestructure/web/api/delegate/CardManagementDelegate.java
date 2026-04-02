@@ -1,5 +1,6 @@
 package com.bank.credit_card.infraestructure.web.api.delegate;
 
+import com.bank.credit_card.infraestructure.web.api.schema.request.ExchangeConsumptionRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.request.InitiateCardRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.request.InitiateConsumptionRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.request.InitiatePaymentRequest;

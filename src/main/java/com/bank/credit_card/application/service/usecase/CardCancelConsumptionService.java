@@ -60,7 +60,7 @@ public class CardCancelConsumptionService implements CardCancelConsumptionUseCas
         CurrencyEnum cardCurrencyEnum = loadCardCurrencyPort.load(cardCancelConsumptionCommand.cardId())
                 .orElseThrow(() -> new ApplicationCardException(CARD_NOT_FOUND));
 
-        CurrencyEnum consumptionCurrencyEnum = loadConsumptionCurrencyPort.load(cardCancelConsumptionCommand.consumptionId())
+        CurrencyEnum consumptionCurrencyEnum = loadConsumptionCurrencyPort.load(cardCancelConsumptionCommand.consumptionId(), cardCancelConsumptionCommand.cardId().toString())
                 .orElseThrow(() -> new ApplicationConsumptionException(CONSUMPTION_NOT_FOUND));
 
         Currency cardCurrency = loadCurrencyPort.load(cardCurrencyEnum)
@@ -70,7 +70,7 @@ public class CardCancelConsumptionService implements CardCancelConsumptionUseCas
                 .orElseThrow(() -> new ApplicationConsumptionException(CONSUMPTION_CURRENCY_NOT_FOUND));
 
         Consumption consumption = loadConsumptionPort
-                .load(cardCancelConsumptionCommand.consumptionId(), consumptionCurrency)
+                .load(cardCancelConsumptionCommand.consumptionId(), cardCancelConsumptionCommand.cardId().toString(), consumptionCurrency)
                 .orElseThrow(() -> new ApplicationConsumptionException(CONSUMPTION_NOT_FOUND));
 
         Card card = loadCardPort
