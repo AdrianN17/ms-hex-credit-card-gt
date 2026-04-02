@@ -24,12 +24,12 @@ public class PaymentCosmosRepositoryAdapterConfigCosmos {
     }
 
     @Bean
-    PaymentPersistanceMapperCosmos paymentPersistanceMapper() {
+    PaymentPersistanceMapperCosmos paymentPersistanceMapperCosmos() {
         return new PaymentPersistanceMapperCosmosImpl();
     }
 
     @Bean
-    PaymentQueryMapperCosmos paymentQueryMapper() {
+    PaymentQueryMapperCosmos paymentQueryMapperCosmos() {
         return new PaymentQueryMapperCosmosImpl();
     }
 }

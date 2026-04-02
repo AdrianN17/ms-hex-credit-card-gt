@@ -3,10 +3,15 @@ server:
 spring:
   main:
     allow-bean-definition-overriding: true
+  autoconfigure:
+    exclude:
+      - com.azure.spring.cloud.autoconfigure.implementation.data.cosmos.CosmosDataAutoConfiguration
+      - com.azure.spring.cloud.autoconfigure.implementation.cosmos.AzureCosmosAutoConfiguration
+      - com.azure.spring.cloud.autoconfigure.implementation.data.cosmos.CosmosRepositoriesAutoConfiguration
   datasource:
-    url: jdbc:sqlserver://localhost:1433;databaseName=credit_card_db;encrypt=false;trustServerCertificate=true
-    username: sa
-    password: your_password
+    url: jdbc:sqlserver://azsqltest03s.database.windows.net;databaseName=azsqltest03;encrypt=false;trustServerCertificate=false;DB_CLOSE_DELAY=-1
+    username: adrian
+    password: ${SQLSERVER_PASSWORD}
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   liquibase:
     change-log: classpath:db/changelog/database.yaml
@@ -21,3 +26,6 @@ spring:
       database: credit_card_db
       username: your_user
       password: your_password
+api:
+  convert:
+    url: http://localhost:3001/convert/currency/

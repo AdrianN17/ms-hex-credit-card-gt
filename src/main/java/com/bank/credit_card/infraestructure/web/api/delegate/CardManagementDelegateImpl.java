@@ -7,8 +7,8 @@ import com.bank.credit_card.application.service.query.LoadConsumptionByDatesAndC
 import com.bank.credit_card.application.service.query.LoadPaymentByDatesAndCardIdService;
 import com.bank.credit_card.application.service.usecase.*;
 import com.bank.credit_card.infraestructure.web.api.mapper.CardApiMapperRequestCommand;
-import com.bank.credit_card.infraestructure.web.api.mapper.ConsumptionApiMapperCommand;
-import com.bank.credit_card.infraestructure.web.api.mapper.PaymentApiMapperCommand;
+import com.bank.credit_card.infraestructure.web.api.mapper.ConsumptionApiMapperRequestCommand;
+import com.bank.credit_card.infraestructure.web.api.mapper.PaymentApiMapperRequestCommand;
 import com.bank.credit_card.infraestructure.web.api.schema.request.InitiateCardRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.request.InitiateConsumptionRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.request.InitiatePaymentRequest;
@@ -37,8 +37,8 @@ public class CardManagementDelegateImpl implements CardManagementDelegate {
     private final LoadCardByIdService loadCardByIdService;
 
     private final CardApiMapperRequestCommand cardApiMapperRequestCommand;
-    private final ConsumptionApiMapperCommand consumptionApiMapperCommand;
-    private final PaymentApiMapperCommand paymentApiMapperCommand;
+    private final ConsumptionApiMapperRequestCommand consumptionApiMapperRequestCommand;
+    private final PaymentApiMapperRequestCommand paymentApiMapperRequestCommand;
 
     public CardManagementDelegateImpl(CreateCardService createCardService,
                                       CardCancelPaymentService cardCancelPaymentService,
@@ -51,8 +51,8 @@ public class CardManagementDelegateImpl implements CardManagementDelegate {
                                       LoadPaymentByDatesAndCardIdService loadPaymentByDatesAndCardIdService,
                                       LoadCardByIdService loadCardByIdService,
                                       CardApiMapperRequestCommand cardApiMapperRequestCommand,
-                                      ConsumptionApiMapperCommand consumptionApiMapperCommand,
-                                      PaymentApiMapperCommand paymentApiMapperCommand) {
+                                      ConsumptionApiMapperRequestCommand consumptionApiMapperRequestCommand,
+                                      PaymentApiMapperRequestCommand paymentApiMapperRequestCommand) {
         this.createCardService = createCardService;
         this.cardCancelPaymentService = cardCancelPaymentService;
         this.cardCancelConsumptionService = cardCancelConsumptionService;
@@ -64,8 +64,8 @@ public class CardManagementDelegateImpl implements CardManagementDelegate {
         this.loadPaymentByDatesAndCardIdService = loadPaymentByDatesAndCardIdService;
         this.loadCardByIdService = loadCardByIdService;
         this.cardApiMapperRequestCommand = cardApiMapperRequestCommand;
-        this.consumptionApiMapperCommand = consumptionApiMapperCommand;
-        this.paymentApiMapperCommand = paymentApiMapperCommand;
+        this.consumptionApiMapperRequestCommand = consumptionApiMapperRequestCommand;
+        this.paymentApiMapperRequestCommand = paymentApiMapperRequestCommand;
     }
 
     @Override
@@ -76,25 +76,25 @@ public class CardManagementDelegateImpl implements CardManagementDelegate {
 
     @Override
     public ResponseEntity<ControlCard202Response> controlConsumption(Long cardId, UUID consumptionId) {
-        cardCancelConsumptionService.cancelConsumption(consumptionApiMapperCommand.toCommandId(consumptionId, cardId));
+        cardCancelConsumptionService.cancelConsumption(consumptionApiMapperRequestCommand.toCommandId(consumptionId, cardId));
         return getControlCard202Response();
     }
 
     @Override
     public ResponseEntity<ControlCard202Response> controlPayment(Long cardId, UUID paymentId) {
-        cardCancelPaymentService.cancelPayment(paymentApiMapperCommand.toCommandId(paymentId, cardId));
+        cardCancelPaymentService.cancelPayment(paymentApiMapperRequestCommand.toCommandId(paymentId, cardId));
         return getControlCard202Response();
     }
 
     @Override
     public ResponseEntity<ControlCard202Response> initiatePayment(Long cardId, InitiatePaymentRequest initiatePaymentRequest, BindingResult bindingResult) {
-        cardPaymentService.processPayment(paymentApiMapperCommand.toCommand(initiatePaymentRequest.getData(), cardId));
+        cardPaymentService.processPayment(paymentApiMapperRequestCommand.toCommand(initiatePaymentRequest.getData(), cardId));
         return getControlCard202Response();
     }
 
     @Override
     public ResponseEntity<ControlCard202Response> exchangeConsumption(Long cardId, UUID consumptionId, ExchangeConsumptionRequest exchangeConsumptionRequest, BindingResult bindingResult) {
-        splitConsumptionService.splitConsumption(consumptionApiMapperCommand.toCommandIdR(consumptionId, cardId, exchangeConsumptionRequest.getData()));
+        splitConsumptionService.splitConsumption(consumptionApiMapperRequestCommand.toCommandIdR(consumptionId, cardId, exchangeConsumptionRequest.getData()));
         return getControlCard202Response();
     }
 
@@ -106,7 +106,7 @@ public class CardManagementDelegateImpl implements CardManagementDelegate {
 
     @Override
     public ResponseEntity<ControlCard202Response> initiateConsumption(Long cardId, InitiateConsumptionRequest initiateConsumptionRequest, BindingResult bindingResult) {
-        cardConsumptionService.processConsumption(consumptionApiMapperCommand.toCommand(initiateConsumptionRequest.getData(), cardId));
+        cardConsumptionService.processConsumption(consumptionApiMapperRequestCommand.toCommand(initiateConsumptionRequest.getData(), cardId));
         return getControlCard202Response();
     }
 
@@ -124,7 +124,7 @@ public class CardManagementDelegateImpl implements CardManagementDelegate {
                 dateStart,
                 dateEnd,
                 cardId
-        )).stream().map(consumptionApiMapperCommand::toResponse).toList();
+        )).stream().map(consumptionApiMapperRequestCommand::toResponse).toList();
         return getConsumptionResponse(responseConsumptions);
     }
 
@@ -134,7 +134,7 @@ public class CardManagementDelegateImpl implements CardManagementDelegate {
                 dateStart,
                 dateEnd,
                 cardId
-        )).stream().map(paymentApiMapperCommand::toResponse).toList();
+        )).stream().map(paymentApiMapperRequestCommand::toResponse).toList();
         return getPaymentResponse(responsePayments);
     }
 

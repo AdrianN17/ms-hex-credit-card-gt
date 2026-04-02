@@ -7,6 +7,7 @@ import com.bank.credit_card.infraestructure.ws.mapper.MapperCurrencyImpl;
 import com.bank.credit_card.infraestructure.ws.repository.CurrencyJsonServerWSRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestClient;
 
 @Configuration
 public class CurrencyWSAdapterConfig {
@@ -18,10 +19,15 @@ public class CurrencyWSAdapterConfig {
 
     @Bean
     CurrencyWSAdapter currencyWSAdapter(
-            CurrencyJsonServerWSRepository doctorJsonServerWSRepository,
+            CurrencyJsonServerWSRepository currencyJsonServerWSRepository,
             MapperCurrency doctorMapper){
         return new CurrencyWSAdapter(
-                doctorJsonServerWSRepository,
+                currencyJsonServerWSRepository,
                 doctorMapper);
+    }
+
+    @Bean
+    CurrencyJsonServerWSRepository currencyJsonServerWSRepository(RestClient restClient){
+        return new CurrencyJsonServerWSRepository(restClient);
     }
 }

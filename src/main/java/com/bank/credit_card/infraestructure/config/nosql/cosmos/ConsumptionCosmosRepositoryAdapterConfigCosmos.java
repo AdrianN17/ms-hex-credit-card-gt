@@ -14,21 +14,22 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 public class ConsumptionCosmosRepositoryAdapterConfigCosmos {
 
+    @Bean
     ConsumptionCosmosRepositoryAdapter consumptionCosmosRepositoryAdapter(ConsumptionCosmosRepository consumptionCosmosRepository,
                                                                           ConsumptionPersistanceMapperCosmos consumptionPersistanceMapperCosmos,
-                                                                          ConsumptionQueryMapperCosmos consumptionQueryMapperMongo) {
+                                                                          ConsumptionQueryMapperCosmos consumptionQueryMapperCosmos) {
         return new ConsumptionCosmosRepositoryAdapter(consumptionCosmosRepository,
                 consumptionPersistanceMapperCosmos,
-                consumptionQueryMapperMongo);
+                consumptionQueryMapperCosmos);
     }
 
     @Bean
-    ConsumptionPersistanceMapperCosmos consumptionPersistanceMapper() {
+    ConsumptionPersistanceMapperCosmos consumptionPersistanceMapperCosmos() {
         return new ConsumptionPersistanceMapperCosmosImpl();
     }
 
     @Bean
-    ConsumptionQueryMapperCosmos consumptionQueryMapper() {
+    ConsumptionQueryMapperCosmos consumptionQueryMapperCosmos() {
         return new ConsumptionQueryMapperCosmosImpl();
     }
 }

@@ -14,21 +14,22 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 public class ConsumptionMongoRepositoryAdapterConfigMongo {
 
+    @Bean
     ConsumptionMongoRepositoryAdapter consumptionMongoRepositoryAdapter(ConsumptionMongoRepository consumptionMongoRepository,
-                                                                          ConsumptionPersistanceMapperMongo consumptionPersistanceMapperMongo,
-                                                                          ConsumptionQueryMapperMongo consumptionQueryMapperMongo) {
+                                                                        ConsumptionPersistanceMapperMongo consumptionPersistanceMapperMongo,
+                                                                        ConsumptionQueryMapperMongo consumptionQueryMapperMongo) {
         return new ConsumptionMongoRepositoryAdapter(consumptionMongoRepository,
                 consumptionPersistanceMapperMongo,
                 consumptionQueryMapperMongo);
     }
 
     @Bean
-    ConsumptionPersistanceMapperMongo consumptionPersistanceMapper() {
+    ConsumptionPersistanceMapperMongo consumptionPersistanceMapperMongo() {
         return new ConsumptionPersistanceMapperMongoImpl();
     }
 
     @Bean
-    ConsumptionQueryMapperMongo consumptionQueryMapper() {
+    ConsumptionQueryMapperMongo consumptionQueryMapperMongo() {
         return new ConsumptionQueryMapperMongoImpl();
     }
 }

@@ -1,10 +1,15 @@
 spring:
   main:
     allow-bean-definition-overriding: true
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration
   datasource:
-    url: jdbc:sqlserver://localhost:1433;databaseName=credit_card_db;encrypt=false;trustServerCertificate=true
-    username: sa
-    password: your_password
+    url: jdbc:sqlserver://azsqltest03s.database.windows.net;databaseName=azsqltest03;encrypt=false;trustServerCertificate=false;DB_CLOSE_DELAY=-1
+    username: adrian
+    password: ${SQLSERVER_PASSWORD}
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   liquibase:
     change-log: classpath:db/changelog/database.yaml
@@ -12,7 +17,10 @@ spring:
   cloud:
     azure:
       cosmos:
-        endpoint: https://your-cosmos-account.documents.azure.com:443/
-        key: your_cosmos_key
-        database: credit_card_cosmos_db
+        endpoint: https://azcosmosgt.documents.azure.com:443/
+        key: ${COSMOS_KEY}
+        database: cosmosgtdata
         populate-query-metrics: false
+api:
+  convert:
+    url: http://localhost:3001/convert/currency/

@@ -11,7 +11,7 @@ import com.bank.credit_card.infraestructure.web.generic.mapper.GenericMapperResp
 
 import java.util.UUID;
 
-public interface PaymentApiMapperCommand extends GenericMapperRequestId<CardProcessPaymentCommand, Long, PaymentRequest>,
+public interface PaymentApiMapperRequestCommand extends GenericMapperRequestId<CardProcessPaymentCommand, Long, PaymentRequest>,
         GenericMapperResponse<PaymentResponse, LoadPaymentView>,
         GenericMapperCommandIds<CardCancelPaymentCommand, UUID, Long> {
 }

@@ -12,7 +12,7 @@ import com.bank.credit_card.infraestructure.web.api.schema.response.ExchangeCons
 import java.time.ZoneOffset;
 import java.util.UUID;
 
-public class ConsumptionApiMapperCommandImpl implements ConsumptionApiMapperCommand {
+public class ConsumptionApiMapperRequestCommandImpl implements ConsumptionApiMapperRequestCommand {
 
     @Override
     public CardProcessConsumptionCommand toCommand(ConsumptionRequest request, Long cardId) {

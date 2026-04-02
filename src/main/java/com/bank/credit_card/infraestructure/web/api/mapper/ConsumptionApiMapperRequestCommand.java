@@ -14,7 +14,7 @@ import com.bank.credit_card.infraestructure.web.generic.mapper.GenericMapperResp
 
 import java.util.UUID;
 
-public interface ConsumptionApiMapperCommand extends GenericMapperRequestId<CardProcessConsumptionCommand, Long, ConsumptionRequest>,
+public interface ConsumptionApiMapperRequestCommand extends GenericMapperRequestId<CardProcessConsumptionCommand, Long, ConsumptionRequest>,
         GenericMapperResponse<ConsumptionResponse, LoadConsumptionView>,
         GenericMapperCommandIds<CardCancelConsumptionCommand, UUID, Long>,
         GenericMapperCommandIdsR<CardSplitConsumptionCommand, UUID, Long, ExchangeConsumptionRequestData> {

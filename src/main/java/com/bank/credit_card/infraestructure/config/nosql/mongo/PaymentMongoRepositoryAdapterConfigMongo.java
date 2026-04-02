@@ -16,20 +16,20 @@ public class PaymentMongoRepositoryAdapterConfigMongo {
 
     @Bean
     PaymentMongoRepositoryAdapter paymentMongoRepositoryAdapter(PaymentMongoRepository paymentMongoRepository,
-                                                                  PaymentPersistanceMapperMongo paymentPersistanceMapperMongo,
-                                                                  PaymentQueryMapperMongo paymentQueryMapperMongo) {
+                                                                PaymentPersistanceMapperMongo paymentPersistanceMapperMongo,
+                                                                PaymentQueryMapperMongo paymentQueryMapperMongo) {
         return new PaymentMongoRepositoryAdapter(paymentMongoRepository,
                 paymentPersistanceMapperMongo,
                 paymentQueryMapperMongo);
     }
 
     @Bean
-    PaymentPersistanceMapperMongo paymentPersistanceMapper() {
+    PaymentPersistanceMapperMongo paymentPersistanceMapperMongo() {
         return new PaymentPersistanceMapperMongoImpl();
     }
 
     @Bean
-    PaymentQueryMapperMongo paymentQueryMapper() {
+    PaymentQueryMapperMongo paymentQueryMapperMongo() {
         return new PaymentQueryMapperMongoImpl();
     }
 }

@@ -9,13 +9,31 @@ import com.bank.credit_card.infraestructure.web.api.controller.CardManagementApi
 import com.bank.credit_card.infraestructure.web.api.delegate.CardManagementDelegate;
 import com.bank.credit_card.infraestructure.web.api.delegate.CardManagementDelegateImpl;
 import com.bank.credit_card.infraestructure.web.api.mapper.CardApiMapperRequestCommand;
-import com.bank.credit_card.infraestructure.web.api.mapper.ConsumptionApiMapperCommand;
-import com.bank.credit_card.infraestructure.web.api.mapper.PaymentApiMapperCommand;
+import com.bank.credit_card.infraestructure.web.api.mapper.ConsumptionApiMapperRequestCommand;
+import com.bank.credit_card.infraestructure.web.api.mapper.PaymentApiMapperRequestCommand;
+import com.bank.credit_card.infraestructure.web.api.mapper.CardApiMapperRequestCommandImpl;
+import com.bank.credit_card.infraestructure.web.api.mapper.ConsumptionApiMapperRequestCommandImpl;
+import com.bank.credit_card.infraestructure.web.api.mapper.PaymentApiMapperRequestCommandImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class CardManagementAdapterConfig {
+
+    @Bean
+    CardApiMapperRequestCommand cardApiMapperRequestCommand() {
+        return new CardApiMapperRequestCommandImpl();
+    }
+
+    @Bean
+    ConsumptionApiMapperRequestCommand consumptionApiMapperRequestCommand() {
+        return new ConsumptionApiMapperRequestCommandImpl();
+    }
+
+    @Bean
+    PaymentApiMapperRequestCommand paymentApiMapperRequestCommand() {
+        return new PaymentApiMapperRequestCommandImpl();
+    }
 
     @Bean
     CardManagementApi cardManagementApi(CardManagementDelegate cardManagementDelegate) {
@@ -34,8 +52,8 @@ public class CardManagementAdapterConfig {
                                                   LoadPaymentByDatesAndCardIdService loadPaymentByDatesAndCardIdService,
                                                   LoadCardByIdService loadCardByIdService,
                                                   CardApiMapperRequestCommand cardApiMapperRequestCommand,
-                                                  ConsumptionApiMapperCommand consumptionApiMapperCommand,
-                                                  PaymentApiMapperCommand paymentApiMapperCommand) {
+                                                  ConsumptionApiMapperRequestCommand consumptionApiMapperRequestCommand,
+                                                  PaymentApiMapperRequestCommand paymentApiMapperRequestCommand) {
         return new CardManagementDelegateImpl(createCardService,
                 cardCancelPaymentService,
                 cardCancelConsumptionService,
@@ -47,7 +65,7 @@ public class CardManagementAdapterConfig {
                 loadPaymentByDatesAndCardIdService,
                 loadCardByIdService,
                 cardApiMapperRequestCommand,
-                consumptionApiMapperCommand,
-                paymentApiMapperCommand);
+                consumptionApiMapperRequestCommand,
+                paymentApiMapperRequestCommand);
     }
 }

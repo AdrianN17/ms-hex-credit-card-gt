@@ -141,36 +141,36 @@ databaseChangeLog:
         - createTable:
             tableName: Benefits
             columns:
-                - column:
+              - column:
                   name: idBenefit
                   type: INT
                   autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
-                - column:
-                    name: cardId
-                    type: INT
-                    constraints:
-                      nullable: false
-                - column:
-                    name: hasDiscount
-                    type: BIT
-                - column:
-                    name: totalPoints
-                    type: INT
-                - column:
-                    name: multiplierPoints
-                    type: DECIMAL(5,2)
-                - column:
-                    name: createdDate
-                    type: TIMESTAMP
-                - column:
-                    name: updatedDate
-                    type: TIMESTAMP
-                - column:
-                    name: status
-                    type: SMALLINT
+              - column:
+                  name: cardId
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: hasDiscount
+                  type: BIT
+              - column:
+                  name: totalPoints
+                  type: INT
+              - column:
+                  name: multiplierPoints
+                  type: DECIMAL(5,2)
+              - column:
+                  name: createdDate
+                  type: TIMESTAMP
+              - column:
+                  name: updatedDate
+                  type: TIMESTAMP
+              - column:
+                  name: status
+                  type: SMALLINT
 
   # Foreign keys: uno por changeSet para mantener orden y poder aplicarlos/revertirlos individualmente
   - changeSet:

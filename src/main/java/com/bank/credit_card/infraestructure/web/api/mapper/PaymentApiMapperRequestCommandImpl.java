@@ -12,7 +12,7 @@ import com.bank.credit_card.infraestructure.web.api.schema.response.PaymentRespo
 import java.time.ZoneOffset;
 import java.util.UUID;
 
-public class PaymentApiMapperCommandImpl implements PaymentApiMapperCommand {
+public class PaymentApiMapperRequestCommandImpl implements PaymentApiMapperRequestCommand {
 
     @Override
     public CardProcessPaymentCommand toCommand(PaymentRequest request, Long cardId) {
