@@ -1,8 +1,6 @@
 server:
   port: 8081
 spring:
-  application:
-    name: credit-card
   main:
     allow-bean-definition-overriding: true
   datasource:
@@ -10,14 +8,16 @@ spring:
     username: sa
     password: your_password
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  liquibase:
+    change-log: classpath:db/changelog/database.yaml
+    enabled: true
   data:
     mongodb:
+      # Sin autenticación (local)
       uri: mongodb://localhost:27017/credit_card_db
-      host: localhost
-      port: 27017
-      database: credit_card_db
-      username: your_user
-      password: your_password
-api:
-  convert:
-    url: http://localhost:3001/convert/currency/
+      # Con autenticación (descomentar y quitar uri de arriba)
+      # host: localhost
+      # port: 27017
+      # database: credit_card_db
+      # username: your_user
+      # password: your_password

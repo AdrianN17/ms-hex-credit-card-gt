@@ -1,8 +1,4 @@
-server:
-  port: 8081
 spring:
-  application:
-    name: credit-card
   main:
     allow-bean-definition-overriding: true
   datasource:
@@ -10,6 +6,9 @@ spring:
     username: sa
     password: your_password
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  liquibase:
+    change-log: classpath:db/changelog/database.yaml
+    enabled: true
   cloud:
     azure:
       cosmos:
@@ -17,6 +16,3 @@ spring:
         key: your_cosmos_key
         database: credit_card_cosmos_db
         populate-query-metrics: false
-api:
-  convert:
-    url: http://localhost:3001/convert/currency/
