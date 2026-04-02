@@ -62,16 +62,14 @@ public class ConsumptionMongoRepositoryAdapter implements LoadConsumptionPort, S
 
     @Override
     public Optional<Consumption> load(UUID consumptionId, Currency currency) {
-
-        return Optional.of(consumptionMongoRepository.findById(consumptionId)
+        return Optional.of(consumptionMongoRepository.findActiveById(consumptionId)
                         .orElseThrow(() -> new ConsumptionPersistanceException(CONSUMPTION_NOT_FOUND)))
                 .map(consumption -> consumptionPersistanceMapperMongo.toDomain(consumption, currency));
-
     }
 
     @Override
     public Optional<CurrencyEnum> load(UUID consumptionId) {
-        return Optional.of(consumptionMongoRepository.findById(consumptionId)
+        return Optional.of(consumptionMongoRepository.findActiveById(consumptionId)
                         .orElseThrow(() -> new ConsumptionPersistanceException(CONSUMPTION_NOT_FOUND)))
                 .map(ConsumptionEntityMongo::getCurrency);
     }

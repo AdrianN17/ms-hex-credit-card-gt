@@ -6,6 +6,10 @@ import com.bank.credit_card.domain.base.CurrencyEnum;
 import com.bank.credit_card.domain.card.CategoryPaymentEnum;
 import com.bank.credit_card.domain.payment.ChannelPaymentEnum;
 import com.bank.credit_card.infraestructure.persistence.db.generic.entity.GenericEntity;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -35,8 +39,12 @@ public class PaymentEntityCosmos extends GenericEntity {
 
     private CurrencyEnum currency;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime paymentDate;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime paymentApprobationDate;
 
     private ChannelPaymentEnum channel;

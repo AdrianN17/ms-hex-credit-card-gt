@@ -33,8 +33,8 @@ public class ConsumptionApiMapperRequestCommandImpl implements ConsumptionApiMap
                 view.sellerName(),
                 view.currency().name(),
                 view.amount(),
-                view.consumptionDate().atOffset(ZoneOffset.UTC),
-                view.consumptionApprobationDate().atOffset(ZoneOffset.UTC)
+                view.consumptionDate() != null ? view.consumptionDate().atOffset(ZoneOffset.UTC) : null,
+                view.consumptionApprobationDate() != null ? view.consumptionApprobationDate().atOffset(ZoneOffset.UTC) : null
         );
     }
 

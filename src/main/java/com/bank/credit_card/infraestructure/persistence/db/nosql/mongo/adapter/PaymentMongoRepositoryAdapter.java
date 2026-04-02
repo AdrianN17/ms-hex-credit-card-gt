@@ -59,14 +59,14 @@ public class PaymentMongoRepositoryAdapter implements LoadPaymentPort, SavePayme
 
     @Override
     public Optional<Payment> load(UUID paymentId, Currency currency) {
-        return Optional.of(paymentMongoRepository.findById(paymentId)
+        return Optional.of(paymentMongoRepository.findActiveById(paymentId)
                         .orElseThrow(() -> new PaymentPersistanceException(PAYMENT_NOT_FOUND)))
                 .map(payment -> paymentPersistanceMapperMongo.toDomain(payment, currency));
     }
 
     @Override
     public Optional<CurrencyEnum> load(UUID paymentId) {
-        return Optional.of(paymentMongoRepository.findById(paymentId)
+        return Optional.of(paymentMongoRepository.findActiveById(paymentId)
                         .orElseThrow(() -> new PaymentPersistanceException(PAYMENT_NOT_FOUND)))
                 .map(PaymentEntityMongo::getCurrency);
     }

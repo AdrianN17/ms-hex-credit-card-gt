@@ -38,8 +38,8 @@ public class PaymentApiMapperRequestCommandImpl implements PaymentApiMapperReque
                 view.currency().name(),
                 view.amount(),
                 view.category().name(),
-                view.paymentDate().atOffset(ZoneOffset.UTC),
-                view.paymentApprobationDate().atOffset(ZoneOffset.UTC)
+                view.paymentDate() != null ? view.paymentDate().atOffset(ZoneOffset.UTC) : null,
+                view.paymentApprobationDate() != null ? view.paymentApprobationDate().atOffset(ZoneOffset.UTC) : null
         );
     }
 }

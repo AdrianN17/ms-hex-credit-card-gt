@@ -15,7 +15,18 @@ public interface ConsumptionCosmosRepository extends GenericCosmosRespository<Co
     @Query("SELECT c.consumptionId, c.cardId, c.sellerName, c.currency, c.amount, c.consumptionDate, c.consumptionApprobationDate " +
             "FROM c " +
             "WHERE c.cardId = @cardId " +
-            "AND c.consumptionDate >= @start " +
-            "AND c.consumptionDate <= @end")
-    List<ConsumptionEntityCosmos> findByCardIdAndConsumptionDateBetween(String cardId, LocalDateTime start, LocalDateTime end);
+            "AND c.status = 'ACTIVE' " +
+            "AND (c.consumptionDate[0] > @startYear OR (c.consumptionDate[0] = @startYear AND c.consumptionDate[1] > @startMonth) OR (c.consumptionDate[0] = @startYear AND c.consumptionDate[1] = @startMonth AND c.consumptionDate[2] >= @startDay)) " +
+            "AND (c.consumptionDate[0] < @endYear OR (c.consumptionDate[0] = @endYear AND c.consumptionDate[1] < @endMonth) OR (c.consumptionDate[0] = @endYear AND c.consumptionDate[1] = @endMonth AND c.consumptionDate[2] <= @endDay))")
+    List<ConsumptionEntityCosmos> findByCardIdAndConsumptionDateBetweenRaw(
+            String cardId,
+            int startYear, int startMonth, int startDay,
+            int endYear, int endMonth, int endDay);
+
+    default List<ConsumptionEntityCosmos> findByCardIdAndConsumptionDateBetween(String cardId, LocalDateTime start, LocalDateTime end) {
+        return findByCardIdAndConsumptionDateBetweenRaw(
+                cardId,
+                start.getYear(), start.getMonthValue(), start.getDayOfMonth(),
+                end.getYear(), end.getMonthValue(), end.getDayOfMonth());
+    }
 }

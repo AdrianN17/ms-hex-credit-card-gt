@@ -12,7 +12,7 @@ import java.util.UUID;
 @Repository
 public interface PaymentMongoRepository extends GenericMongoRespository<PaymentEntityMongo, UUID> {
 
-    @Query("{ 'cardId': ?0, 'paymentDate': { $gte: ?1, $lte: ?2 } }")
+    @Query("{ 'cardId': ?0, 'status': 'ACTIVE', 'paymentDate': { $gte: ?1, $lte: ?2 } }")
     List<PaymentEntityMongo> findByCardIdAndPaymentDateBetween(String cardId, LocalDateTime start, LocalDateTime end);
 }
 

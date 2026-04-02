@@ -1,7 +1,13 @@
 package com.bank.credit_card.infraestructure.persistence.db.nosql.mongo.entity;
 
 import com.bank.credit_card.domain.base.CurrencyEnum;
+import com.bank.credit_card.infraestructure.persistence.db.generic.converter.CurrencyEnumConverter;
 import com.bank.credit_card.infraestructure.persistence.db.generic.entity.GenericEntity;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import jakarta.persistence.Convert;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,12 +39,17 @@ public class ConsumptionEntityMongo extends GenericEntity {
 
     private String sellerName;
 
+    @Convert(converter = CurrencyEnumConverter.class)
     private CurrencyEnum currency;
 
     private BigDecimal amount;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime consumptionDate;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime consumptionApprobationDate;
 
 }

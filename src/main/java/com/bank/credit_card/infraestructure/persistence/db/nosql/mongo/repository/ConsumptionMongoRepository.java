@@ -12,6 +12,6 @@ import java.util.UUID;
 @Repository
 public interface ConsumptionMongoRepository extends GenericMongoRespository<ConsumptionEntityMongo, UUID> {
 
-    @Query("{ 'cardId': ?0, 'consumptionDate': { $gte: ?1, $lte: ?2 } }")
+    @Query("{ 'cardId': ?0, 'status': 'ACTIVE', 'consumptionDate': { $gte: ?1, $lte: ?2 } }")
     List<ConsumptionEntityMongo> findByCardIdAndConsumptionDateBetween(String cardId, LocalDateTime start, LocalDateTime end);
 }

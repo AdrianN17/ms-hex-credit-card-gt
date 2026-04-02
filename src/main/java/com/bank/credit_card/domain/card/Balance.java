@@ -171,8 +171,8 @@ public class Balance extends GenericDomain<Long> {
         Amount totalAmount = getAvailable();
         Amount totalBalance = getTotal();
 
-        isNotConditional(totalAmount.estaSobrando(totalBalance),
-                new BalanceException(PAYMENT_CATEGORY_EXCEED_LIKE + totalAmount.menos(totalBalance).toString()));
+        isNotConditional(totalBalance.estaSobrando(totalAmount),
+                new BalanceException(PAYMENT_CATEGORY_EXCEED_LIKE + totalBalance.menos(totalAmount).toString()));
     }
 
     public void pay(Payment payment) {

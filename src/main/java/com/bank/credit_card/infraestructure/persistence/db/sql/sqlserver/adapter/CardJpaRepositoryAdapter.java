@@ -48,7 +48,7 @@ public class CardJpaRepositoryAdapter implements LoadCardPort, SaveCardPort, Loa
 
     @Override
     public Optional<Card> load(Long cardId, Currency currency) {
-        return Optional.of(cardVOJpaRepository.findById(cardId)
+        return Optional.of(cardVOJpaRepository.findActiveById(cardId)
                         .orElseThrow(() -> new CardPersistanceException(CARD_NOT_FOUND)))
                 .map(cardVO -> cardPersistanceMapper.toDomain(cardVO, currency));
     }

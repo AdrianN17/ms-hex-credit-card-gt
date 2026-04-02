@@ -59,14 +59,14 @@ public class PaymentCosmosRepositoryAdapter implements LoadPaymentPort, SavePaym
 
     @Override
     public Optional<Payment> load(UUID paymentId, Currency currency) {
-        return Optional.of(paymentCosmosRepository.findById(paymentId)
+        return Optional.of(paymentCosmosRepository.findActiveById(paymentId)
                         .orElseThrow(() -> new PaymentPersistanceException(PAYMENT_NOT_FOUND)))
                 .map(payment -> paymentPersistanceMapperCosmos.toDomain(payment, currency));
     }
 
     @Override
     public Optional<CurrencyEnum> load(UUID paymentId) {
-        return Optional.of(paymentCosmosRepository.findById(paymentId)
+        return Optional.of(paymentCosmosRepository.findActiveById(paymentId)
                         .orElseThrow(() -> new PaymentPersistanceException(PAYMENT_NOT_FOUND)))
                 .map(PaymentEntityCosmos::getCurrency);
     }

@@ -30,18 +30,21 @@ public interface CardVOJpaRepository extends GenericJpaRespository<CardEntityVO,
                 bal.startDate          AS startDate,
                 bal.endDate            AS endDate
             FROM Cards c
-            JOIN CardAccounts ca  ON ca.cardId  = c.cardId
-            JOIN balances bal      ON bal.cardId = c.cardId
-            JOIN Benefits b        ON b.cardId   = c.cardId
+            JOIN CardAccounts ca  ON ca.cardId  = c.cardId AND ca.status = 1
+            JOIN balances bal      ON bal.cardId = c.cardId AND bal.status = 1
+            JOIN Benefits b        ON b.cardId   = c.cardId AND b.status = 1
             WHERE c.cardId = :cardId
+            AND c.status = 1
             """, nativeQuery = true)
     Optional<CardSumaryProjection> getCardAllProjectionByCardId(Long cardId);
 
     @Query(value = """
             SELECT
-                ca.currency            AS currency,
+                ca.currency            AS currency
             FROM Cards c
+            JOIN CardAccounts ca ON ca.cardId = c.cardId AND ca.status = 1
             WHERE c.cardId = :cardId
+            AND c.status = 1
             """, nativeQuery = true)
     Optional<CardCurrencyProjection> getCardCurrencyProjectionByCardId(Long cardId);
 }

@@ -15,9 +15,18 @@ public interface PaymentCosmosRepository extends GenericCosmosRespository<Paymen
     @Query("SELECT c.paymentId, c.cardId, c.amount, c.currency, c.paymentDate, c.paymentApprobationDate, c.channel, c.category " +
             "FROM c " +
             "WHERE c.cardId = @cardId " +
-            "AND c.paymentDate >= @start " +
-            "AND c.paymentDate <= @end")
-    List<PaymentEntityCosmos> findByCardIdAndPaymentDateBetween(String cardId, LocalDateTime start, LocalDateTime end);
+            "AND c.status = 'ACTIVE' " +
+            "AND (c.paymentDate[0] > @startYear OR (c.paymentDate[0] = @startYear AND c.paymentDate[1] > @startMonth) OR (c.paymentDate[0] = @startYear AND c.paymentDate[1] = @startMonth AND c.paymentDate[2] >= @startDay)) " +
+            "AND (c.paymentDate[0] < @endYear OR (c.paymentDate[0] = @endYear AND c.paymentDate[1] < @endMonth) OR (c.paymentDate[0] = @endYear AND c.paymentDate[1] = @endMonth AND c.paymentDate[2] <= @endDay))")
+    List<PaymentEntityCosmos> findByCardIdAndPaymentDateBetweenRaw(
+            String cardId,
+            int startYear, int startMonth, int startDay,
+            int endYear, int endMonth, int endDay);
+
+    default List<PaymentEntityCosmos> findByCardIdAndPaymentDateBetween(String cardId, LocalDateTime start, LocalDateTime end) {
+        return findByCardIdAndPaymentDateBetweenRaw(
+                cardId,
+                start.getYear(), start.getMonthValue(), start.getDayOfMonth(),
+                end.getYear(), end.getMonthValue(), end.getDayOfMonth());
+    }
 }
-
-

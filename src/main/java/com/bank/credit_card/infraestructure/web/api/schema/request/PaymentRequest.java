@@ -144,7 +144,6 @@ public class PaymentRequest {
      *
      * @return pointsUsed
      */
-    @NotNull
     @Min(0)
     @Max(1000)
     @Schema(name = "pointsUsed", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
