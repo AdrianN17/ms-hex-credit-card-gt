@@ -6,6 +6,7 @@ import com.bank.credit_card.infraestructure.persistence.db.generic.entity.Generi
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @SuperBuilder
 @Entity

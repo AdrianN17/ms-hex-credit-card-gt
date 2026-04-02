@@ -6,6 +6,7 @@ import com.bank.credit_card.infraestructure.persistence.db.generic.entity.Generi
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -15,6 +16,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "CardAccounts")
 public class CardAccountEntity extends GenericEntity {
