@@ -26,12 +26,12 @@ public class BenefitEntity extends GenericEntity {
     @Column(name = "cardId", nullable = false)
     private Long cardId;
 
-    @Column(name = "hasDiscount")
+    @Column(name = "hasDiscount", updatable = false)
     private Boolean hasDiscount;
 
     @Column(name = "totalPoints")
     private Integer totalPoints;
 
-    @Column(name = "multiplierPoints", precision = 5, scale = 2)
+    @Column(name = "multiplierPoints", precision = 5, scale = 2, updatable = false)
     private BigDecimal multiplierPoints;
 }

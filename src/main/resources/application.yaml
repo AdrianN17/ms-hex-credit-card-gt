@@ -4,4 +4,4 @@ spring:
   application:
     name: credit-card
   profiles:
-    active: new
+    active: old

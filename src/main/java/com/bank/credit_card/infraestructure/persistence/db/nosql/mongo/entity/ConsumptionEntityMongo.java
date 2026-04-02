@@ -1,13 +1,11 @@
 package com.bank.credit_card.infraestructure.persistence.db.nosql.mongo.entity;
 
 import com.bank.credit_card.domain.base.CurrencyEnum;
-import com.bank.credit_card.infraestructure.persistence.db.generic.converter.CurrencyEnumConverter;
 import com.bank.credit_card.infraestructure.persistence.db.generic.entity.GenericEntity;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import jakarta.persistence.Convert;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,6 +15,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -31,6 +30,7 @@ import java.util.UUID;
 public class ConsumptionEntityMongo extends GenericEntity {
 
     @Id
+    @Field(targetType = FieldType.STRING)
     private UUID consumptionId;
 
     @Indexed
@@ -39,7 +39,6 @@ public class ConsumptionEntityMongo extends GenericEntity {
 
     private String sellerName;
 
-    @Convert(converter = CurrencyEnumConverter.class)
     private CurrencyEnum currency;
 
     private BigDecimal amount;

@@ -29,7 +29,7 @@ public class BalanceEntity extends GenericEntity {
     @Column(name = "cardId", nullable = false)
     private Long cardId;
 
-    @Column(name = "totalAmount", precision = 19, scale = 2)
+    @Column(name = "totalAmount", precision = 19, scale = 2, updatable = false)
     private BigDecimal totalAmount;
 
     @Column(name = "availableAmount", precision = 19, scale = 2)
@@ -39,12 +39,12 @@ public class BalanceEntity extends GenericEntity {
     private BigDecimal oldAmount;
 
     @Convert(converter = CurrencyEnumConverter.class)
-    @Column(name = "currency")
+    @Column(name = "currency", updatable = false)
     private CurrencyEnum currency;
 
-    @Column(name = "startDate")
+    @Column(name = "startDate", updatable = false)
     private LocalDate startDate;
 
-    @Column(name = "endDate")
+    @Column(name = "endDate", updatable = false)
     private LocalDate endDate;
 }

@@ -26,10 +26,10 @@ public class CardEntity extends GenericEntity {
     private Long cardId;
 
     @Convert(converter = TypeCardEnumConverter.class)
-    @Column(name = "typeCard")
+    @Column(name = "typeCard", updatable = false)
     private TypeCardEnum typeCard;
 
     @Convert(converter = CategoryCardEnumConverter.class)
-    @Column(name = "categoryCard")
+    @Column(name = "categoryCard", updatable = false)
     private CategoryCardEnum categoryCard;
 }

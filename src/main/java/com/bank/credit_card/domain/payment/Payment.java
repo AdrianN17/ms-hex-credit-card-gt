@@ -130,7 +130,8 @@ public class Payment extends GenericDomain<UUID> {
     }
 
     public void validateIfPaymentIsInApprobation() {
-        isNotConditional(isNull(getPaymentApprobationDate()), new PaymentException(PAYMENT_IS_STILL_IN_APPROBATION));
+        isNotConditional(isNull(getPaymentApprobationDate()),
+                new PaymentException(PAYMENT_IS_STILL_IN_APPROBATION));
     }
 
     public void cancel() {

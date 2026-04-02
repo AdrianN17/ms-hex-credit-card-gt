@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.bank.credit_card.infraestructure.web.api.util.MapperResponse.*;
+import static com.bank.credit_card.infraestructure.web.api.util.BindingValidator.validate;
 
 public class CardManagementDelegateImpl implements CardManagementDelegate {
 
@@ -89,24 +90,28 @@ public class CardManagementDelegateImpl implements CardManagementDelegate {
 
     @Override
     public ResponseEntity<ControlCard202Response> initiatePayment(Long cardId, InitiatePaymentRequest initiatePaymentRequest, BindingResult bindingResult) {
+        validate(bindingResult);
         cardPaymentService.processPayment(paymentApiMapperRequestCommand.toCommand(initiatePaymentRequest.getData(), cardId));
         return getControlCard202Response();
     }
 
     @Override
     public ResponseEntity<ControlCard202Response> exchangeConsumption(Long cardId, UUID consumptionId, ExchangeConsumptionRequest exchangeConsumptionRequest, BindingResult bindingResult) {
+        validate(bindingResult);
         splitConsumptionService.splitConsumption(consumptionApiMapperRequestCommand.toCommandIdR(consumptionId, cardId, exchangeConsumptionRequest.getData()));
         return getControlCard202Response();
     }
 
     @Override
     public ResponseEntity<ControlCard202Response> initiateCard(InitiateCardRequest initiateCardRequest, BindingResult bindingResult) {
+        validate(bindingResult);
         createCardService.createCard(cardApiMapperRequestCommand.toCommand(initiateCardRequest.getData()));
         return getControlCard202Response();
     }
 
     @Override
     public ResponseEntity<ControlCard202Response> initiateConsumption(Long cardId, InitiateConsumptionRequest initiateConsumptionRequest, BindingResult bindingResult) {
+        validate(bindingResult);
         cardConsumptionService.processConsumption(consumptionApiMapperRequestCommand.toCommand(initiateConsumptionRequest.getData(), cardId));
         return getControlCard202Response();
     }

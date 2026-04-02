@@ -2,7 +2,9 @@ package com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity
 
 import com.bank.credit_card.domain.base.CurrencyEnum;
 import com.bank.credit_card.domain.card.CardStatusEnum;
+import com.bank.credit_card.infraestructure.persistence.db.generic.converter.CurrencyEnumConverter;
 import com.bank.credit_card.infraestructure.persistence.db.generic.entity.GenericEntity;
+import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.converter.CardStatusEnumConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,12 +37,14 @@ public class CardAccountEntityVO extends GenericEntity {
     @Column(name = "debtTax", precision = 19, scale = 2)
     private BigDecimal debtTax;
 
+    @Convert(converter = CurrencyEnumConverter.class)
     @Column(name = "currency")
     private CurrencyEnum currency;
 
     @Column(name = "paymentDate")
     private Short paymentDate;
 
+    @Convert(converter = CardStatusEnumConverter.class)
     @Column(name = "cardStatus")
     private CardStatusEnum cardStatus;
 }

@@ -12,7 +12,7 @@ import java.util.Optional;
 @NoRepositoryBean
 public interface GenericMongoRepository<T, ID extends Serializable> extends MongoRepository<T, ID> {
 
-    @Query("{ '_id': ?0, 'cardId': ?1 }")
+    @Query("{ '_id': ?#{[0].toString()}, 'cardId': ?1 }")
     Optional<T> findByIdAndCardId(ID id, String partitionId);
 
     default Optional<T> findActiveById(ID id, String partitionId) {

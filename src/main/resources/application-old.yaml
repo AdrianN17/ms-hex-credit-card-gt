@@ -23,14 +23,8 @@ spring:
     enabled: true
   data:
     mongodb:
-      # Sin autenticación (local)
-      uri: mongodb://localhost:27017/credit_card_db
-      # Con autenticación (descomentar y quitar uri de arriba)
-      host: localhost
-      port: 27017
+      uri: mongodb+srv://adriannor176_db_user:${MONGODB_PASSWORD}@cluster0.maa0cec.mongodb.net/credit_card_db?appName=Cluster0
       database: credit_card_db
-      username: your_user
-      password: your_password
 api:
   convert:
     url: http://localhost:3001/convert/currency/

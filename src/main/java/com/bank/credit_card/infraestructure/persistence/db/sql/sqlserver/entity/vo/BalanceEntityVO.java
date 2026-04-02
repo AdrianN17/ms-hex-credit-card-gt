@@ -1,6 +1,7 @@
 package com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.vo;
 
 import com.bank.credit_card.domain.base.CurrencyEnum;
+import com.bank.credit_card.infraestructure.persistence.db.generic.converter.CurrencyEnumConverter;
 import com.bank.credit_card.infraestructure.persistence.db.generic.entity.GenericEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -38,6 +39,7 @@ public class BalanceEntityVO extends GenericEntity {
     @Column(name = "oldAmount", precision = 19, scale = 2)
     private BigDecimal oldAmount;
 
+    @Convert(converter = CurrencyEnumConverter.class)
     @Column(name = "currency")
     private CurrencyEnum currency;
 

@@ -30,20 +30,20 @@ public class CardAccountEntity extends GenericEntity {
     @Column(name = "cardId", nullable = false)
     private Long cardId;
 
-    @Column(name = "creditTotal", precision = 19, scale = 2)
+    @Column(name = "creditTotal", precision = 19, scale = 2, updatable = false)
     private BigDecimal creditTotal;
 
-    @Column(name = "debtTax", precision = 19, scale = 2)
+    @Column(name = "debtTax", precision = 19, scale = 2, updatable = false)
     private BigDecimal debtTax;
 
     @Convert(converter = CurrencyEnumConverter.class)
-    @Column(name = "currency")
+    @Column(name = "currency", updatable = false)
     private CurrencyEnum currency;
 
-    @Column(name = "paymentDate")
+    @Column(name = "paymentDate", updatable = false)
     private Short paymentDate;
 
     @Convert(converter = CardStatusEnumConverter.class)
-    @Column(name = "cardStatus")
+    @Column(name = "cardStatus", updatable = false)
     private CardStatusEnum cardStatus;
 }

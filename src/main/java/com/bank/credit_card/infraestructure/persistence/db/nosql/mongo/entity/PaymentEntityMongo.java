@@ -5,8 +5,6 @@ import com.bank.credit_card.domain.card.CategoryPaymentEnum;
 import com.bank.credit_card.domain.payment.ChannelPaymentEnum;
 import com.bank.credit_card.infraestructure.persistence.db.generic.converter.CurrencyEnumConverter;
 import com.bank.credit_card.infraestructure.persistence.db.generic.entity.GenericEntity;
-import com.bank.credit_card.infraestructure.persistence.db.nosql.common.converter.CategoryPaymentEnumConverter;
-import com.bank.credit_card.infraestructure.persistence.db.nosql.common.converter.ChannelPaymentEnumConverter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -21,6 +19,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -35,6 +34,7 @@ import java.util.UUID;
 public class PaymentEntityMongo extends GenericEntity {
 
     @Id
+    @Field(targetType = FieldType.STRING)
     private UUID paymentId;
 
     @Indexed
@@ -54,9 +54,7 @@ public class PaymentEntityMongo extends GenericEntity {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime paymentApprobationDate;
 
-    @Convert(converter = ChannelPaymentEnumConverter.class)
     private ChannelPaymentEnum channel;
 
-    @Convert(converter = CategoryPaymentEnumConverter.class)
     private CategoryPaymentEnum category;
 }
