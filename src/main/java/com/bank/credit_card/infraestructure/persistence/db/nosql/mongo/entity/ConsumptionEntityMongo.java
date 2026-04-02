@@ -1,7 +1,5 @@
 package com.bank.credit_card.infraestructure.persistence.db.nosql.mongo.entity;
 
-import com.azure.spring.data.cosmos.core.mapping.Container;
-import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import com.bank.credit_card.domain.base.CurrencyEnum;
 import com.bank.credit_card.infraestructure.persistence.db.generic.entity.GenericEntity;
 import lombok.AllArgsConstructor;
@@ -10,6 +8,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -20,13 +21,14 @@ import java.util.UUID;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @SuperBuilder
-@Container(containerName = "Consumptions")
+@Document(collection = "Consumptions")
 public class ConsumptionEntityMongo extends GenericEntity {
 
     @Id
     private UUID consumptionId;
 
-    @PartitionKey
+    @Indexed
+    @Field("cardId")
     private String cardId;
 
     private String sellerName;
