@@ -63,7 +63,7 @@ public class Amount {
     public static Amount convertir(Amount a, Amount b) {
         if (!a.getCurrency().sonIguales(b.getCurrency()))
             return Amount.create(Currency.create(a.getCurrency().getCurrency(), a.getCurrency().getExchangeRate()),
-                    b.getAmount().multiply(a.getCurrency().getExchangeRate()));
+                    b.getAmount().multiply(b.getCurrency().getExchangeRate()));
         else
             return b;
 
