@@ -11,8 +11,20 @@ import java.util.UUID;
 
 @UtilityClass
 public class MapperResponse {
-    public static ResponseEntity<ControlCard202Response> getControlCard202Response() {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ControlCard202Response(new Tracking(UUID.randomUUID(), OffsetDateTime.now())));
+    public static ResponseEntity<Long202Response> getLong202Response(Long id) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(
+                new Long202Response(new Tracking(UUID.randomUUID(),
+                        OffsetDateTime.now()), new LongResponse(id)));
+    }
+
+    public static ResponseEntity<UUID202Response> getUUID202Response(UUID id) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new UUID202Response(new Tracking(UUID.randomUUID(), OffsetDateTime.now()),
+                new UUIDResponse(id)));
+    }
+
+    public static ResponseEntity<UUIDList202Response> getUUIDList202Response(List<UUID> ids) {
+        List<UUIDResponse> data = ids.stream().map(UUIDResponse::new).toList();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new UUIDList202Response(new Tracking(UUID.randomUUID(), OffsetDateTime.now()), data));
     }
 
     public static ResponseEntity<RetrieveBalance200Response> getRetrieveBalance(CardResponse response) {

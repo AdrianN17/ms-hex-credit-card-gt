@@ -38,7 +38,7 @@ public class CardCloseService implements CardCloseUseCase {
     }
 
     @Override
-    public void closeCard(CardCloseCommand cardCloseCommand) {
+    public Long closeCard(CardCloseCommand cardCloseCommand) {
 
         CurrencyEnum cardCurrencyEnum = loadCardCurrencyPort.load(cardCloseCommand.cardId())
                 .orElseThrow(() -> new ApplicationCardException(CARD_NOT_FOUND));
@@ -55,5 +55,6 @@ public class CardCloseService implements CardCloseUseCase {
         this.saveBalancePort.save(card.getBalance()).orElseThrow(() -> new ApplicationBalanceException(FAILED_TO_UPDATE_BALANCE));
         this.saveBenefitPort.save(card.getBenefit()).orElseThrow(() -> new ApplicationBenefitException(FAILED_TO_UPDATE_BENEFIT));
 
+        return card.getId();
     }
 }

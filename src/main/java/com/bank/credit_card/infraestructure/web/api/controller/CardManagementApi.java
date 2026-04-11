@@ -50,7 +50,7 @@ public interface CardManagementApi {
             tags = {},
             responses = {
                     @ApiResponse(responseCode = "202", description = "", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ControlCard202Response.class))
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Long202Response.class))
                     }),
                     @ApiResponse(responseCode = "400", description = "", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = DefaultResponse4xx.class))
@@ -68,7 +68,7 @@ public interface CardManagementApi {
             value = "/CardManagement/{cardId}/Control",
             produces = {"application/json"}
     )
-    ResponseEntity<ControlCard202Response> controlCard(
+    ResponseEntity<Long202Response> controlCard(
             @Parameter(name = "cardId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("cardId") Long cardId
     );
 
@@ -90,7 +90,7 @@ public interface CardManagementApi {
             tags = {},
             responses = {
                     @ApiResponse(responseCode = "202", description = "", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ControlCard202Response.class))
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = UUID202Response.class))
                     }),
                     @ApiResponse(responseCode = "400", description = "", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = DefaultResponse4xx.class))
@@ -108,7 +108,7 @@ public interface CardManagementApi {
             value = "/CardManagement/{cardId}/Consumption/{ConsumptionId}/Control",
             produces = {"application/json"}
     )
-    ResponseEntity<ControlCard202Response> controlConsumption(
+    ResponseEntity<UUID202Response> controlConsumption(
             @Parameter(name = "cardId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("cardId") Long cardId,
             @Parameter(name = "ConsumptionId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("ConsumptionId") UUID consumptionId
     );
@@ -131,7 +131,7 @@ public interface CardManagementApi {
             tags = {},
             responses = {
                     @ApiResponse(responseCode = "202", description = "", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ControlCard202Response.class))
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = UUID202Response.class))
                     }),
                     @ApiResponse(responseCode = "400", description = "", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = DefaultResponse4xx.class))
@@ -149,7 +149,7 @@ public interface CardManagementApi {
             value = "/CardManagement/{cardId}/Payment/{paymentId}/Control",
             produces = {"application/json"}
     )
-    ResponseEntity<ControlCard202Response> controlPayment(
+    ResponseEntity<UUID202Response> controlPayment(
             @Parameter(name = "cardId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("cardId") Long cardId,
             @Parameter(name = "paymentId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("paymentId") UUID paymentId
     );
@@ -172,7 +172,7 @@ public interface CardManagementApi {
             tags = {},
             responses = {
                     @ApiResponse(responseCode = "202", description = "", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ControlCard202Response.class))
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = UUID202Response.class))
                     }),
                     @ApiResponse(responseCode = "400", description = "", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = DefaultResponse4xx.class))
@@ -191,7 +191,7 @@ public interface CardManagementApi {
             produces = {"application/json"},
             consumes = {"application/json"}
     )
-    ResponseEntity<ControlCard202Response> initiatePayment(
+    ResponseEntity<UUID202Response> initiatePayment(
             @Parameter(name = "cardId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("cardId") Long cardId,
             @Parameter(name = "CreatePaymentRequest", description = "", required = true) @Valid @RequestBody InitiatePaymentRequest initiatePaymentRequest,
             BindingResult bindingResult
@@ -216,7 +216,7 @@ public interface CardManagementApi {
             tags = {},
             responses = {
                     @ApiResponse(responseCode = "202", description = "", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ControlCard202Response.class))
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = UUIDList202Response.class))
                     }),
                     @ApiResponse(responseCode = "400", description = "", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = DefaultResponse4xx.class))
@@ -235,7 +235,7 @@ public interface CardManagementApi {
             produces = {"application/json"},
             consumes = {"application/json"}
     )
-    ResponseEntity<ControlCard202Response> exchangeConsumption(
+    ResponseEntity<UUIDList202Response> exchangeConsumption(
             @Parameter(name = "cardId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("cardId") Long cardId,
             @Parameter(name = "ConsumptionId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("ConsumptionId") UUID consumptionId,
             @Parameter(name = "ExchangeConsumptionRequest", description = "", required = true) @Valid @RequestBody ExchangeConsumptionRequest exchangeConsumptionRequest,
@@ -259,7 +259,7 @@ public interface CardManagementApi {
             tags = {},
             responses = {
                     @ApiResponse(responseCode = "202", description = "", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ControlCard202Response.class))
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Long202Response.class))
                     }),
                     @ApiResponse(responseCode = "400", description = "", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = DefaultResponse4xx.class))
@@ -278,7 +278,7 @@ public interface CardManagementApi {
             produces = {"application/json"},
             consumes = {"application/json"}
     )
-    ResponseEntity<ControlCard202Response> initiateCard(
+    ResponseEntity<Long202Response> initiateCard(
             @Parameter(name = "InitiateCardRequest", description = "", required = true) @Valid @RequestBody InitiateCardRequest initiateCardRequest,
             BindingResult bindingResult
     );
@@ -301,7 +301,7 @@ public interface CardManagementApi {
             tags = {},
             responses = {
                     @ApiResponse(responseCode = "202", description = "", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ControlCard202Response.class))
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = UUID202Response.class))
                     }),
                     @ApiResponse(responseCode = "400", description = "", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = DefaultResponse4xx.class))
@@ -320,7 +320,7 @@ public interface CardManagementApi {
             produces = {"application/json"},
             consumes = {"application/json"}
     )
-    ResponseEntity<ControlCard202Response> initiateConsumption(
+    ResponseEntity<UUID202Response> initiateConsumption(
             @Parameter(name = "cardId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("cardId") Long cardId,
             @Parameter(name = "ConsumptionRequest", description = "", required = true) @Valid @RequestBody InitiateConsumptionRequest initiateConsumptionRequest,
             BindingResult bindingResult

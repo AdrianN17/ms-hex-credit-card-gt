@@ -19,6 +19,8 @@ import com.bank.credit_card.domain.base.vo.Currency;
 import com.bank.credit_card.domain.card.Card;
 import com.bank.credit_card.domain.consumption.Consumption;
 
+import java.util.UUID;
+
 import static com.bank.credit_card.application.error.balance.BalanceApplicationErrorMessage.FAILED_TO_UPDATE_BALANCE;
 import static com.bank.credit_card.application.error.benefit.BenefitApplicationErrorMessage.FAILED_TO_UPDATE_BENEFIT;
 import static com.bank.credit_card.application.error.card.CardApplicationErrorMessage.CARD_CURRENCY_NOT_FOUND;
@@ -55,7 +57,7 @@ public class CardCancelConsumptionService implements CardCancelConsumptionUseCas
     }
 
     @Override
-    public void cancelConsumption(CardCancelConsumptionCommand cardCancelConsumptionCommand) {
+    public UUID cancelConsumption(CardCancelConsumptionCommand cardCancelConsumptionCommand) {
 
         CurrencyEnum cardCurrencyEnum = loadCardCurrencyPort.load(cardCancelConsumptionCommand.cardId())
                 .orElseThrow(() -> new ApplicationCardException(CARD_NOT_FOUND));
@@ -82,5 +84,7 @@ public class CardCancelConsumptionService implements CardCancelConsumptionUseCas
         this.saveConsumptionPort.save(consumption).orElseThrow(() -> new ApplicationConsumptionException(FAILED_TO_UPDATE_CONSUMPTION));
         this.saveBalancePort.save(card.getBalance()).orElseThrow(() -> new ApplicationBalanceException(FAILED_TO_UPDATE_BALANCE));
         this.saveBenefitPort.save(card.getBenefit()).orElseThrow(() -> new ApplicationBenefitException(FAILED_TO_UPDATE_BENEFIT));
+
+        return consumption.getId();
     }
 }

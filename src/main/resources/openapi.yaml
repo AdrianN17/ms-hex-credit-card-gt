@@ -71,8 +71,11 @@ paths:
                 properties:
                   tracking:
                     $ref: '#/components/schemas/Tracking'
+                  data:
+                    $ref: '#/components/schemas/LongResponse'
                 required:
                   - tracking
+                  - data
           headers: {}
         '400':
           $ref: '#/components/responses/BadRequest'
@@ -114,8 +117,11 @@ paths:
                 properties:
                   tracking:
                     $ref: '#/components/schemas/Tracking'
+                  data:
+                    $ref: '#/components/schemas/LongResponse'
                 required:
                   - tracking
+                  - data
           headers: {}
         '400':
           $ref: '#/components/responses/BadRequest'
@@ -164,8 +170,11 @@ paths:
                 properties:
                   tracking:
                     $ref: '#/components/schemas/Tracking'
+                  data:
+                    $ref: '#/components/schemas/UUIDResponse'
                 required:
                   - tracking
+                  - data
           headers: {}
         '400':
           $ref: '#/components/responses/BadRequest'
@@ -214,8 +223,11 @@ paths:
                 properties:
                   tracking:
                     $ref: '#/components/schemas/Tracking'
+                  data:
+                    $ref: '#/components/schemas/UUIDResponse'
                 required:
                   - tracking
+                  - data
           headers: {}
         '400':
           $ref: '#/components/responses/BadRequest'
@@ -259,8 +271,11 @@ paths:
                 properties:
                   tracking:
                     $ref: '#/components/schemas/Tracking'
+                  data:
+                    $ref: '#/components/schemas/UUIDResponse'
                 required:
                   - tracking
+                  - data
           headers: {}
         '400':
           $ref: '#/components/responses/BadRequest'
@@ -304,8 +319,11 @@ paths:
                 properties:
                   tracking:
                     $ref: '#/components/schemas/Tracking'
+                  data:
+                    $ref: '#/components/schemas/UUIDResponse'
                 required:
                   - tracking
+                  - data
           headers: {}
         '400':
           $ref: '#/components/responses/BadRequest'
@@ -369,8 +387,13 @@ paths:
                 properties:
                   tracking:
                     $ref: '#/components/schemas/Tracking'
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UUIDResponse'
                 required:
                   - tracking
+                  - data
           headers: {}
         '400':
           $ref: '#/components/responses/BadRequest'
@@ -382,7 +405,7 @@ paths:
           $ref: '#/components/responses/InternalError'
           description: ''
       security: []
-  /CardManagement/{cardId}/Payment/{paymentId}/Retrieve:
+  /CardManagement/{cardId}/Payment/Retrieve:
     get:
       summary: retrievePayment
       deprecated: false
@@ -397,13 +420,6 @@ paths:
           schema:
             type: integer
             format: int64
-        - name: paymentId
-          in: path
-          description: ''
-          required: true
-          schema:
-            type: string
-            format: uuid
         - name: dateStart
           in: query
           description: ''
@@ -446,7 +462,7 @@ paths:
           $ref: '#/components/responses/InternalError'
           description: ''
       security: []
-  /CardManagement/{cardId}/Consumption/{ConsumptionId}/Retrieve:
+  /CardManagement/{cardId}/Consumption/Retrieve:
     get:
       summary: retrieveConsumption
       deprecated: false
@@ -461,13 +477,6 @@ paths:
           schema:
             type: integer
             format: int64
-        - name: ConsumptionId
-          in: path
-          description: ''
-          required: true
-          schema:
-            type: string
-            format: uuid
         - name: dateStart
           in: query
           description: ''
@@ -687,6 +696,25 @@ components:
       required:
         - trackingId
         - operationDate
+    DefaultResponse4xx:
+      type: object
+      properties:
+        description:
+          type: string
+        errors:
+          type: array
+          items:
+            type: string
+      required:
+        - description
+        - errors
+    DefaultResponse:
+      type: object
+      properties:
+        description:
+          type: string
+      required:
+        - description
     PaymentResponse:
       type: object
       properties:
@@ -736,25 +764,22 @@ components:
         - amount
         - consumptionDate
         - consumptionApprobationDate
-    DefaultResponse4xx:
+    LongResponse:
       type: object
       properties:
-        description:
-          type: string
-        errors:
-          type: array
-          items:
-            type: string
+        id:
+          type: integer
+          format: int64
       required:
-        - description
-        - errors
-    DefaultResponse:
+        - id
+    UUIDResponse:
       type: object
       properties:
-        description:
+        id:
           type: string
+          format: uuid
       required:
-        - description
+        - id
   responses:
     BadRequest:
       description: ''

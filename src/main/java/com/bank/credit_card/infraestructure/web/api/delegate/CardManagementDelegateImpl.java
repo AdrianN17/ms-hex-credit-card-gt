@@ -14,16 +14,17 @@ import com.bank.credit_card.infraestructure.web.api.schema.request.InitiateCardR
 import com.bank.credit_card.infraestructure.web.api.schema.request.InitiateConsumptionRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.request.InitiatePaymentRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.response.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
 import static com.bank.credit_card.infraestructure.web.api.util.MapperResponse.*;
 import static com.bank.credit_card.infraestructure.web.api.util.BindingValidator.validate;
 
+@Slf4j
 public class CardManagementDelegateImpl implements CardManagementDelegate {
 
     private final CreateCardService createCardService;
@@ -71,62 +72,63 @@ public class CardManagementDelegateImpl implements CardManagementDelegate {
     }
 
     @Override
-    public ResponseEntity<ControlCard202Response> controlCard(Long cardId) {
-        cardCloseService.closeCard(cardApiMapperRequestCommand.toCommandId(cardId));
-        return getControlCard202Response();
+    public ResponseEntity<Long202Response> controlCard(Long cardId) {
+        var id = cardCloseService.closeCard(cardApiMapperRequestCommand.toCommandId(cardId));
+        return getLong202Response(id);
     }
 
     @Override
-    public ResponseEntity<ControlCard202Response> controlConsumption(Long cardId, UUID consumptionId) {
-        cardCancelConsumptionService.cancelConsumption(consumptionApiMapperRequestCommand.toCommandId(consumptionId, cardId));
-        return getControlCard202Response();
+    public ResponseEntity<UUID202Response> controlConsumption(Long cardId, UUID consumptionId) {
+        var id = cardCancelConsumptionService.cancelConsumption(consumptionApiMapperRequestCommand.toCommandId(consumptionId, cardId));
+        return getUUID202Response(id);
     }
 
     @Override
-    public ResponseEntity<ControlCard202Response> controlPayment(Long cardId, UUID paymentId) {
-        cardCancelPaymentService.cancelPayment(paymentApiMapperRequestCommand.toCommandId(paymentId, cardId));
-        return getControlCard202Response();
+    public ResponseEntity<UUID202Response> controlPayment(Long cardId, UUID paymentId) {
+        var id =  cardCancelPaymentService.cancelPayment(paymentApiMapperRequestCommand.toCommandId(paymentId, cardId));
+        return getUUID202Response(id);
     }
 
     @Override
-    public ResponseEntity<ControlCard202Response> initiatePayment(Long cardId, InitiatePaymentRequest initiatePaymentRequest, BindingResult bindingResult) {
+    public ResponseEntity<UUID202Response> initiatePayment(Long cardId, InitiatePaymentRequest initiatePaymentRequest, BindingResult bindingResult) {
         validate(bindingResult);
-        cardPaymentService.processPayment(paymentApiMapperRequestCommand.toCommand(initiatePaymentRequest.getData(), cardId));
-        return getControlCard202Response();
+        var payment = cardPaymentService.processPayment(paymentApiMapperRequestCommand.toCommand(initiatePaymentRequest.getData(), cardId));
+        return getUUID202Response(payment.getId());
     }
 
     @Override
-    public ResponseEntity<ControlCard202Response> exchangeConsumption(Long cardId, UUID consumptionId, ExchangeConsumptionRequest exchangeConsumptionRequest, BindingResult bindingResult) {
+    public ResponseEntity<UUIDList202Response> exchangeConsumption(Long cardId, UUID consumptionId, ExchangeConsumptionRequest exchangeConsumptionRequest, BindingResult bindingResult) {
         validate(bindingResult);
-        splitConsumptionService.splitConsumption(consumptionApiMapperRequestCommand.toCommandIdR(consumptionId, cardId, exchangeConsumptionRequest.getData()));
-        return getControlCard202Response();
+        var consumptions = splitConsumptionService.splitConsumption(consumptionApiMapperRequestCommand.toCommandIdR(consumptionId, cardId, exchangeConsumptionRequest.getData()));
+        return getUUIDList202Response(consumptions.stream()
+                .map(c -> c.getId())
+                .toList());
     }
 
     @Override
-    public ResponseEntity<ControlCard202Response> initiateCard(InitiateCardRequest initiateCardRequest, BindingResult bindingResult) {
+    public ResponseEntity<Long202Response> initiateCard(InitiateCardRequest initiateCardRequest, BindingResult bindingResult) {
         validate(bindingResult);
-        createCardService.createCard(cardApiMapperRequestCommand.toCommand(initiateCardRequest.getData()));
-        return getControlCard202Response();
+        var card = createCardService.createCard(cardApiMapperRequestCommand.toCommand(initiateCardRequest.getData()));
+        return getLong202Response(card.getId());
     }
 
     @Override
-    public ResponseEntity<ControlCard202Response> initiateConsumption(Long cardId, InitiateConsumptionRequest initiateConsumptionRequest, BindingResult bindingResult) {
+    public ResponseEntity<UUID202Response> initiateConsumption(Long cardId, InitiateConsumptionRequest initiateConsumptionRequest, BindingResult bindingResult) {
         validate(bindingResult);
-        cardConsumptionService.processConsumption(consumptionApiMapperRequestCommand.toCommand(initiateConsumptionRequest.getData(), cardId));
-        return getControlCard202Response();
+        var consumption = cardConsumptionService.processConsumption(consumptionApiMapperRequestCommand.toCommand(initiateConsumptionRequest.getData(), cardId));
+        return getUUID202Response(consumption.getId());
     }
 
     @Override
     public ResponseEntity<RetrieveBalance200Response> retrieveBalance(Long cardId) {
 
-        CardResponse cardResponse = cardApiMapperRequestCommand.toResponse(loadCardByIdService.findById(cardId));
-
+        var cardResponse = cardApiMapperRequestCommand.toResponse(loadCardByIdService.findById(cardId));
         return getRetrieveBalance(cardResponse);
     }
 
     @Override
     public ResponseEntity<RetrieveConsumption200Response> retrieveConsumption(Long cardId, LocalDate dateStart, LocalDate dateEnd) {
-        List<ConsumptionResponse> responseConsumptions = loadConsumptionByDatesAndCardIdService.findByDatesAndCardId(new FindConsumptionByDatesAndCardIdCriteria(
+        var responseConsumptions = loadConsumptionByDatesAndCardIdService.findByDatesAndCardId(new FindConsumptionByDatesAndCardIdCriteria(
                 dateStart,
                 dateEnd,
                 cardId
@@ -136,7 +138,7 @@ public class CardManagementDelegateImpl implements CardManagementDelegate {
 
     @Override
     public ResponseEntity<RetrievePayment200Response> retrievePayment(Long cardId, LocalDate dateStart, LocalDate dateEnd) {
-        List<PaymentResponse> responsePayments = loadPaymentByDatesAndCardIdService.findByDatesAndCardId(new FindPaymentByDatesAndCardIdCriteria(
+        var responsePayments = loadPaymentByDatesAndCardIdService.findByDatesAndCardId(new FindPaymentByDatesAndCardIdCriteria(
                 dateStart,
                 dateEnd,
                 cardId
