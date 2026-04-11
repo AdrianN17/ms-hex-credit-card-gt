@@ -7,7 +7,7 @@ spring:
       - org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration
       - org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration
   datasource:
-    url: jdbc:sqlserver://azsqltest03s.database.windows.net;databaseName=azsqltest03;encrypt=false;trustServerCertificate=false;DB_CLOSE_DELAY=-1
+    url: jdbc:sqlserver://adriandbs.database.windows.net;databaseName=adriandb;encrypt=false;trustServerCertificate=false;DB_CLOSE_DELAY=-1
     username: adrian
     password: ${SQLSERVER_PASSWORD}
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
@@ -22,7 +22,7 @@ spring:
   cloud:
     azure:
       cosmos:
-        endpoint: https://azcosmosgt.documents.azure.com:443/
+        endpoint: https://azcosmosgt3.documents.azure.com:443/
         key: ${COSMOS_KEY}
         database: cosmosgtdata
         populate-query-metrics: false
