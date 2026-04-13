@@ -1,4 +1,4 @@
-package com.bank.credit_card.domain.card;
+package com.bank.credit_card.domain.balance;
 
 import com.bank.credit_card.domain.exception.DomainException;
 

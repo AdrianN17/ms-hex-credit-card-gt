@@ -1,6 +1,6 @@
 package com.bank.credit_card.domain.base.vo;
 
-import com.bank.credit_card.domain.card.BalanceException;
+import com.bank.credit_card.domain.balance.BalanceException;
 
 import java.time.LocalDate;
 

@@ -4,6 +4,7 @@ import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.adapter
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.mapper.persistance.BenefitPersistanceMapper;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.mapper.persistance.BenefitPersistanceMapperImpl;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.repository.BenefitJpaRepository;
+import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.repository.vo.BenefitVOJpaRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,8 +13,9 @@ public class BenefitJpaRepositoryAdapterConfig {
 
     @Bean
     BenefitJpaRepositoryAdapter benefitJpaRepositoryAdapter(BenefitJpaRepository benefitJpaRepository,
+                                                            BenefitVOJpaRepository benefitVOJpaRepository,
                                                             BenefitPersistanceMapper benefitPersistanceMapper) {
-        return new BenefitJpaRepositoryAdapter(benefitJpaRepository, benefitPersistanceMapper);
+        return new BenefitJpaRepositoryAdapter(benefitJpaRepository, benefitVOJpaRepository, benefitPersistanceMapper);
     }
 
     @Bean

@@ -16,7 +16,7 @@ import com.bank.credit_card.domain.base.vo.Currency;
 import com.bank.credit_card.domain.base.vo.DateRange;
 import com.bank.credit_card.domain.benefit.Benefit;
 import com.bank.credit_card.domain.benefit.vo.DiscountPolicy;
-import com.bank.credit_card.domain.card.Balance;
+import com.bank.credit_card.domain.balance.Balance;
 import com.bank.credit_card.domain.card.Card;
 import com.bank.credit_card.domain.card.vo.CardAccountId;
 import com.bank.credit_card.domain.card.vo.CardId;

@@ -1,5 +1,6 @@
 package com.bank.credit_card.domain.card;
 
+import com.bank.credit_card.domain.balance.Balance;
 import com.bank.credit_card.domain.base.StatusEnum;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.benefit.Benefit;
@@ -15,8 +16,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
+import static com.bank.credit_card.domain.balance.BalanceErrorMessage.*;
 import static com.bank.credit_card.domain.base.StatusEnum.ACTIVE;
-import static com.bank.credit_card.domain.card.BalanceErrorMessage.*;
 import static com.bank.credit_card.domain.card.CardErrorMessage.*;
 import static com.bank.credit_card.domain.card.CardErrorMessage.ID_CANNOT_BE_NULL;
 import static com.bank.credit_card.domain.card.CardStatusEnum.IN_DEBT;
@@ -32,8 +33,6 @@ public class Card extends GenericDomain<Long> {
     private final CategoryCardEnum categoryCard;
     private final Credit credit;
     private CardStatusEnum cardStatus;
-    private Balance balance;
-    private Benefit benefit;
     private final CardAccountId cardAccountId;
     private final Short paymentDay;
 
@@ -57,8 +56,6 @@ public class Card extends GenericDomain<Long> {
         this.categoryCard = categoryCard;
         this.credit = credit;
         this.cardStatus = cardStatus;
-        this.balance = balance;
-        this.benefit = benefit;
         this.cardAccountId = cardAccountId;
         this.paymentDay = paymentDay;
     }
@@ -143,16 +140,8 @@ public class Card extends GenericDomain<Long> {
         return credit;
     }
 
-    public Balance getBalance() {
-        return balance;
-    }
-
     public CardStatusEnum getCardStatus() {
         return cardStatus;
-    }
-
-    public Benefit getBenefit() {
-        return benefit;
     }
 
     public CardAccountId getCardAccountId() {
@@ -163,93 +152,91 @@ public class Card extends GenericDomain<Long> {
         return paymentDay;
     }
 
-    public void pay(Payment payment) {
+    public void pay(Balance balance, Payment payment) {
 
-        isNotNull(getBalance(), new CardException(BALANCE_CANNOT_BE_NULL));
+        isNotNull(balance, new CardException(BALANCE_CANNOT_BE_NULL));
 
         isNotNull(payment, new CardException(PAYMENT_CANNOT_BE_NULL));
 
         if (Objects.equals(payment.getCategory(), ADELANTADO))
-            getBalance().prePay(payment);
+            balance.prePay(payment);
         else
-            getBalance().pay(payment);
+            balance.pay(payment);
 
-        updateStatus();
+        updateStatus(balance);
 
     }
 
-    public void pay(Payment payment, Point point) {
+    public void pay(Balance balance, Benefit benefit, Payment payment, Point point) {
 
-        isNotNull(getBalance(), new CardException(BALANCE_CANNOT_BE_NULL));
-        isNotNull(getBenefit(), new CardException(BENEFIT_CANNOT_BE_NULL));
+        isNotNull(balance, new CardException(BALANCE_CANNOT_BE_NULL));
+        isNotNull(benefit, new CardException(BENEFIT_CANNOT_BE_NULL));
 
         isNotNull(payment, new CardException(PAYMENT_CANNOT_BE_NULL));
         isNotNull(point, new CardException(POINT_CANNOT_BE_NULL));
 
         isNotConditional(Objects.equals(payment.getCategory(), ADELANTADO), new CardException(POINTS_CANNOT_USED_WITH_PREPAY));
 
-        getBalance().pay(getBenefit().discount(payment, point));
+        balance.pay(benefit.discount(payment, point));
 
-        updateStatus();
+        updateStatus(balance);
     }
 
-    private void updateStatus() {
-        if (getBalance().isOvercharged())
+    private void updateStatus(Balance balance) {
+        if (balance.isOvercharged())
             this.cardStatus = CardStatusEnum.OVERCHARGE;
         else
             this.cardStatus = OPERATIVE;
     }
 
-    public void consumption(Consumption consumption) {
+    public void consumption(Balance balance, Benefit benefit, Consumption consumption) {
 
-        isNotNull(getBalance(), new CardException(BALANCE_CANNOT_BE_NULL));
-        isNotNull(getBenefit(), new CardException(BENEFIT_CANNOT_BE_NULL));
+        isNotNull(balance, new CardException(BALANCE_CANNOT_BE_NULL));
+        isNotNull(benefit, new CardException(BENEFIT_CANNOT_BE_NULL));
 
         isNotNull(consumption, new CardException(CONSUMPTION_CANNOT_BE_NULL));
 
         isNotConditional(Objects.equals(getCardStatus(), IN_DEBT), new CardException(IN_DEBT_CARD));
 
-        Amount totalAvailable = getBalance().calculateConsumption(consumption.getConsumptionAmount());
+        Amount totalAvailable = balance.calculateConsumption(consumption.getConsumptionAmount());
 
-        isNotConditional(totalAvailable.estaFaltando(getBalance().getTotal()), new ConsumptionException(AMOUNT_EXCEED_CREDIT_LIMIT));
+        isNotConditional(totalAvailable.estaFaltando(balance.getTotal()), new ConsumptionException(AMOUNT_EXCEED_CREDIT_LIMIT));
 
-        getBalance().applyConsumption(consumption.getConsumptionAmount());
+        balance.applyConsumption(consumption.getConsumptionAmount());
 
-        getBenefit().accumulate(consumption.getConsumptionAmount(), getCategoryCard());
+        benefit.accumulate(consumption.getConsumptionAmount(), getCategoryCard());
     }
 
-    public List<Consumption> split(Consumption consumption, Integer quantity) {
-        isNotNull(getBalance(), new CardException(BALANCE_CANNOT_BE_NULL));
+    public List<Consumption> split(Balance balance, Consumption consumption, Integer quantity) {
+        isNotNull(balance, new CardException(BALANCE_CANNOT_BE_NULL));
 
         consumption.validateIfConsumptionIsInApprobation();
         List<Consumption> consumptionsSplit = consumption.split(quantity, credit.getDebtTax());
-        getBalance().cancelConsumption(consumption);
-        getBalance().consumptionSplitted(consumptionsSplit);
+        balance.cancelConsumption(consumption);
+        balance.consumptionSplitted(consumptionsSplit);
         return consumptionsSplit;
     }
 
-    public void cancelConsumption(Consumption consumption) {
+    public void cancelConsumption(Balance balance, Consumption consumption) {
 
-        isNotNull(getBalance(), new CardException(BALANCE_CANNOT_BE_NULL));
+        isNotNull(balance, new CardException(BALANCE_CANNOT_BE_NULL));
 
         isNotNull(consumption, new CardException(CONSUMPTION_CANNOT_BE_NULL));
         consumption.validateIfConsumptionIsInApprobation();
-        getBalance().cancelConsumption(consumption);
+        balance.cancelConsumption(consumption);
     }
 
-    public void cancelPayment(Payment payment) {
+    public void cancelPayment(Balance balance, Payment payment) {
 
-        isNotNull(getBalance(), new CardException(BALANCE_CANNOT_BE_NULL));
+        isNotNull(balance, new CardException(BALANCE_CANNOT_BE_NULL));
 
         isNotNull(payment, new CardException(PAYMENT_CANNOT_BE_NULL));
         payment.validateIfPaymentIsInApprobation();
-        getBalance().cancelPayment(payment);
+        balance.cancelPayment(payment);
     }
 
     public void close() {
         softDelete();
-        getBalance().close();
-        getBenefit().close();
     }
 
 }

@@ -1,4 +1,4 @@
-package com.bank.credit_card.domain.card;
+package com.bank.credit_card.domain.balance;
 
 public interface BalanceErrorMessage {
     String PAYMENT_CANNOT_BE_NULL = "Payment cannot be null";

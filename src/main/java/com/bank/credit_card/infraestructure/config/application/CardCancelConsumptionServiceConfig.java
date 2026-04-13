@@ -1,7 +1,7 @@
 package com.bank.credit_card.infraestructure.config.application;
 
+import com.bank.credit_card.application.port.out.balance.LoadBalancePort;
 import com.bank.credit_card.application.port.out.balance.SaveBalancePort;
-import com.bank.credit_card.application.port.out.benefit.SaveBenefitPort;
 import com.bank.credit_card.application.port.out.card.query.LoadCardCurrencyPort;
 import com.bank.credit_card.application.port.out.card.usecase.LoadCardPort;
 import com.bank.credit_card.application.port.out.consumption.query.LoadConsumptionCurrencyPort;
@@ -18,8 +18,8 @@ public class CardCancelConsumptionServiceConfig {
     @Bean
     CardCancelConsumptionService cardCancelConsumptionService(
             LoadCardPort loadCardPort,
+            LoadBalancePort loadBalancePort,
             LoadConsumptionPort loadConsumptionPort,
-            SaveBenefitPort saveBenefitPort,
             SaveBalancePort saveBalancePort,
             SaveConsumptionPort saveConsumptionPort,
             LoadCurrencyPort loadCurrencyPort,
@@ -27,8 +27,8 @@ public class CardCancelConsumptionServiceConfig {
             LoadConsumptionCurrencyPort loadConsumptionCurrencyPort) {
 
         return new CardCancelConsumptionService(loadCardPort,
+                loadBalancePort,
                 loadConsumptionPort,
-                saveBenefitPort,
                 saveBalancePort,
                 saveConsumptionPort,
                 loadCurrencyPort,

@@ -1,11 +1,11 @@
 package com.bank.credit_card.application.service.usecase;
 
 import com.bank.credit_card.application.error.balance.ApplicationBalanceException;
-import com.bank.credit_card.application.error.benefit.ApplicationBenefitException;
 import com.bank.credit_card.application.error.card.ApplicationCardException;
 import com.bank.credit_card.application.error.payment.ApplicationPaymentException;
 import com.bank.credit_card.application.port.in.command.CardCancelPaymentCommand;
 import com.bank.credit_card.application.port.in.usecase.CardCancelPaymentUseCase;
+import com.bank.credit_card.application.port.out.balance.LoadBalancePort;
 import com.bank.credit_card.application.port.out.balance.SaveBalancePort;
 import com.bank.credit_card.application.port.out.benefit.SaveBenefitPort;
 import com.bank.credit_card.application.port.out.card.query.LoadCardCurrencyPort;
@@ -14,6 +14,7 @@ import com.bank.credit_card.application.port.out.currency.LoadCurrencyPort;
 import com.bank.credit_card.application.port.out.payment.query.LoadPaymentCurrencyPort;
 import com.bank.credit_card.application.port.out.payment.usecase.LoadPaymentPort;
 import com.bank.credit_card.application.port.out.payment.usecase.SavePaymentPort;
+import com.bank.credit_card.domain.balance.Balance;
 import com.bank.credit_card.domain.base.CurrencyEnum;
 import com.bank.credit_card.domain.base.vo.Currency;
 import com.bank.credit_card.domain.card.Card;
@@ -21,8 +22,8 @@ import com.bank.credit_card.domain.payment.Payment;
 
 import java.util.UUID;
 
+import static com.bank.credit_card.application.error.balance.BalanceApplicationErrorMessage.BALANCE_NOT_FOUND;
 import static com.bank.credit_card.application.error.balance.BalanceApplicationErrorMessage.FAILED_TO_UPDATE_BALANCE;
-import static com.bank.credit_card.application.error.benefit.BenefitApplicationErrorMessage.FAILED_TO_UPDATE_BENEFIT;
 import static com.bank.credit_card.application.error.card.CardApplicationErrorMessage.CARD_CURRENCY_NOT_FOUND;
 import static com.bank.credit_card.application.error.card.CardApplicationErrorMessage.CARD_NOT_FOUND;
 import static com.bank.credit_card.application.error.payment.PaymentApplicationErrorMessage.*;
@@ -30,8 +31,8 @@ import static com.bank.credit_card.application.error.payment.PaymentApplicationE
 public class CardCancelPaymentService implements CardCancelPaymentUseCase {
 
     private final LoadCardPort loadCardPort;
+    private final LoadBalancePort loadBalancePort;
     private final LoadPaymentPort loadPaymentPort;
-    private final SaveBenefitPort saveBenefitPort;
     private final SaveBalancePort saveBalancePort;
     private final SavePaymentPort savePaymentPort;
     private final LoadCurrencyPort loadCurrencyPort;
@@ -39,16 +40,16 @@ public class CardCancelPaymentService implements CardCancelPaymentUseCase {
     private final LoadPaymentCurrencyPort loadConsumptionCurrencyPort;
 
     public CardCancelPaymentService(LoadCardPort loadCardPort,
+                                    LoadBalancePort loadBalancePort,
                                     LoadPaymentPort loadPaymentPort,
-                                    SaveBenefitPort saveBenefitPort,
                                     SaveBalancePort saveBalancePort,
                                     SavePaymentPort savePaymentPort,
                                     LoadCurrencyPort loadCurrencyPort,
                                     LoadCardCurrencyPort loadCardCurrencyPort,
                                     LoadPaymentCurrencyPort loadConsumptionCurrencyPort) {
         this.loadCardPort = loadCardPort;
+        this.loadBalancePort = loadBalancePort;
         this.loadPaymentPort = loadPaymentPort;
-        this.saveBenefitPort = saveBenefitPort;
         this.saveBalancePort = saveBalancePort;
         this.savePaymentPort = savePaymentPort;
         this.loadCurrencyPort = loadCurrencyPort;
@@ -80,11 +81,14 @@ public class CardCancelPaymentService implements CardCancelPaymentUseCase {
                 .load(cardCancelPaymentCommand.cardId(), cardCurrency)
                 .orElseThrow(() -> new ApplicationCardException(CARD_NOT_FOUND));
 
-        card.cancelPayment(payment);
+        Balance balance = loadBalancePort
+                .load(cardCancelPaymentCommand.cardId(), cardCurrency)
+                .orElseThrow(() -> new ApplicationBalanceException(BALANCE_NOT_FOUND));
+
+        card.cancelPayment(balance, payment);
 
         this.savePaymentPort.save(payment).orElseThrow(() -> new ApplicationPaymentException(FAILED_TO_UPDATE_PAYMENT));
-        this.saveBalancePort.save(card.getBalance()).orElseThrow(() -> new ApplicationBalanceException(FAILED_TO_UPDATE_BALANCE));
-        this.saveBenefitPort.save(card.getBenefit()).orElseThrow(() -> new ApplicationBenefitException(FAILED_TO_UPDATE_BENEFIT));
+        this.saveBalancePort.save(balance).orElseThrow(() -> new ApplicationBalanceException(FAILED_TO_UPDATE_BALANCE));
 
         return payment.getId();
     }
