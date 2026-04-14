@@ -29,9 +29,8 @@ public class CardJpaRepositoryAdapterConfig {
     }
 
     @Bean
-    CardPersistanceMapper cardPersistanceMapper(BalancePersistanceMapper balancePersistanceMapper,
-                                                BenefitPersistanceMapper benefitPersistanceMapper) {
-        return new CardPersistanceMapperImpl(balancePersistanceMapper, benefitPersistanceMapper);
+    CardPersistanceMapper cardPersistanceMapper() {
+        return new CardPersistanceMapperImpl();
     }
 
     @Bean

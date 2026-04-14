@@ -10,14 +10,6 @@ import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.
 
 public class CardPersistanceMapperImpl implements CardPersistanceMapper {
 
-    private final BalancePersistanceMapper balancePersistanceMapper;
-    private final BenefitPersistanceMapper benefitPersistanceMapper;
-
-    public CardPersistanceMapperImpl(BalancePersistanceMapper balancePersistanceMapper, BenefitPersistanceMapper benefitPersistanceMapper) {
-        this.balancePersistanceMapper = balancePersistanceMapper;
-        this.benefitPersistanceMapper = benefitPersistanceMapper;
-    }
-
     @Override
     public CardEntity toEntity(Card card) {
         return CardEntity.builder()
@@ -46,8 +38,6 @@ public class CardPersistanceMapperImpl implements CardPersistanceMapper {
                 cardEntity.getCategoryCard(),
                 Credit.create(credit, cardEntity.getCardAccount().getDebtTax()),
                 cardEntity.getCardAccount().getCardStatus(),
-                balancePersistanceMapper.toDomain(cardEntity.getBalance(), currency),
-                benefitPersistanceMapper.toDomain(cardEntity.getBenefit()),
                 CardAccountId.create(cardEntity.getCardAccount().getCardAccountId()),
                 cardEntity.getCardAccount().getPaymentDate()
         );

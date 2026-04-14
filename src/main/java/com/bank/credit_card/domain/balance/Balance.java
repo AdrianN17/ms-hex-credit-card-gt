@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
+import static com.bank.credit_card.domain.balance.BalanceConstant.OVERCHARGE_LIMIT;
 import static com.bank.credit_card.domain.base.constants.StatusEnum.ACTIVE;
 import static com.bank.credit_card.domain.base.constants.DateRangeErrorMessage.DATE_NOT_WITHIN_RANGE;
 import static com.bank.credit_card.domain.balance.BalanceErrorMessage.*;
-import static com.bank.credit_card.domain.card.CardConstant.OVERCHARGE_LIMIT;
 import static com.bank.credit_card.domain.card.CardErrorMessage.PAYMENT_CATEGORY_EXCEED_LIKE;
 import static com.bank.credit_card.domain.card.CardErrorMessage.PAYMENT_CATEGORY_NOT_SAME_AS_PAYMENT;
 import static com.bank.credit_card.domain.card.CategoryPaymentEnum.ADELANTADO;
