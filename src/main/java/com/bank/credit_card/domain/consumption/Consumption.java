@@ -1,6 +1,6 @@
 package com.bank.credit_card.domain.consumption;
 
-import com.bank.credit_card.domain.base.StatusEnum;
+import com.bank.credit_card.domain.base.constants.StatusEnum;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.card.vo.CardId;
 import com.bank.credit_card.domain.generic.GenericDomain;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
-import static com.bank.credit_card.domain.base.StatusEnum.ACTIVE;
+import static com.bank.credit_card.domain.base.constants.StatusEnum.ACTIVE;
 import static com.bank.credit_card.domain.consumption.ConsumptionConstant.CONSUMPTION_SPLIT;
 import static com.bank.credit_card.domain.consumption.ConsumptionErrorMessage.*;
 import static com.bank.credit_card.domain.util.Validation.isNotConditional;

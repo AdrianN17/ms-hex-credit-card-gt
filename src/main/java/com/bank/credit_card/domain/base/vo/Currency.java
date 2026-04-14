@@ -1,12 +1,13 @@
 package com.bank.credit_card.domain.base.vo;
 
-import com.bank.credit_card.domain.base.CurrencyEnum;
+import com.bank.credit_card.domain.base.constants.CurrencyEnum;
+import com.bank.credit_card.domain.base.exceptions.CurrencyException;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-import static com.bank.credit_card.domain.base.vo.CurrencyErrorMessage.CURRENCY_REQUIRED;
-import static com.bank.credit_card.domain.base.vo.CurrencyErrorMessage.EXCHANGE_RATE_REQUIRED;
+import static com.bank.credit_card.domain.base.constants.CurrencyErrorMessage.CURRENCY_REQUIRED;
+import static com.bank.credit_card.domain.base.constants.CurrencyErrorMessage.EXCHANGE_RATE_REQUIRED;
 import static com.bank.credit_card.domain.util.Validation.isNotNull;
 
 public class Currency {

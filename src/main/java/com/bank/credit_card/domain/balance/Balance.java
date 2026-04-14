@@ -1,6 +1,6 @@
 package com.bank.credit_card.domain.balance;
 
-import com.bank.credit_card.domain.base.StatusEnum;
+import com.bank.credit_card.domain.base.constants.StatusEnum;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.base.vo.DateRange;
 import com.bank.credit_card.domain.card.CategoryPaymentEnum;
@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import static com.bank.credit_card.domain.base.StatusEnum.ACTIVE;
-import static com.bank.credit_card.domain.base.vo.DateRangeErrorMessage.DATE_NOT_WITHIN_RANGE;
+import static com.bank.credit_card.domain.base.constants.StatusEnum.ACTIVE;
+import static com.bank.credit_card.domain.base.constants.DateRangeErrorMessage.DATE_NOT_WITHIN_RANGE;
 import static com.bank.credit_card.domain.balance.BalanceErrorMessage.*;
 import static com.bank.credit_card.domain.card.CardConstant.OVERCHARGE_LIMIT;
 import static com.bank.credit_card.domain.card.CardErrorMessage.PAYMENT_CATEGORY_EXCEED_LIKE;

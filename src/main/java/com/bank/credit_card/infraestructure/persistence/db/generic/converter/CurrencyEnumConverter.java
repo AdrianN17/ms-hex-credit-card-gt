@@ -1,6 +1,6 @@
 package com.bank.credit_card.infraestructure.persistence.db.generic.converter;
 
-import com.bank.credit_card.domain.base.CurrencyEnum;
+import com.bank.credit_card.domain.base.constants.CurrencyEnum;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

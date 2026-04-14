@@ -1,6 +1,6 @@
 package com.bank.credit_card.application.port.in.command;
 
-import com.bank.credit_card.domain.base.CurrencyEnum;
+import com.bank.credit_card.domain.base.constants.CurrencyEnum;
 
 import java.math.BigDecimal;
 

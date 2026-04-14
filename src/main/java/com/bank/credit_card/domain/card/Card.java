@@ -1,7 +1,7 @@
 package com.bank.credit_card.domain.card;
 
 import com.bank.credit_card.domain.balance.Balance;
-import com.bank.credit_card.domain.base.StatusEnum;
+import com.bank.credit_card.domain.base.constants.StatusEnum;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.benefit.Benefit;
 import com.bank.credit_card.domain.benefit.Point;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.bank.credit_card.domain.balance.BalanceErrorMessage.*;
-import static com.bank.credit_card.domain.base.StatusEnum.ACTIVE;
+import static com.bank.credit_card.domain.base.constants.StatusEnum.ACTIVE;
 import static com.bank.credit_card.domain.card.CardErrorMessage.*;
 import static com.bank.credit_card.domain.card.CardErrorMessage.ID_CANNOT_BE_NULL;
 import static com.bank.credit_card.domain.card.CardStatusEnum.IN_DEBT;
@@ -46,8 +46,6 @@ public class Card extends GenericDomain<Long> {
             CategoryCardEnum categoryCard,
             Credit credit,
             CardStatusEnum cardStatus,
-            Balance balance,
-            Benefit benefit,
             CardAccountId cardAccountId,
             Short paymentDay) {
 
@@ -69,8 +67,6 @@ public class Card extends GenericDomain<Long> {
             CategoryCardEnum categoryCard,
             Credit credit,
             CardStatusEnum cardStatus,
-            Balance balance,
-            Benefit benefit,
             CardAccountId cardAccountId,
             Short paymentDay) {
 
@@ -78,8 +74,6 @@ public class Card extends GenericDomain<Long> {
         isNotNull(categoryCard, new CardException(CATEGORY_CARD_CANNOT_BE_NULL));
         isNotNull(credit, new CardException(CREDIT_CANNOT_BE_NULL));
         isNotNull(cardStatus, new CardException(TYPE_CARD_CANNOT_BE_NULL));
-        isNotNull(balance, new CardException(BALANCE_CANNOT_BE_NULL));
-        isNotNull(benefit, new CardException(BENEFIT_CANNOT_BE_NULL));
         isNotNull(cardAccountId, new CardException(CARD_ACCOUNTID_CANNOT_BE_NULL));
         isNotNull(paymentDay, new CardException(PAYMENT_DAY_CANNOT_BE_NULL));
 
@@ -92,8 +86,6 @@ public class Card extends GenericDomain<Long> {
                 categoryCard,
                 credit,
                 cardStatus,
-                balance,
-                benefit,
                 cardAccountId,
                 paymentDay);
     }
@@ -122,8 +114,6 @@ public class Card extends GenericDomain<Long> {
                 categoryCard,
                 credit,
                 OPERATIVE,
-                null,
-                null,
                 cardAccountId,
                 paymentDay);
     }

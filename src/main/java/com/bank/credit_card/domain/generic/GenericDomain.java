@@ -1,11 +1,11 @@
 package com.bank.credit_card.domain.generic;
 
-import com.bank.credit_card.domain.base.StatusEnum;
+import com.bank.credit_card.domain.base.constants.StatusEnum;
 import com.bank.credit_card.domain.exception.DomainException;
 
 import java.time.LocalDateTime;
 
-import static com.bank.credit_card.domain.base.DomainErrorMessage.INVALID_ID;
+import static com.bank.credit_card.domain.base.constants.DomainErrorMessage.INVALID_ID;
 import static java.util.Objects.isNull;
 
 public abstract class GenericDomain<T> {

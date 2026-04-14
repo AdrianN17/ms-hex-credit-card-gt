@@ -1,11 +1,11 @@
 package com.bank.credit_card.domain.base.vo;
 
-import com.bank.credit_card.domain.balance.BalanceException;
+import com.bank.credit_card.domain.base.exceptions.AmountException;
 
 import java.math.BigDecimal;
 
-import static com.bank.credit_card.domain.base.vo.AmountErrorMessage.AMOUNT_NEGATIVE;
-import static com.bank.credit_card.domain.base.vo.AmountErrorMessage.AMOUNT_REQUIRED;
+import static com.bank.credit_card.domain.base.constants.AmountErrorMessage.AMOUNT_NEGATIVE;
+import static com.bank.credit_card.domain.base.constants.AmountErrorMessage.AMOUNT_REQUIRED;
 import static com.bank.credit_card.domain.util.Validation.isNotNull;
 
 public class Amount {
@@ -29,12 +29,12 @@ public class Amount {
 
     public static Amount create(Currency currency,
                                 BigDecimal amount)
-            throws BalanceException {
+            throws AmountException {
 
         isNotNull(amount, new AmountException(AMOUNT_REQUIRED));
 
         if (amount.compareTo(BigDecimal.ZERO) < 0)
-            throw new BalanceException(AMOUNT_NEGATIVE);
+            throw new AmountException(AMOUNT_NEGATIVE);
 
         return new Amount(currency, amount);
     }

@@ -1,16 +1,16 @@
-package com.bank.credit_card.domain.base.vo;
+package com.bank.credit_card.domain.base.exceptions;
 
 import com.bank.credit_card.domain.exception.DomainException;
 
 import java.security.PrivilegedActionException;
 
-public class CurrencyException extends DomainException {
+public class AmountException extends DomainException {
     /**
      * Constructs a new exception with {@code null} as its detail message.
      * The cause is not initialized, and may subsequently be initialized by a
      * call to {@link #initCause}.
      */
-    public CurrencyException() {
+    public AmountException() {
     }
 
     /**
@@ -21,7 +21,7 @@ public class CurrencyException extends DomainException {
      * @param message the detail message. The detail message is saved for
      *                later retrieval by the {@link #getMessage()} method.
      */
-    public CurrencyException(String message) {
+    public AmountException(String message) {
         super(message);
     }
 
@@ -39,7 +39,7 @@ public class CurrencyException extends DomainException {
      *                unknown.)
      * @since 1.4
      */
-    public CurrencyException(String message, Throwable cause) {
+    public AmountException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -57,7 +57,7 @@ public class CurrencyException extends DomainException {
      *              unknown.)
      * @since 1.4
      */
-    public CurrencyException(Throwable cause) {
+    public AmountException(Throwable cause) {
         super(cause);
     }
 
@@ -75,7 +75,7 @@ public class CurrencyException extends DomainException {
      *                           be writable
      * @since 1.7
      */
-    public CurrencyException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public AmountException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

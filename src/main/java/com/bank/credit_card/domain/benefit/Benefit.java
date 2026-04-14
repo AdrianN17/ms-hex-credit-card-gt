@@ -1,6 +1,6 @@
 package com.bank.credit_card.domain.benefit;
 
-import com.bank.credit_card.domain.base.StatusEnum;
+import com.bank.credit_card.domain.base.constants.StatusEnum;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.benefit.vo.DiscountPolicy;
 import com.bank.credit_card.domain.card.CategoryCardEnum;
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 
-import static com.bank.credit_card.domain.base.StatusEnum.ACTIVE;
+import static com.bank.credit_card.domain.base.constants.StatusEnum.ACTIVE;
 import static com.bank.credit_card.domain.benefit.BenefitConstant.*;
 import static com.bank.credit_card.domain.benefit.BenefitErrorMessage.*;
 import static com.bank.credit_card.domain.util.Validation.isNotConditional;

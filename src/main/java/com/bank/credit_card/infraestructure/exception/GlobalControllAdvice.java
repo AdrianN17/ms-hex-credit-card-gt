@@ -1,6 +1,7 @@
 package com.bank.credit_card.infraestructure.exception;
 
 import com.bank.credit_card.application.error.ApplicationException;
+import com.bank.credit_card.domain.base.exceptions.DateRangeException;
 import com.bank.credit_card.domain.exception.DomainException;
 import com.bank.credit_card.infraestructure.persistence.db.generic.exception.PersistenceException;
 import com.bank.credit_card.infraestructure.web.api.exception.RequestValidationException;
@@ -152,7 +153,7 @@ public class GlobalControllAdvice {
             com.bank.credit_card.domain.card.vo.CardAccountException.class,
             com.bank.credit_card.domain.card.vo.CreditException.class,
             com.bank.credit_card.domain.benefit.vo.DiscountPolicyException.class,
-            com.bank.credit_card.domain.base.vo.DateRangeException.class,
+            DateRangeException.class,
             com.bank.credit_card.domain.payment.PaymentException.class
     })
     public ResponseEntity<Map<String, Object>> handleDomainException(

@@ -1,6 +1,6 @@
 package com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.repository.vo;
 
-import com.bank.credit_card.domain.base.StatusEnum;
+import com.bank.credit_card.domain.base.constants.StatusEnum;
 import com.bank.credit_card.infraestructure.persistence.db.generic.repository.GenericJpaRepository;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.vo.BalanceEntityVO;
 import org.springframework.stereotype.Repository;

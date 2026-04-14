@@ -1,6 +1,6 @@
 package com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.vo;
 
-import com.bank.credit_card.domain.base.CurrencyEnum;
+import com.bank.credit_card.domain.base.constants.CurrencyEnum;
 import com.bank.credit_card.domain.card.CardStatusEnum;
 import com.bank.credit_card.infraestructure.persistence.db.generic.converter.CurrencyEnumConverter;
 import com.bank.credit_card.infraestructure.persistence.db.generic.entity.GenericEntity;

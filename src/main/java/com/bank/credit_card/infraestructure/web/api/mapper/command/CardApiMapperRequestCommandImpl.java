@@ -3,7 +3,7 @@ package com.bank.credit_card.infraestructure.web.api.mapper.command;
 import com.bank.credit_card.application.port.in.command.CardCloseCommand;
 import com.bank.credit_card.application.port.in.command.CardCreateCommand;
 import com.bank.credit_card.application.port.in.query.view.LoadCardBalanceBenefitView;
-import com.bank.credit_card.domain.base.CurrencyEnum;
+import com.bank.credit_card.domain.base.constants.CurrencyEnum;
 import com.bank.credit_card.domain.card.CategoryCardEnum;
 import com.bank.credit_card.domain.card.TypeCardEnum;
 import com.bank.credit_card.infraestructure.web.api.schema.request.CardRequest;

@@ -1,6 +1,6 @@
 package com.bank.credit_card.domain.payment;
 
-import com.bank.credit_card.domain.base.StatusEnum;
+import com.bank.credit_card.domain.base.constants.StatusEnum;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.card.CategoryPaymentEnum;
 import com.bank.credit_card.domain.card.vo.CardId;
@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static com.bank.credit_card.domain.base.StatusEnum.ACTIVE;
+import static com.bank.credit_card.domain.base.constants.StatusEnum.ACTIVE;
 import static com.bank.credit_card.domain.payment.PaymentErrorMessage.*;
 import static com.bank.credit_card.domain.util.Validation.isNotConditional;
 import static com.bank.credit_card.domain.util.Validation.isNotNull;

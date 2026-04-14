@@ -15,7 +15,7 @@ import com.bank.credit_card.application.port.out.card.usecase.LoadCardPort;
 import com.bank.credit_card.application.port.out.consumption.usecase.SaveConsumptionPort;
 import com.bank.credit_card.application.port.out.currency.LoadCurrencyPort;
 import com.bank.credit_card.domain.balance.Balance;
-import com.bank.credit_card.domain.base.CurrencyEnum;
+import com.bank.credit_card.domain.base.constants.CurrencyEnum;
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.base.vo.Currency;
 import com.bank.credit_card.domain.benefit.Benefit;

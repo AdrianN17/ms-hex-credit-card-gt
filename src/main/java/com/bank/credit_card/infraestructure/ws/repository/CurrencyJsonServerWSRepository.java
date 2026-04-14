@@ -1,6 +1,6 @@
 package com.bank.credit_card.infraestructure.ws.repository;
 
-import com.bank.credit_card.domain.base.CurrencyEnum;
+import com.bank.credit_card.domain.base.constants.CurrencyEnum;
 import com.bank.credit_card.infraestructure.ws.dto.CurrencyDto;
 import com.bank.credit_card.infraestructure.ws.exception.ConverterWSClientException;
 import org.springframework.web.client.RestClient;

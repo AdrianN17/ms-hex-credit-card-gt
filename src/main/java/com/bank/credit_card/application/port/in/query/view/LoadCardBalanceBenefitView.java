@@ -1,6 +1,6 @@
 package com.bank.credit_card.application.port.in.query.view;
 
-import com.bank.credit_card.domain.base.CurrencyEnum;
+import com.bank.credit_card.domain.base.constants.CurrencyEnum;
 import com.bank.credit_card.domain.card.CardStatusEnum;
 import com.bank.credit_card.domain.card.CategoryCardEnum;
 import com.bank.credit_card.domain.card.TypeCardEnum;
