@@ -107,8 +107,8 @@ public class Benefit extends GenericDomain<BenefitId> {
             return this;
         }
 
-        public BenefitBuilder status(Integer status) {
-            this.status = StatusEnum.ofValue(status).orElseThrow();
+        public BenefitBuilder status(StatusEnum status) {
+            this.status = status;
             return this;
         }
 

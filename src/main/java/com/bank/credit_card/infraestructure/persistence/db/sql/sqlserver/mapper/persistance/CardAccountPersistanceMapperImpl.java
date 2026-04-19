@@ -13,11 +13,11 @@ public class CardAccountPersistanceMapperImpl implements CardAccountPersistanceM
                 .currency(card.getCredit().getCreditTotal().getCurrency().getCurrency())
                 .debtTax(card.getCredit().getDebtTax())
                 .creditTotal(card.getCredit().getCreditTotal().getAmount())
-                .paymentDate(card.getPaymentDay())
+                .paymentDate(card.getPaymentDay().getValue())
                 .createdDate(card.getCreatedDate())
                 .updatedDate(card.getUpdatedDate())
                 .status(card.getStatus())
-                .cardId(card.getId())
+                .cardId(card.getId().getValue())
                 .build();
     }
 }

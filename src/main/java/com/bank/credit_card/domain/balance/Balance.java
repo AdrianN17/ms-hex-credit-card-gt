@@ -27,11 +27,4 @@ public interface Balance {
     BalanceId getId();
 
     void close();
-
-    Boolean isOvercharged();
-
-    void apply(Amount amount);
-
-    void cancel(Amount amount);
-
 }

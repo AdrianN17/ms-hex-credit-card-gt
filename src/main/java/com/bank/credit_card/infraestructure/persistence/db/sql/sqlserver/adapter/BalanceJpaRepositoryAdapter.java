@@ -2,7 +2,7 @@ package com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.adapte
 
 import com.bank.credit_card.application.port.out.balance.LoadBalancePort;
 import com.bank.credit_card.application.port.out.balance.SaveBalancePort;
-import com.bank.credit_card.domain.balance.old.Balance;
+import com.bank.credit_card.domain.balance.Balance;
 import com.bank.credit_card.domain.base.vo.Currency;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.BalanceEntity;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.exception.BalancePersistanceException;

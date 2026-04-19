@@ -146,14 +146,14 @@ public class Card extends GenericDomain<CardId> {
             return this;
         }
 
-        public CardBuilder cardStatus(Integer cardStatus) {
-            this.cardStatus = CardStatusEnum.ofValue(cardStatus).orElseThrow(
-                    () -> new CardException(CARD_STATUS_CANNOT_BE_NULL));
+        public CardBuilder cardStatus(CardStatusEnum cardStatus) {
+            isNotNull(cardStatus, new CardException(CARD_STATUS_CANNOT_BE_NULL));
+            this.cardStatus = cardStatus;
             return this;
         }
 
-        public CardBuilder status(Integer status) {
-            this.status = StatusEnum.ofValue(status).orElseThrow();
+        public CardBuilder status(StatusEnum status) {
+            this.status = status;
             return this;
         }
 

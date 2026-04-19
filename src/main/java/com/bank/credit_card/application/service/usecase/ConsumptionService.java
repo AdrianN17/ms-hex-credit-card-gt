@@ -8,11 +8,11 @@ import com.bank.credit_card.application.service.usecase.business.BusinessService
 import com.bank.credit_card.application.service.usecase.business.BusinessServiceBenefit;
 import com.bank.credit_card.application.service.usecase.business.BusinessServiceCard;
 import com.bank.credit_card.application.service.usecase.business.BusinessServiceConsumption;
+import com.bank.credit_card.domain.balance.BalanceConsumo;
 import com.bank.credit_card.domain.consumption.Consumption;
 import com.bank.credit_card.domain.consumption.vo.ConsumptionId;
 
 import static com.bank.credit_card.application.error.consumption.ConsumptionApplicationErrorMessage.CONSUMPTION_CURRENCY_NOT_FOUND;
-import static com.bank.credit_card.domain.balance.factory.BalanceType.CONSUMPTION;
 
 public class ConsumptionService implements ProcessConsumptionUseCase {
 
@@ -34,7 +34,7 @@ public class ConsumptionService implements ProcessConsumptionUseCase {
     public ConsumptionId processConsumption(CardProcessConsumptionCommand cardProcessConsumptionCommand) {
 
         var card = businessServiceCard.get(cardProcessConsumptionCommand.cardId());
-        var balance = businessServiceBalance.get(cardProcessConsumptionCommand.cardId(), CONSUMPTION);
+        var balance = BalanceConsumo.from(businessServiceBalance.get(cardProcessConsumptionCommand.cardId()));
         var benefit = businessServiceBenefit.get(cardProcessConsumptionCommand.cardId());
 
         var consumptionCurrency = loadCurrencyPort.load(cardProcessConsumptionCommand.currency())

@@ -13,7 +13,7 @@ public class CardPersistanceMapperImpl implements CardPersistanceMapper {
     @Override
     public CardEntity toEntity(Card card) {
         return CardEntity.builder()
-                .cardId(card.getId())
+                .cardId(card.getId().getValue())
                 .typeCard(card.getTypeCard())
                 .categoryCard(card.getCategoryCard())
                 .createdDate(card.getCreatedDate())
@@ -24,22 +24,17 @@ public class CardPersistanceMapperImpl implements CardPersistanceMapper {
 
     @Override
     public Card toDomain(CardEntityVO cardEntity, Currency currency) {
-        Amount credit = Amount.create(
-                currency,
-                cardEntity.getCardAccount().getCreditTotal()
-        );
-
-        return Card.create(
-                cardEntity.getCardId(),
-                cardEntity.getStatus(),
-                cardEntity.getCreatedDate(),
-                cardEntity.getUpdatedDate(),
-                cardEntity.getTypeCard(),
-                cardEntity.getCategoryCard(),
-                Credit.create(credit, cardEntity.getCardAccount().getDebtTax()),
-                cardEntity.getCardAccount().getCardStatus(),
-                CardAccountId.create(cardEntity.getCardAccount().getCardAccountId()),
-                cardEntity.getCardAccount().getPaymentDate()
-        );
+        return Card.builder()
+                .cardId(cardEntity.getCardId())
+                .status(cardEntity.getStatus())
+                .createdDate(cardEntity.getCreatedDate())
+                .updatedDate(cardEntity.getUpdatedDate())
+                .typeCard(cardEntity.getTypeCard())
+                .categoryCard(cardEntity.getCategoryCard())
+                .credit(cardEntity.getCardAccount().getCreditTotal(), cardEntity.getCardAccount().getDebtTax(), currency)
+                .cardStatus(cardEntity.getCardAccount().getCardStatus())
+                .cardAccountId(cardEntity.getCardAccount().getCardAccountId())
+                .paymentDay(cardEntity.getCardAccount().getPaymentDate())
+                .build();
     }
 }

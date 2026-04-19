@@ -75,49 +75,49 @@ public class CardManagementDelegateImpl implements CardManagementDelegate {
     @Override
     public ResponseEntity<Long202Response> controlCard(Long cardId) {
         var id = cardCloseService.closeCard(cardApiMapperRequestCommand.toCommandId(cardId));
-        return getLong202Response(id);
+        return getLong202Response(id.getValue());
     }
 
     @Override
     public ResponseEntity<UUID202Response> controlConsumption(Long cardId, UUID consumptionId) {
         var id = cardCancelConsumptionService.cancelConsumption(consumptionApiMapperRequestCommand.toCommandId(consumptionId, cardId));
-        return getUUID202Response(id);
+        return getUUID202Response(id.getValue());
     }
 
     @Override
     public ResponseEntity<UUID202Response> controlPayment(Long cardId, UUID paymentId) {
         var id =  cardCancelPaymentService.cancelPayment(paymentApiMapperRequestCommand.toCommandId(paymentId, cardId));
-        return getUUID202Response(id);
+        return getUUID202Response(id.getValue());
     }
 
     @Override
     public ResponseEntity<UUID202Response> initiatePayment(Long cardId, InitiatePaymentRequest initiatePaymentRequest, BindingResult bindingResult) {
         validate(bindingResult);
-        var payment = cardPaymentService.processPayment(paymentApiMapperRequestCommand.toCommand(initiatePaymentRequest.getData(), cardId));
-        return getUUID202Response(payment.getId());
+        var id = cardPaymentService.processPayment(paymentApiMapperRequestCommand.toCommand(initiatePaymentRequest.getData(), cardId));
+        return getUUID202Response(id.getValue());
     }
 
     @Override
     public ResponseEntity<UUIDList202Response> exchangeConsumption(Long cardId, UUID consumptionId, ExchangeConsumptionRequest exchangeConsumptionRequest, BindingResult bindingResult) {
         validate(bindingResult);
-        var consumptions = splitConsumptionService.splitConsumption(consumptionApiMapperRequestCommand.toCommandIdR(consumptionId, cardId, exchangeConsumptionRequest.getData()));
-        return getUUIDList202Response(consumptions.stream()
-                .map(c -> c.getId())
+        var ids = splitConsumptionService.splitConsumption(consumptionApiMapperRequestCommand.toCommandIdR(consumptionId, cardId, exchangeConsumptionRequest.getData()));
+        return getUUIDList202Response(ids.stream()
+                .map(c -> c.getValue())
                 .toList());
     }
 
     @Override
     public ResponseEntity<Long202Response> initiateCard(InitiateCardRequest initiateCardRequest, BindingResult bindingResult) {
         validate(bindingResult);
-        var card = createCardService.createCard(cardApiMapperRequestCommand.toCommand(initiateCardRequest.getData()));
-        return getLong202Response(card.getId());
+        var id = createCardService.createCard(cardApiMapperRequestCommand.toCommand(initiateCardRequest.getData()));
+        return getLong202Response(id.getValue());
     }
 
     @Override
     public ResponseEntity<UUID202Response> initiateConsumption(Long cardId, InitiateConsumptionRequest initiateConsumptionRequest, BindingResult bindingResult) {
         validate(bindingResult);
         var id = cardConsumptionService.processConsumption(consumptionApiMapperRequestCommand.toCommand(initiateConsumptionRequest.getData(), cardId));
-        return getUUID202Response(consumption.getId());
+        return getUUID202Response(id.getValue());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.bank.credit_card.infraestructure.config.sql.sqlserver;
 
+import com.bank.credit_card.domain.balance.factory.BalanceFactory;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.adapter.BalanceJpaRepositoryAdapter;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.mapper.persistance.BalancePersistanceMapper;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.mapper.persistance.BalancePersistanceMapperImpl;
@@ -19,7 +20,7 @@ public class BalanceJpaRepositoryAdapterConfig {
     }
 
     @Bean
-    BalancePersistanceMapper balancePersistanceMapper() {
-        return new BalancePersistanceMapperImpl();
+    BalancePersistanceMapper balancePersistanceMapper(BalanceFactory balanceFactory) {
+        return new BalancePersistanceMapperImpl(balanceFactory);
     }
 }

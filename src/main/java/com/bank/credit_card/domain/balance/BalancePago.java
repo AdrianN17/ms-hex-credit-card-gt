@@ -19,7 +19,7 @@ import static com.bank.credit_card.domain.util.Validation.isNotConditional;
 import static com.bank.credit_card.domain.util.Validation.isNotNull;
 
 
-public class BalancePago extends GenericDomain<BalanceId> implements Balance {
+public class BalancePago extends GenericDomain<BalanceId> implements BalanceOperable {
 
     private final CardId cardId;
     private final Amount total;
@@ -42,6 +42,21 @@ public class BalancePago extends GenericDomain<BalanceId> implements Balance {
         this.old = old;
         this.dateRange = dateRange;
         this.available = available;
+    }
+
+    public static BalancePago from(Balance balance) {
+        return BalancePago.builder()
+                .balanceId(balance.getId().getValue())
+                .status(balance.getStatus())
+                .createdDate(balance.getCreatedDate())
+                .updatedDate(balance.getUpdatedDate())
+                .currency(balance.getTotal().getCurrency())
+                .cardId(balance.getCardId().getValue())
+                .total(balance.getTotal().getAmount())
+                .old(balance.getOld().getAmount())
+                .available(balance.getAvailable().getAmount())
+                .dateRange(balance.getDateRange().getStartDate(), balance.getDateRange().getEndDate())
+                .build();
     }
 
     @Override
@@ -159,8 +174,8 @@ public class BalancePago extends GenericDomain<BalanceId> implements Balance {
             return this;
         }
 
-        public BalancePagoBuilder status(Integer status) {
-            this.status = StatusEnum.ofValue(status).orElseThrow();
+        public BalancePagoBuilder status(StatusEnum status) {
+            this.status = status;
             return this;
         }
 

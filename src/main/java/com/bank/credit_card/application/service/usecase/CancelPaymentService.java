@@ -5,9 +5,8 @@ import com.bank.credit_card.application.port.in.usecase.CancelPaymentUseCase;
 import com.bank.credit_card.application.service.usecase.business.BusinessServiceBalance;
 import com.bank.credit_card.application.service.usecase.business.BusinessServiceCard;
 import com.bank.credit_card.application.service.usecase.business.BusinessServicePayment;
+import com.bank.credit_card.domain.balance.BalancePago;
 import com.bank.credit_card.domain.payment.vo.PaymentId;
-
-import static com.bank.credit_card.domain.balance.factory.BalanceType.PAYMENT;
 
 public class CancelPaymentService implements CancelPaymentUseCase {
 
@@ -25,7 +24,7 @@ public class CancelPaymentService implements CancelPaymentUseCase {
     public PaymentId cancelPayment(CardCancelPaymentCommand cardCancelPaymentCommand) {
 
         var card = businessServiceCard.get(cardCancelPaymentCommand.cardId());
-        var balance = businessServiceBalance.get(cardCancelPaymentCommand.cardId(), PAYMENT);
+        var balance = BalancePago.from(businessServiceBalance.get(cardCancelPaymentCommand.cardId()));
         var payment = businessServicePayment.get(cardCancelPaymentCommand.cardId(), cardCancelPaymentCommand.paymentId());
 
         balance.cancel(payment.getPaymentAmount());

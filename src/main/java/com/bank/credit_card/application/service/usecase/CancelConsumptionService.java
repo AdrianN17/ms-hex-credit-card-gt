@@ -5,9 +5,8 @@ import com.bank.credit_card.application.port.in.usecase.CancelConsumptionUseCase
 import com.bank.credit_card.application.service.usecase.business.BusinessServiceBalance;
 import com.bank.credit_card.application.service.usecase.business.BusinessServiceCard;
 import com.bank.credit_card.application.service.usecase.business.BusinessServiceConsumption;
+import com.bank.credit_card.domain.balance.BalanceConsumo;
 import com.bank.credit_card.domain.consumption.vo.ConsumptionId;
-
-import static com.bank.credit_card.domain.balance.factory.BalanceType.CONSUMPTION;
 
 public class CancelConsumptionService implements CancelConsumptionUseCase {
 
@@ -26,7 +25,7 @@ public class CancelConsumptionService implements CancelConsumptionUseCase {
     public ConsumptionId cancelConsumption(CardCancelConsumptionCommand cardCancelConsumptionCommand) {
 
         var card = businessServiceCard.get(cardCancelConsumptionCommand.cardId());
-        var balance = businessServiceBalance.get(cardCancelConsumptionCommand.cardId(), CONSUMPTION);
+        var balance = BalanceConsumo.from(businessServiceBalance.get(cardCancelConsumptionCommand.cardId()));
         var consumption = businessServiceConsumption.get(cardCancelConsumptionCommand.cardId(),
                 cardCancelConsumptionCommand.consumptionId());
 

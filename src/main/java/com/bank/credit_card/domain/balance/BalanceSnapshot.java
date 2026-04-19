@@ -11,50 +11,33 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static com.bank.credit_card.domain.balance.BalanceConstant.OVERCHARGE_LIMIT;
 import static com.bank.credit_card.domain.balance.BalanceErrorMessage.*;
 import static com.bank.credit_card.domain.base.enums.StatusEnum.ACTIVE;
-import static com.bank.credit_card.domain.util.Validation.isNotConditional;
 import static com.bank.credit_card.domain.util.Validation.isNotNull;
 
-public class BalanceConsumo extends GenericDomain<BalanceId> implements BalanceOperable {
+public class BalanceSnapshot extends GenericDomain<BalanceId> implements Balance {
 
     private final CardId cardId;
     private final Amount total;
     private final Amount old;
+    private final Amount available;
     private final DateRange dateRange;
-    private Amount available;
 
-    protected BalanceConsumo(BalanceId id,
-                             StatusEnum status,
-                             LocalDateTime createdDate,
-                             LocalDateTime updatedDate,
-                             CardId cardId,
-                             Amount total,
-                             Amount old,
-                             DateRange dateRange,
-                             Amount available) {
+    protected BalanceSnapshot(BalanceId id,
+                              StatusEnum status,
+                              LocalDateTime createdDate,
+                              LocalDateTime updatedDate,
+                              CardId cardId,
+                              Amount total,
+                              Amount old,
+                              DateRange dateRange,
+                              Amount available) {
         super(id, status, createdDate, updatedDate);
         this.cardId = cardId;
         this.total = total;
         this.old = old;
-        this.dateRange = dateRange;
         this.available = available;
-    }
-
-    public static BalanceConsumo from(Balance balance) {
-        return BalanceConsumo.builder()
-                .balanceId(balance.getId().getValue())
-                .status(balance.getStatus())
-                .createdDate(balance.getCreatedDate())
-                .updatedDate(balance.getUpdatedDate())
-                .currency(balance.getTotal().getCurrency())
-                .cardId(balance.getCardId().getValue())
-                .total(balance.getTotal().getAmount())
-                .old(balance.getOld().getAmount())
-                .available(balance.getAvailable().getAmount())
-                .dateRange(balance.getDateRange().getStartDate(), balance.getDateRange().getEndDate())
-                .build();
+        this.dateRange = dateRange;
     }
 
     @Override
@@ -87,30 +70,26 @@ public class BalanceConsumo extends GenericDomain<BalanceId> implements BalanceO
         softDelete();
     }
 
-    @Override
-    public Boolean isOvercharged() {
-        BigDecimal limitOvercharge = getTotal().getAmount().multiply(OVERCHARGE_LIMIT);
-        BigDecimal totalLimit = getTotal().getAmount().add(limitOvercharge);
-        return getAvailable().getAmount().compareTo(totalLimit) > 0;
+    public static BalanceSnapshotBuilder builder() {
+        return new BalanceSnapshotBuilder();
     }
 
-    @Override
-    public void apply(Amount amount) {
-        this.available = getAvailable().menos(amount);
-        isNotConditional(getAvailable().estaFaltando(getTotal()), new BalanceException(AMOUNT_EXCEED_CREDIT_LIMIT));
+    public static BalanceSnapshot from(Balance balance) {
+        return BalanceSnapshot.builder()
+                .balanceId(balance.getId().getValue())
+                .status(balance.getStatus())
+                .createdDate(balance.getCreatedDate())
+                .updatedDate(balance.getUpdatedDate())
+                .currency(balance.getTotal().getCurrency())
+                .cardId(balance.getCardId().getValue())
+                .total(balance.getTotal().getAmount())
+                .old(balance.getOld().getAmount())
+                .available(balance.getAvailable().getAmount())
+                .dateRange(balance.getDateRange().getStartDate(), balance.getDateRange().getEndDate())
+                .build();
     }
 
-    @Override
-    public void cancel(Amount amount) {
-        isNotNull(amount, new BalanceException(PAYMENT_CANNOT_BE_NULL));
-        this.available = getAvailable().menos(amount);
-    }
-
-    public static BalanceConsumoBuilder builder() {
-        return new BalanceConsumoBuilder();
-    }
-
-    public static class BalanceConsumoBuilder {
+    public static class BalanceSnapshotBuilder {
         private BalanceId id;
         private StatusEnum status;
         private LocalDateTime createdDate;
@@ -123,69 +102,69 @@ public class BalanceConsumo extends GenericDomain<BalanceId> implements BalanceO
 
         private Currency currency;
 
-        public BalanceConsumoBuilder balanceId(Long balanceId) {
+        public BalanceSnapshotBuilder balanceId(Long balanceId) {
             this.id = BalanceId.create(balanceId);
             return this;
         }
 
-        public BalanceConsumoBuilder cardId(Long cardId) {
+        public BalanceSnapshotBuilder cardId(Long cardId) {
             this.cardId = CardId.create(cardId);
             return this;
         }
 
-        public BalanceConsumoBuilder currency(Currency currency) {
+        public BalanceSnapshotBuilder currency(Currency currency) {
             isNotNull(currency, new BalanceException(CURRENCY_CANNOT_BE_NULL));
             this.currency = currency;
             return this;
         }
 
-        public BalanceConsumoBuilder total(BigDecimal total) {
+        public BalanceSnapshotBuilder total(BigDecimal total) {
             isNotNull(total, new BalanceException(TOTAL_AMOUNT_CANNOT_BE_NULL));
             this.total = Amount.create(currency, total);
             return this;
         }
 
-        public BalanceConsumoBuilder old(BigDecimal old) {
+        public BalanceSnapshotBuilder old(BigDecimal old) {
             isNotNull(old, new BalanceException(OLD_AMOUNT_CANNOT_BE_NULL));
             this.old = Amount.create(currency, old);
             return this;
         }
 
-        public BalanceConsumoBuilder available(BigDecimal available) {
+        public BalanceSnapshotBuilder available(BigDecimal available) {
             isNotNull(available, new BalanceException(AVAILABLE_AMOUNT_CANNOT_BE_NULL));
             this.available = Amount.create(currency, available);
             return this;
         }
 
-        public BalanceConsumoBuilder dateRange(Short paymentDay) {
+        public BalanceSnapshotBuilder dateRange(Short paymentDay) {
             isNotNull(paymentDay, new BalanceException(DATE_RANGE_CANNOT_BE_NULL));
             this.dateRange = DateRange.create(paymentDay);
             return this;
         }
 
-        public BalanceConsumoBuilder dateRange(LocalDate startDate, LocalDate endDate) {
+        public BalanceSnapshotBuilder dateRange(LocalDate startDate, LocalDate endDate) {
             isNotNull(startDate, new BalanceException(DATE_RANGE_CANNOT_BE_NULL));
             isNotNull(endDate, new BalanceException(DATE_RANGE_CANNOT_BE_NULL));
             this.dateRange = DateRange.create(startDate, endDate);
             return this;
         }
 
-        public BalanceConsumoBuilder status(StatusEnum status) {
+        public BalanceSnapshotBuilder status(StatusEnum status) {
             this.status = status;
             return this;
         }
 
-        public BalanceConsumoBuilder createdDate(LocalDateTime createdDate) {
+        public BalanceSnapshotBuilder createdDate(LocalDateTime createdDate) {
             this.createdDate = createdDate;
             return this;
         }
 
-        public BalanceConsumoBuilder updatedDate(LocalDateTime updatedDate) {
+        public BalanceSnapshotBuilder updatedDate(LocalDateTime updatedDate) {
             this.updatedDate = updatedDate;
             return this;
         }
 
-        public BalanceConsumo build() {
+        public BalanceSnapshot build() {
             isNotNull(id, new BalanceException(ID_CANNOT_BE_NULL));
             isNotNull(cardId, new BalanceException(CARD_ID_CANNOT_BE_NULL));
             isNotNull(total, new BalanceException(TOTAL_AMOUNT_CANNOT_BE_NULL));
@@ -197,7 +176,7 @@ public class BalanceConsumo extends GenericDomain<BalanceId> implements BalanceO
             if (this.old == null) this.old = this.total;
             if (this.available == null) this.available = this.total;
 
-            return new BalanceConsumo(id, status, createdDate, updatedDate,
+            return new BalanceSnapshot(id, status, createdDate, updatedDate,
                     cardId, total, old, dateRange, available);
         }
     }

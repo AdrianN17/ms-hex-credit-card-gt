@@ -1,6 +1,7 @@
 package com.bank.credit_card.domain.balance.factory;
 
 import com.bank.credit_card.domain.balance.Balance;
+import com.bank.credit_card.domain.base.enums.StatusEnum;
 import com.bank.credit_card.domain.base.vo.Currency;
 
 import java.math.BigDecimal;
@@ -11,7 +12,7 @@ public interface BalanceFactory {
 
     Balance create(
             Long id,
-            Integer status,
+            StatusEnum status,
             LocalDateTime createdDate,
             LocalDateTime updatedDate,
             Currency currency,
@@ -20,8 +21,7 @@ public interface BalanceFactory {
             BigDecimal old,
             BigDecimal available,
             LocalDate startDate,
-            LocalDate endDate,
-            BalanceType balanceType
+            LocalDate endDate
     );
 
     Balance create(
@@ -29,8 +29,7 @@ public interface BalanceFactory {
             Currency currency,
             Long cardId,
             BigDecimal total,
-            Short paymentDay,
-            BalanceType balanceType
+            Short paymentDay
     );
 
 }

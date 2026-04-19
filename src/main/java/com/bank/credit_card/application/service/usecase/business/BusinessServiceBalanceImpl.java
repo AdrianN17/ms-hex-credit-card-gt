@@ -8,7 +8,6 @@ import com.bank.credit_card.application.port.out.card.query.LoadCardCurrencyPort
 import com.bank.credit_card.application.port.out.currency.LoadCurrencyPort;
 import com.bank.credit_card.domain.balance.Balance;
 import com.bank.credit_card.domain.balance.BalanceId;
-import com.bank.credit_card.domain.balance.factory.BalanceType;
 
 import static com.bank.credit_card.application.error.balance.BalanceApplicationErrorMessage.BALANCE_NOT_FOUND;
 import static com.bank.credit_card.application.error.balance.BalanceApplicationErrorMessage.FAILED_TO_CREATE_BALANCE;
@@ -30,7 +29,7 @@ public class BusinessServiceBalanceImpl implements BusinessServiceBalance {
     }
 
     @Override
-    public Balance get(Long cardId, BalanceType balanceType) {
+    public Balance get(Long cardId) {
         var cardCurrencyValue = loadCardCurrencyPort.load(cardId)
                 .orElseThrow(() -> new ApplicationCardException(CARD_NOT_FOUND));
 
