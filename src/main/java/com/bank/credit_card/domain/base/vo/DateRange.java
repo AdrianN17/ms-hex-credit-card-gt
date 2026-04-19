@@ -9,7 +9,7 @@ import static com.bank.credit_card.domain.base.constants.DateRangeErrorMessage.E
 import static com.bank.credit_card.domain.base.constants.DateRangeErrorMessage.START_DATE_AFTER_END_DATE;
 import static com.bank.credit_card.domain.util.Validation.isNotConditional;
 
-public class DateRange {
+public final class DateRange {
     private final LocalDate startDate;
     private final LocalDate endDate;
 

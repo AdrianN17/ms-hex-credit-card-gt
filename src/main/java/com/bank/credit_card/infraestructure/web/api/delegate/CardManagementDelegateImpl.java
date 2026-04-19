@@ -6,6 +6,7 @@ import com.bank.credit_card.application.service.query.LoadCardByIdService;
 import com.bank.credit_card.application.service.query.LoadConsumptionByDatesAndCardIdService;
 import com.bank.credit_card.application.service.query.LoadPaymentByDatesAndCardIdService;
 import com.bank.credit_card.application.service.usecase.*;
+import com.bank.credit_card.application.service.usecase.SplitConsumptionService;
 import com.bank.credit_card.infraestructure.web.api.mapper.command.CardApiMapperRequestCommand;
 import com.bank.credit_card.infraestructure.web.api.mapper.command.ConsumptionApiMapperRequestCommand;
 import com.bank.credit_card.infraestructure.web.api.mapper.command.PaymentApiMapperRequestCommand;
@@ -28,11 +29,11 @@ import static com.bank.credit_card.infraestructure.web.api.util.BindingValidator
 public class CardManagementDelegateImpl implements CardManagementDelegate {
 
     private final CreateCardService createCardService;
-    private final CardCancelPaymentService cardCancelPaymentService;
-    private final CardCancelConsumptionService cardCancelConsumptionService;
+    private final CancelPaymentService cardCancelPaymentService;
+    private final CancelConsumptionService cardCancelConsumptionService;
     private final CardCloseService cardCloseService;
-    private final CardConsumptionService cardConsumptionService;
-    private final CardPaymentService cardPaymentService;
+    private final ConsumptionService cardConsumptionService;
+    private final PaymentService cardPaymentService;
     private final SplitConsumptionService splitConsumptionService;
 
     private final LoadConsumptionByDatesAndCardIdService loadConsumptionByDatesAndCardIdService;
@@ -44,11 +45,11 @@ public class CardManagementDelegateImpl implements CardManagementDelegate {
     private final PaymentApiMapperRequestCommand paymentApiMapperRequestCommand;
 
     public CardManagementDelegateImpl(CreateCardService createCardService,
-                                      CardCancelPaymentService cardCancelPaymentService,
-                                      CardCancelConsumptionService cardCancelConsumptionService,
+                                      CancelPaymentService cardCancelPaymentService,
+                                      CancelConsumptionService cardCancelConsumptionService,
                                       CardCloseService cardCloseService,
-                                      CardConsumptionService cardConsumptionService,
-                                      CardPaymentService cardPaymentService,
+                                      ConsumptionService cardConsumptionService,
+                                      PaymentService cardPaymentService,
                                       SplitConsumptionService splitConsumptionService,
                                       LoadConsumptionByDatesAndCardIdService loadConsumptionByDatesAndCardIdService,
                                       LoadPaymentByDatesAndCardIdService loadPaymentByDatesAndCardIdService,
@@ -115,7 +116,7 @@ public class CardManagementDelegateImpl implements CardManagementDelegate {
     @Override
     public ResponseEntity<UUID202Response> initiateConsumption(Long cardId, InitiateConsumptionRequest initiateConsumptionRequest, BindingResult bindingResult) {
         validate(bindingResult);
-        var consumption = cardConsumptionService.processConsumption(consumptionApiMapperRequestCommand.toCommand(initiateConsumptionRequest.getData(), cardId));
+        var id = cardConsumptionService.processConsumption(consumptionApiMapperRequestCommand.toCommand(initiateConsumptionRequest.getData(), cardId));
         return getUUID202Response(consumption.getId());
     }
 

@@ -1,6 +1,6 @@
 package com.bank.credit_card.infraestructure.persistence.db.generic.repository;
 
-import com.bank.credit_card.domain.base.constants.StatusEnum;
+import com.bank.credit_card.domain.base.enums.StatusEnum;
 import com.bank.credit_card.infraestructure.persistence.db.generic.entity.GenericEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;

@@ -4,6 +4,7 @@ import com.bank.credit_card.application.service.query.LoadCardByIdService;
 import com.bank.credit_card.application.service.query.LoadConsumptionByDatesAndCardIdService;
 import com.bank.credit_card.application.service.query.LoadPaymentByDatesAndCardIdService;
 import com.bank.credit_card.application.service.usecase.*;
+import com.bank.credit_card.application.service.usecase.SplitConsumptionService;
 import com.bank.credit_card.infraestructure.web.api.delegate.CardManagementDelegate;
 import com.bank.credit_card.infraestructure.web.api.delegate.CardManagementDelegateImpl;
 import com.bank.credit_card.infraestructure.web.api.mapper.command.CardApiMapperRequestCommand;
@@ -36,11 +37,11 @@ public class CardManagementAdapterConfig {
 
     @Bean
     CardManagementDelegate cardManagementDelegate(CreateCardService createCardService,
-                                                  CardCancelPaymentService cardCancelPaymentService,
-                                                  CardCancelConsumptionService cardCancelConsumptionService,
+                                                  CancelPaymentService cardCancelPaymentService,
+                                                  CancelConsumptionService cardCancelConsumptionService,
                                                   CardCloseService cardCloseService,
-                                                  CardConsumptionService cardConsumptionService,
-                                                  CardPaymentService cardPaymentService,
+                                                  ConsumptionService cardConsumptionService,
+                                                  PaymentService cardPaymentService,
                                                   SplitConsumptionService splitConsumptionService,
                                                   LoadConsumptionByDatesAndCardIdService loadConsumptionByDatesAndCardIdService,
                                                   LoadPaymentByDatesAndCardIdService loadPaymentByDatesAndCardIdService,

@@ -5,7 +5,7 @@ import com.bank.credit_card.application.port.out.card.query.LoadCardBalanceBenef
 import com.bank.credit_card.application.port.out.card.query.LoadCardCurrencyPort;
 import com.bank.credit_card.application.port.out.card.usecase.LoadCardPort;
 import com.bank.credit_card.application.port.out.card.usecase.SaveCardPort;
-import com.bank.credit_card.domain.base.constants.CurrencyEnum;
+import com.bank.credit_card.domain.base.enums.CurrencyEnum;
 import com.bank.credit_card.domain.base.vo.Currency;
 import com.bank.credit_card.domain.card.Card;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.CardEntity;

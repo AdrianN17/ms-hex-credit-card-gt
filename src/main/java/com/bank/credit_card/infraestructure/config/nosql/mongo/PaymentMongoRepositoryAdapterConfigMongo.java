@@ -1,5 +1,6 @@
 package com.bank.credit_card.infraestructure.config.nosql.mongo;
 
+import com.bank.credit_card.domain.payment.factory.PaymentFactory;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.mongo.adapter.PaymentMongoRepositoryAdapter;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.mongo.mapper.persistance.PaymentPersistanceMapperMongo;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.mongo.mapper.persistance.PaymentPersistanceMapperMongoImpl;
@@ -24,8 +25,8 @@ public class PaymentMongoRepositoryAdapterConfigMongo {
     }
 
     @Bean
-    PaymentPersistanceMapperMongo paymentPersistanceMapperMongo() {
-        return new PaymentPersistanceMapperMongoImpl();
+    PaymentPersistanceMapperMongo paymentPersistanceMapperMongo(PaymentFactory paymentFactory) {
+        return new PaymentPersistanceMapperMongoImpl(paymentFactory);
     }
 
     @Bean

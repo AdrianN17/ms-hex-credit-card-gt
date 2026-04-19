@@ -1,5 +1,6 @@
 package com.bank.credit_card.infraestructure.config.nosql.cosmos;
 
+import com.bank.credit_card.domain.payment.factory.PaymentFactory;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.adapter.PaymentCosmosRepositoryAdapter;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.mapper.persistance.PaymentPersistanceMapperCosmos;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.mapper.persistance.PaymentPersistanceMapperCosmosImpl;
@@ -24,8 +25,8 @@ public class PaymentCosmosRepositoryAdapterConfigCosmos {
     }
 
     @Bean
-    PaymentPersistanceMapperCosmos paymentPersistanceMapperCosmos() {
-        return new PaymentPersistanceMapperCosmosImpl();
+    PaymentPersistanceMapperCosmos paymentPersistanceMapperCosmos(PaymentFactory paymentFactory) {
+        return new PaymentPersistanceMapperCosmosImpl(paymentFactory);
     }
 
     @Bean

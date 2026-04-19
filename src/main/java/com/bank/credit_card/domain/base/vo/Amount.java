@@ -8,7 +8,7 @@ import static com.bank.credit_card.domain.base.constants.AmountErrorMessage.AMOU
 import static com.bank.credit_card.domain.base.constants.AmountErrorMessage.AMOUNT_REQUIRED;
 import static com.bank.credit_card.domain.util.Validation.isNotNull;
 
-public class Amount {
+public final class Amount {
 
     private final Currency currency;
     private final BigDecimal amount;
@@ -58,6 +58,11 @@ public class Amount {
 
         return Amount.create(getCurrency(),
                 this.amount.subtract(convertir(this, amount).getAmount()));
+    }
+
+    public Amount dividir(Integer quantity) {
+        return Amount.create(getCurrency(),
+                this.amount.divide(BigDecimal.valueOf(quantity)));
     }
 
     public static Amount convertir(Amount a, Amount b) {

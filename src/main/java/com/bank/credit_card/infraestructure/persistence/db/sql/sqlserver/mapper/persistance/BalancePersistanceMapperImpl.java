@@ -3,7 +3,7 @@ package com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.mapper
 import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.base.vo.Currency;
 import com.bank.credit_card.domain.base.vo.DateRange;
-import com.bank.credit_card.domain.balance.Balance;
+import com.bank.credit_card.domain.balance.old.Balance;
 import com.bank.credit_card.domain.card.vo.CardId;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.BalanceEntity;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.vo.BalanceEntityVO;

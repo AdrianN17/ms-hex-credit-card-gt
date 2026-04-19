@@ -1,6 +1,6 @@
 package com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.projection;
 
-import com.bank.credit_card.domain.base.constants.CurrencyEnum;
+import com.bank.credit_card.domain.base.enums.CurrencyEnum;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.exception.CardPersistanceException;
 
 import static com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.exception.CardErrorMessage.INCORRECT_CURRENCY_VALUE;

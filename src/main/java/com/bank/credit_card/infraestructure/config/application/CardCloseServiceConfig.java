@@ -1,14 +1,9 @@
 package com.bank.credit_card.infraestructure.config.application;
 
-import com.bank.credit_card.application.port.out.balance.LoadBalancePort;
-import com.bank.credit_card.application.port.out.balance.SaveBalancePort;
-import com.bank.credit_card.application.port.out.benefit.LoadBenefitPort;
-import com.bank.credit_card.application.port.out.benefit.SaveBenefitPort;
-import com.bank.credit_card.application.port.out.card.query.LoadCardCurrencyPort;
-import com.bank.credit_card.application.port.out.card.usecase.LoadCardPort;
-import com.bank.credit_card.application.port.out.card.usecase.SaveCardPort;
-import com.bank.credit_card.application.port.out.currency.LoadCurrencyPort;
 import com.bank.credit_card.application.service.usecase.CardCloseService;
+import com.bank.credit_card.application.service.usecase.business.BusinessServiceBalance;
+import com.bank.credit_card.application.service.usecase.business.BusinessServiceBenefit;
+import com.bank.credit_card.application.service.usecase.business.BusinessServiceCard;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,23 +12,10 @@ public class CardCloseServiceConfig {
 
     @Bean
     CardCloseService cardCloseService(
-            LoadCardPort loadCardPort,
-            LoadBalancePort loadBalancePort,
-            LoadBenefitPort loadBenefitPort,
-            SaveBenefitPort saveBenefitPort,
-            SaveBalancePort saveBalancePort,
-            SaveCardPort saveCardPort,
-            LoadCurrencyPort loadCurrencyPort,
-            LoadCardCurrencyPort loadCardCurrencyPort) {
+            BusinessServiceCard businessServiceCard,
+            BusinessServiceBalance businessServiceBalance,
+            BusinessServiceBenefit businessServiceBenefit) {
 
-        return new CardCloseService(loadCardPort,
-                loadBalancePort,
-                loadBenefitPort,
-                saveBenefitPort,
-                saveBalancePort,
-                saveCardPort,
-                loadCurrencyPort,
-                loadCardCurrencyPort);
+        return new CardCloseService(businessServiceCard, businessServiceBalance, businessServiceBenefit);
     }
 }
-

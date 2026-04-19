@@ -4,7 +4,7 @@ import com.bank.credit_card.application.port.in.command.CardCancelConsumptionCom
 import com.bank.credit_card.application.port.in.command.CardProcessConsumptionCommand;
 import com.bank.credit_card.application.port.in.command.CardSplitConsumptionCommand;
 import com.bank.credit_card.application.port.in.query.view.LoadConsumptionView;
-import com.bank.credit_card.domain.base.constants.CurrencyEnum;
+import com.bank.credit_card.domain.base.enums.CurrencyEnum;
 import com.bank.credit_card.infraestructure.web.api.schema.request.ConsumptionRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.response.ConsumptionResponse;
 import com.bank.credit_card.infraestructure.web.api.schema.request.ExchangeConsumptionRequestData;

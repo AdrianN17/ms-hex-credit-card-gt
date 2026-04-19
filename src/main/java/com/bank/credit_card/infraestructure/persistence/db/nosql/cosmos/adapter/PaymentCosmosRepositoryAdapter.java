@@ -6,9 +6,9 @@ import com.bank.credit_card.application.port.out.payment.query.LoadPaymentCurren
 import com.bank.credit_card.application.port.out.payment.query.LoadPaymentsByDatesAndCardIdPort;
 import com.bank.credit_card.application.port.out.payment.usecase.LoadPaymentPort;
 import com.bank.credit_card.application.port.out.payment.usecase.SavePaymentPort;
-import com.bank.credit_card.domain.base.constants.CurrencyEnum;
+import com.bank.credit_card.domain.base.enums.CurrencyEnum;
 import com.bank.credit_card.domain.base.vo.Currency;
-import com.bank.credit_card.domain.payment.Payment;
+import com.bank.credit_card.domain.payment.old.Payment;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.entity.PaymentEntityCosmos;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.common.exception.PaymentPersistanceException;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.mapper.persistance.PaymentPersistanceMapperCosmos;

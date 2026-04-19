@@ -1,7 +1,7 @@
 package com.bank.credit_card.infraestructure.ws.adapter;
 
 import com.bank.credit_card.application.port.out.currency.LoadCurrencyPort;
-import com.bank.credit_card.domain.base.constants.CurrencyEnum;
+import com.bank.credit_card.domain.base.enums.CurrencyEnum;
 import com.bank.credit_card.domain.base.vo.Currency;
 import com.bank.credit_card.infraestructure.ws.mapper.MapperCurrency;
 import com.bank.credit_card.infraestructure.ws.repository.CurrencyJsonServerWSRepository;

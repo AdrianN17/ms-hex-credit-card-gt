@@ -1,6 +1,5 @@
 package com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.mapper.persistance;
 
-import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.base.vo.Currency;
 import com.bank.credit_card.domain.card.vo.CardId;
 import com.bank.credit_card.domain.consumption.Consumption;
@@ -10,29 +9,27 @@ public class ConsumptionPersistanceMapperCosmosImpl implements ConsumptionPersis
 
     @Override
     public Consumption toDomain(ConsumptionEntityCosmos consumptionEntity, Currency currency) {
-        return Consumption.create(
-                consumptionEntity.getConsumptionId(),
-                consumptionEntity.getStatus(),
-                consumptionEntity.getCreatedDate(),
-                consumptionEntity.getUpdatedDate(),
-                Amount.create(currency, consumptionEntity.getAmount()),
-                consumptionEntity.getConsumptionDate(),
-                consumptionEntity.getConsumptionApprobationDate(),
-                CardId.create(consumptionEntity.getCardId()),
-                consumptionEntity.getSellerName()
-        );
+        return Consumption.builder()
+                .id(consumptionEntity.getConsumptionId())
+                .status(consumptionEntity.getStatus())
+                .createdDate(consumptionEntity.getCreatedDate())
+                .updatedDate(consumptionEntity.getUpdatedDate())
+                .consumptionAmount(consumptionEntity.getAmount(), currency)
+                .consumptionApprobation(consumptionEntity.getConsumptionDate(), consumptionEntity.getConsumptionApprobationDate())
+                .cardId(CardId.create(consumptionEntity.getCardId()))
+                .sellerName(consumptionEntity.getSellerName())
+                .build();
     }
 
     @Override
     public ConsumptionEntityCosmos toEntity(Consumption consumption) {
-
         return ConsumptionEntityCosmos.builder()
-                .consumptionId(consumption.getId())
+                .consumptionId(consumption.getId().getValue())
                 .amount(consumption.getConsumptionAmount().getAmount())
                 .currency(consumption.getConsumptionAmount().getCurrency().getCurrency())
-                .consumptionDate(consumption.getConsumptionDate())
-                .consumptionApprobationDate(consumption.getConsumptionApprobationDate())
-                .sellerName(consumption.getSellerName())
+                .consumptionDate(consumption.getConsumptionApprobation().getDate())
+                .consumptionApprobationDate(consumption.getConsumptionApprobation().getApprobationDate())
+                .sellerName(consumption.getSellerName().getValue())
                 .cardId(consumption.getCardId().getValue().toString())
                 .createdDate(consumption.getCreatedDate())
                 .updatedDate(consumption.getUpdatedDate())

@@ -1,6 +1,6 @@
 package com.bank.credit_card.infraestructure.persistence.db.generic.entity;
 
-import com.bank.credit_card.domain.base.constants.StatusEnum;
+import com.bank.credit_card.domain.base.enums.StatusEnum;
 import com.bank.credit_card.infraestructure.persistence.db.generic.converter.StatusEnumConverter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

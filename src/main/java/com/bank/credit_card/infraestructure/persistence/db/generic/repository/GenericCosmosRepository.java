@@ -2,7 +2,7 @@ package com.bank.credit_card.infraestructure.persistence.db.generic.repository;
 
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
-import com.bank.credit_card.domain.base.constants.StatusEnum;
+import com.bank.credit_card.domain.base.enums.StatusEnum;
 import com.bank.credit_card.infraestructure.persistence.db.generic.entity.GenericEntity;
 import org.springframework.data.repository.NoRepositoryBean;
 
