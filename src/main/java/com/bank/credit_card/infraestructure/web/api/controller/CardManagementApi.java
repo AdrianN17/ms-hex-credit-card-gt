@@ -5,6 +5,7 @@
  */
 package com.bank.credit_card.infraestructure.web.api.controller;
 
+import com.bank.credit_card.infraestructure.aop.annotation.TransactionalUseCase;
 import com.bank.credit_card.infraestructure.web.api.schema.request.ExchangeConsumptionRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.request.InitiateCardRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.request.InitiateConsumptionRequest;
@@ -43,6 +44,7 @@ public interface CardManagementApi {
      * or  (status code 404)
      * or  (status code 500)
      */
+    @TransactionalUseCase
     @Operation(
             operationId = "controlCard",
             summary = "controlCard",
@@ -83,6 +85,7 @@ public interface CardManagementApi {
      * or  (status code 404)
      * or  (status code 500)
      */
+    @TransactionalUseCase
     @Operation(
             operationId = "controlConsumption",
             summary = "controlConsumption",
@@ -124,6 +127,7 @@ public interface CardManagementApi {
      * or  (status code 404)
      * or  (status code 500)
      */
+    @TransactionalUseCase
     @Operation(
             operationId = "controlPayment",
             summary = "controlPayment",
@@ -165,6 +169,7 @@ public interface CardManagementApi {
      * or  (status code 404)
      * or  (status code 500)
      */
+    @TransactionalUseCase
     @Operation(
             operationId = "initiatePayment",
             summary = "initiatePayment",
@@ -209,6 +214,7 @@ public interface CardManagementApi {
      * or  (status code 404)
      * or  (status code 500)
      */
+    @TransactionalUseCase
     @Operation(
             operationId = "exchangeConsumption",
             summary = "exchangeConsumption",
@@ -252,6 +258,7 @@ public interface CardManagementApi {
      * or  (status code 404)
      * or  (status code 500)
      */
+    @TransactionalUseCase
     @Operation(
             operationId = "initiateCard",
             summary = "initiateCard",
@@ -294,6 +301,7 @@ public interface CardManagementApi {
      * or  (status code 404)
      * or  (status code 500)
      */
+    @TransactionalUseCase
     @Operation(
             operationId = "initiateConsumption",
             summary = "initiateConsumption",
