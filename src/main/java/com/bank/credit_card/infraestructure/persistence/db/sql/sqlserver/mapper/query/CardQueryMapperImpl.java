@@ -2,7 +2,9 @@ package com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.mapper
 
 import com.bank.credit_card.application.port.in.query.view.LoadCardBalanceBenefitView;
 import com.bank.credit_card.infraestructure.persistence.db.sql.sqlserver.entity.projection.CardSumaryProjection;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CardQueryMapperImpl implements CardQueryMapper {
 
     @Override

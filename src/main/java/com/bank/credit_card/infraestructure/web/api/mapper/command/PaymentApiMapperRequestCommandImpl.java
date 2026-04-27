@@ -10,7 +10,11 @@ import com.bank.credit_card.infraestructure.web.api.schema.request.PaymentReques
 import com.bank.credit_card.infraestructure.web.api.schema.response.PaymentResponse;
 
 import java.time.ZoneOffset;
+import java.util.Objects;
 import java.util.UUID;
+
+import static com.bank.credit_card.infraestructure.web.api.contants.PaymentMapperCommandMessageConstants.PAYMENT_APPROBATION_DATE_NOT_NULL;
+import static com.bank.credit_card.infraestructure.web.api.contants.PaymentMapperCommandMessageConstants.PAYMENT_DATE_NOT_NULL;
 
 public class PaymentApiMapperRequestCommandImpl implements PaymentApiMapperRequestCommand {
 
@@ -38,8 +42,8 @@ public class PaymentApiMapperRequestCommandImpl implements PaymentApiMapperReque
                 view.currency().name(),
                 view.amount(),
                 view.category().name(),
-                view.paymentDate() != null ? view.paymentDate().atOffset(ZoneOffset.UTC) : null,
-                view.paymentApprobationDate() != null ? view.paymentApprobationDate().atOffset(ZoneOffset.UTC) : null
+                Objects.requireNonNull(view.paymentDate(), PAYMENT_DATE_NOT_NULL).atOffset(ZoneOffset.UTC),
+                Objects.requireNonNull(view.paymentApprobationDate(), PAYMENT_APPROBATION_DATE_NOT_NULL).atOffset(ZoneOffset.UTC)
         );
     }
 }

@@ -2,7 +2,9 @@ package com.bank.credit_card.infraestructure.persistence.db.nosql.mongo.mapper.q
 
 import com.bank.credit_card.application.port.in.query.view.LoadPaymentView;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.mongo.entity.PaymentEntityMongo;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PaymentQueryMapperMongoImpl implements PaymentQueryMapperMongo {
 
     @Override

@@ -6,11 +6,15 @@ import com.bank.credit_card.application.port.in.command.CardSplitConsumptionComm
 import com.bank.credit_card.application.port.in.query.view.LoadConsumptionView;
 import com.bank.credit_card.domain.base.enums.CurrencyEnum;
 import com.bank.credit_card.infraestructure.web.api.schema.request.ConsumptionRequest;
-import com.bank.credit_card.infraestructure.web.api.schema.response.ConsumptionResponse;
 import com.bank.credit_card.infraestructure.web.api.schema.request.ExchangeConsumptionRequestData;
+import com.bank.credit_card.infraestructure.web.api.schema.response.ConsumptionResponse;
 
 import java.time.ZoneOffset;
+import java.util.Objects;
 import java.util.UUID;
+
+import static com.bank.credit_card.infraestructure.web.api.contants.ConsumptionMapperCommandMessageConstants.CONSUMPTION_APPROBATION_DATE_NOT_NULL;
+import static com.bank.credit_card.infraestructure.web.api.contants.ConsumptionMapperCommandMessageConstants.CONSUMPTION_DATE_NOT_NULL;
 
 public class ConsumptionApiMapperRequestCommandImpl implements ConsumptionApiMapperRequestCommand {
 
@@ -33,8 +37,8 @@ public class ConsumptionApiMapperRequestCommandImpl implements ConsumptionApiMap
                 view.sellerName(),
                 view.currency().name(),
                 view.amount(),
-                view.consumptionDate() != null ? view.consumptionDate().atOffset(ZoneOffset.UTC) : null,
-                view.consumptionApprobationDate() != null ? view.consumptionApprobationDate().atOffset(ZoneOffset.UTC) : null
+                Objects.requireNonNull(view.consumptionDate(), CONSUMPTION_DATE_NOT_NULL).atOffset(ZoneOffset.UTC),
+                Objects.requireNonNull(view.consumptionApprobationDate(), CONSUMPTION_APPROBATION_DATE_NOT_NULL).atOffset(ZoneOffset.UTC)
         );
     }
 

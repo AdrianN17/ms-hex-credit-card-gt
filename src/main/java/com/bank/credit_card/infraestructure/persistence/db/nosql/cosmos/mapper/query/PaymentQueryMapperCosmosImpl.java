@@ -2,7 +2,9 @@ package com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.mapper.
 
 import com.bank.credit_card.application.port.in.query.view.LoadPaymentView;
 import com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.entity.PaymentEntityCosmos;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PaymentQueryMapperCosmosImpl implements PaymentQueryMapperCosmos {
 
     @Override

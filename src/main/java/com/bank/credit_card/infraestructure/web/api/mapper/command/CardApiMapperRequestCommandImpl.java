@@ -7,24 +7,34 @@ import com.bank.credit_card.domain.base.enums.CurrencyEnum;
 import com.bank.credit_card.domain.card.CategoryCardEnum;
 import com.bank.credit_card.domain.card.TypeCardEnum;
 import com.bank.credit_card.infraestructure.web.api.schema.request.CardRequest;
+import com.bank.credit_card.infraestructure.web.api.schema.request.CardRequestAccount;
+import com.bank.credit_card.infraestructure.web.api.schema.request.CardRequestBenefit;
 import com.bank.credit_card.infraestructure.web.api.schema.response.CardResponse;
 import com.bank.credit_card.infraestructure.web.api.schema.response.CardResponseAccount;
 import com.bank.credit_card.infraestructure.web.api.schema.response.CardResponseBalance;
 import com.bank.credit_card.infraestructure.web.api.schema.response.CardResponseBenefit;
 
+import java.util.Objects;
+
+import static com.bank.credit_card.infraestructure.web.api.contants.CardMapperCommandMessageConstants.*;
+
 public class CardApiMapperRequestCommandImpl implements CardApiMapperRequestCommand {
 
     @Override
     public CardCreateCommand toCommand(CardRequest request) {
+        CardRequestAccount account = Objects.requireNonNull(request.getAccount(), ACCOUNT_NOT_NULL);
+        CardRequestBenefit benefit = Objects.requireNonNull(request.getBenefit(), BENEFIT_NOT_NULL);
+        String currency = Objects.requireNonNull(account.getCurrency(), CURRENCY_NOT_NULL);
+
         return new CardCreateCommand(
                 TypeCardEnum.valueOf(request.getTypeCard()),
                 CategoryCardEnum.valueOf(request.getCategoryCard()),
-                request.getAccount().getCreditTotal(),
-                request.getAccount().getDebtTax(),
-                request.getBenefit().getHasDiscount(),
-                request.getBenefit().getMultiplierPoints(),
-                Short.parseShort(request.getAccount().getPaymentDate()),
-                CurrencyEnum.valueOf(request.getAccount().getCurrency())
+                account.getCreditTotal(),
+                account.getDebtTax(),
+                benefit.getHasDiscount(),
+                benefit.getMultiplierPoints(),
+                Short.parseShort(account.getPaymentDate()),
+                CurrencyEnum.valueOf(currency)
         );
     }
 
