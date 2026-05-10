@@ -25,6 +25,7 @@ spring:
     mongodb:
       uri: mongodb+srv://adriannor176_db_user:${MONGODB_PASSWORD}@cluster0.maa0cec.mongodb.net/credit_card_db?appName=Cluster0
       database: credit_card_db
+      uuid-representation: standard
 api:
   convert:
     url: http://localhost:3001/convert/currency/
