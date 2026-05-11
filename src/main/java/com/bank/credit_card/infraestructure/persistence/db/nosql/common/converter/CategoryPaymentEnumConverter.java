@@ -1,6 +1,6 @@
 package com.bank.credit_card.infraestructure.persistence.db.nosql.common.converter;
 
-import com.bank.credit_card.domain.card.CategoryPaymentEnum;
+import com.bank.credit_card.domain.payment.CategoryPaymentEnum;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

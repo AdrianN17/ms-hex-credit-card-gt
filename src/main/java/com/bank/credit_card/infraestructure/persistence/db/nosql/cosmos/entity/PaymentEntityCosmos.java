@@ -3,7 +3,7 @@ package com.bank.credit_card.infraestructure.persistence.db.nosql.cosmos.entity;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import com.bank.credit_card.domain.base.enums.CurrencyEnum;
-import com.bank.credit_card.domain.card.CategoryPaymentEnum;
+import com.bank.credit_card.domain.payment.CategoryPaymentEnum;
 import com.bank.credit_card.domain.payment.ChannelPaymentEnum;
 import com.bank.credit_card.infraestructure.persistence.db.generic.entity.GenericEntity;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

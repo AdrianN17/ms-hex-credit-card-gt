@@ -6,7 +6,6 @@ import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.base.vo.Approbation;
 import com.bank.credit_card.domain.base.vo.Currency;
 import com.bank.credit_card.domain.base.vo.DateRange;
-import com.bank.credit_card.domain.card.CategoryPaymentEnum;
 import com.bank.credit_card.domain.card.vo.CardId;
 import com.bank.credit_card.domain.generic.GenericDomain;
 import com.bank.credit_card.domain.payment.vo.PaymentId;

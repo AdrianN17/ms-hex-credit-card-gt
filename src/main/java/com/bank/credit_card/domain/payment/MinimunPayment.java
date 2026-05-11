@@ -6,7 +6,6 @@ import com.bank.credit_card.domain.base.vo.Amount;
 import com.bank.credit_card.domain.base.vo.Approbation;
 import com.bank.credit_card.domain.base.vo.Currency;
 import com.bank.credit_card.domain.base.vo.DateRange;
-import com.bank.credit_card.domain.card.CategoryPaymentEnum;
 import com.bank.credit_card.domain.card.vo.CardId;
 import com.bank.credit_card.domain.generic.GenericDomain;
 import com.bank.credit_card.domain.payment.vo.PaymentId;
@@ -17,7 +16,7 @@ import java.util.UUID;
 
 import static com.bank.credit_card.domain.base.constants.DateRangeErrorMessage.DATE_NOT_WITHIN_RANGE;
 import static com.bank.credit_card.domain.base.enums.StatusEnum.ACTIVE;
-import static com.bank.credit_card.domain.card.CategoryPaymentEnum.MINIMO;
+import static com.bank.credit_card.domain.payment.CategoryPaymentEnum.MINIMO;
 import static com.bank.credit_card.domain.payment.PaymentErrorMessage.*;
 import static com.bank.credit_card.domain.util.Validation.isNotConditional;
 import static com.bank.credit_card.domain.util.Validation.isNotNull;

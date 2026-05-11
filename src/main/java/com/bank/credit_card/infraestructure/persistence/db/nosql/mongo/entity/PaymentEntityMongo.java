@@ -1,7 +1,7 @@
 package com.bank.credit_card.infraestructure.persistence.db.nosql.mongo.entity;
 
 import com.bank.credit_card.domain.base.enums.CurrencyEnum;
-import com.bank.credit_card.domain.card.CategoryPaymentEnum;
+import com.bank.credit_card.domain.payment.CategoryPaymentEnum;
 import com.bank.credit_card.domain.payment.ChannelPaymentEnum;
 import com.bank.credit_card.infraestructure.persistence.db.generic.converter.CurrencyEnumConverter;
 import com.bank.credit_card.infraestructure.persistence.db.generic.entity.GenericEntity;

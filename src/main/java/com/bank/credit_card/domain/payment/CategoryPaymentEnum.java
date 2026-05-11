@@ -1,4 +1,4 @@
-package com.bank.credit_card.domain.card;
+package com.bank.credit_card.domain.payment;
 
 import java.util.Arrays;
 import java.util.Optional;

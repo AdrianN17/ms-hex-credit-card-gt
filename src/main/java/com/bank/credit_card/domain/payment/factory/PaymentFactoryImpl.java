@@ -2,7 +2,7 @@ package com.bank.credit_card.domain.payment.factory;
 
 import com.bank.credit_card.domain.base.enums.StatusEnum;
 import com.bank.credit_card.domain.base.vo.Currency;
-import com.bank.credit_card.domain.card.CategoryPaymentEnum;
+import com.bank.credit_card.domain.payment.CategoryPaymentEnum;
 import com.bank.credit_card.domain.payment.*;
 
 import java.math.BigDecimal;

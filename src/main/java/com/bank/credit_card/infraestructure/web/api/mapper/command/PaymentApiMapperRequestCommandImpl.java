@@ -4,7 +4,7 @@ import com.bank.credit_card.application.port.in.command.CardCancelPaymentCommand
 import com.bank.credit_card.application.port.in.command.CardProcessPaymentCommand;
 import com.bank.credit_card.application.port.in.query.view.LoadPaymentView;
 import com.bank.credit_card.domain.base.enums.CurrencyEnum;
-import com.bank.credit_card.domain.card.CategoryPaymentEnum;
+import com.bank.credit_card.domain.payment.CategoryPaymentEnum;
 import com.bank.credit_card.domain.payment.ChannelPaymentEnum;
 import com.bank.credit_card.infraestructure.web.api.schema.request.PaymentRequest;
 import com.bank.credit_card.infraestructure.web.api.schema.response.PaymentResponse;
