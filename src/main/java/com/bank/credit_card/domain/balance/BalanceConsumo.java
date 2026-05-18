@@ -90,8 +90,7 @@ public class BalanceConsumo extends GenericDomain<BalanceId> implements BalanceO
     @Override
     public Boolean isOvercharged() {
         BigDecimal limitOvercharge = getTotal().getAmount().multiply(OVERCHARGE_LIMIT);
-        BigDecimal totalLimit = getTotal().getAmount().add(limitOvercharge);
-        return getAvailable().getAmount().compareTo(totalLimit) > 0;
+        return getAvailable().getAmount().compareTo(limitOvercharge) <= 0;
     }
 
     @Override
