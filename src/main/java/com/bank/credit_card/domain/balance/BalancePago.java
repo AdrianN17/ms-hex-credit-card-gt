@@ -100,8 +100,9 @@ public class BalancePago extends GenericDomain<BalanceId> implements BalanceOper
     public void apply(Amount amount) {
         isNotNull(amount, new BalanceException(PAYMENT_CANNOT_BE_NULL));
         this.available = getAvailable().mas(amount);
-        isNotConditional(getAvailable().estaSobrando(getTotal()),
-                new BalanceException(PAYMENT_CATEGORY_EXCEED_LIKE + getAvailable().menos(getTotal()).toString()));
+        isNotConditional(getAvailable().estaFaltando(getTotal()),
+                new BalanceException(PAYMENT_CATEGORY_EXCEED_LIKE + getTotal().menos(getAvailable())));
+
     }
 
     @Override
@@ -196,6 +197,7 @@ public class BalancePago extends GenericDomain<BalanceId> implements BalanceOper
             isNotNull(dateRange, new BalanceException(DATE_RANGE_CANNOT_BE_NULL));
 
             if (this.status == null) this.status = ACTIVE;
+            if (this.updatedDate != null) this.updatedDate = LocalDateTime.now();
             if (this.createdDate == null) this.createdDate = LocalDateTime.now();
 
             if (this.old == null) this.old = this.total;

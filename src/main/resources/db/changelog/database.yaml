@@ -117,9 +117,6 @@ databaseChangeLog:
                   name: oldAmount
                   type: DECIMAL(19,2)
               - column:
-                  name: exchangeRate
-                  type: DECIMAL(19,2)
-              - column:
                   name: startDate
                   type: DATE
               - column:

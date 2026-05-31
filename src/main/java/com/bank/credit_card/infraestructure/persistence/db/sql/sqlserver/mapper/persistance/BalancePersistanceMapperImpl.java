@@ -44,6 +44,7 @@ public class BalancePersistanceMapperImpl implements BalancePersistanceMapper {
                 .updatedDate(balance.getUpdatedDate())
                 .status(balance.getStatus())
                 .cardId(balance.getCardId().getValue())
+                .currency(balance.getAvailable().getCurrency().getCurrency())
                 .build();
     }
 }

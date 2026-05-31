@@ -37,13 +37,13 @@ public final class DateRange {
 
     public static DateRange create(LocalDate startDate, LocalDate endDate) {
         isNotConditional(startDate.isAfter(endDate), new DateRangeException(START_DATE_AFTER_END_DATE));
-        isNotConditional((startDate.isBefore(LocalDate.now()) || endDate.isBefore(LocalDate.now())), new DateRangeException(END_DATE_BEFORE_START_DATE));
+        isNotConditional((startDate.isBefore(now()) && endDate.isBefore(now())), new DateRangeException(END_DATE_BEFORE_START_DATE));
 
         return new DateRange(startDate, endDate);
     }
 
     public static DateRange create(Short day) {
-        LocalDate startDate = LocalDate.now().withDayOfMonth(day);
+        LocalDate startDate = now().withDayOfMonth(day);
         LocalDate endDate = startDate.plusMonths(NEXT_MONTH);
         return new DateRange(startDate, endDate);
     }
@@ -52,5 +52,10 @@ public final class DateRange {
         LocalDate startDate = dateRange.getStartDate().plusMonths(NEXT_MONTH);
         LocalDate endDate = dateRange.getEndDate().plusMonths(NEXT_MONTH);
         return new DateRange(startDate, endDate);
+    }
+
+
+    private static LocalDate now() {
+        return LocalDate.now();
     }
 }

@@ -21,6 +21,6 @@ public class CurrencyWSAdapter implements LoadCurrencyPort {
     @Override
     public Optional<Currency> load(CurrencyEnum currencyEnum) {
         return Optional.of(currencyJsonServerWSRepository.findByCurrency(currencyEnum))
-                .map(mapperCurrency::toDomain);
+                .map(C -> mapperCurrency.toDomain(C, currencyEnum));
     }
 }

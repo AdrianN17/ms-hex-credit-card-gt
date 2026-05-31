@@ -26,7 +26,7 @@ public final class Approbation {
 
     public static Approbation create(LocalDateTime date) {
         isNotNull(date, new ApprobationException(APPROBATION_DATE_REQUIRED));
-        return new Approbation(date, null);
+        return new Approbation(date, date);
     }
 
     public static Approbation create(LocalDateTime date, LocalDateTime approbationDate) {

@@ -176,6 +176,7 @@ public class TotalPayment extends GenericDomain<PaymentId> implements Payment {
         public TotalPayment build() {
             if (this.id == null) this.id = PaymentId.create(UUID.randomUUID());
             if (this.status == null) this.status = ACTIVE;
+            if (this.updatedDate != null) this.updatedDate = LocalDateTime.now();
             if (this.createdDate == null) this.createdDate = LocalDateTime.now();
             if (this.paymentApprobation == null) this.paymentApprobation = Approbation.create(LocalDateTime.now());
 

@@ -129,6 +129,7 @@ public class Benefit extends GenericDomain<BenefitId> {
 
             if (this.totalPoints == null) this.totalPoints = Point.create();
             if (this.status == null) this.status = ACTIVE;
+            if (this.updatedDate != null) this.updatedDate = LocalDateTime.now();
             if (this.createdDate == null) this.createdDate = LocalDateTime.now();
 
             return new Benefit(this);

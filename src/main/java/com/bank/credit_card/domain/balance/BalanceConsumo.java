@@ -102,7 +102,7 @@ public class BalanceConsumo extends GenericDomain<BalanceId> implements BalanceO
     @Override
     public void cancel(Amount amount) {
         isNotNull(amount, new BalanceException(PAYMENT_CANNOT_BE_NULL));
-        this.available = getAvailable().menos(amount);
+        this.available = getAvailable().mas(amount);
     }
 
     public static BalanceConsumoBuilder builder() {
@@ -191,6 +191,7 @@ public class BalanceConsumo extends GenericDomain<BalanceId> implements BalanceO
             isNotNull(dateRange, new BalanceException(DATE_RANGE_CANNOT_BE_NULL));
 
             if (this.status == null) this.status = ACTIVE;
+            if (this.updatedDate != null) this.updatedDate = LocalDateTime.now();
             if (this.createdDate == null) this.createdDate = LocalDateTime.now();
 
             if (this.old == null) this.old = this.total;

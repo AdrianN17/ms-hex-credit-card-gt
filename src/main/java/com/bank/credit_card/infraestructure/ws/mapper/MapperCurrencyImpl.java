@@ -7,8 +7,8 @@ import com.bank.credit_card.infraestructure.ws.dto.CurrencyDto;
 public class MapperCurrencyImpl implements MapperCurrency {
 
     @Override
-    public Currency toDomain(CurrencyDto currencyDto) {
-        return Currency.create(CurrencyEnum.valueOf(currencyDto.currency()),
+    public Currency toDomain(CurrencyDto currencyDto, CurrencyEnum currencyEnum) {
+        return Currency.create(currencyEnum,
                 currencyDto.value());
     }
 

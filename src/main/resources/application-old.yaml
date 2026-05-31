@@ -9,11 +9,12 @@ spring:
       - com.azure.spring.cloud.autoconfigure.implementation.cosmos.AzureCosmosAutoConfiguration
       - com.azure.spring.cloud.autoconfigure.implementation.data.cosmos.CosmosRepositoriesAutoConfiguration
   datasource:
-    url: jdbc:sqlserver://azsqltest03s.database.windows.net;databaseName=azsqltest03;encrypt=false;trustServerCertificate=false;DB_CLOSE_DELAY=-1
+    url: jdbc:sqlserver://dbtestgt.database.windows.net;databaseName=free-sql-db-9472607;encrypt=false;trustServerCertificate=false;DB_CLOSE_DELAY=-1
     username: adrian
     password: ${SQLSERVER_PASSWORD}
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
+    show-sql: true
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

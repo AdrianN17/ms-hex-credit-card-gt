@@ -177,6 +177,8 @@ public class Card extends GenericDomain<CardId> {
 
             if (this.cardStatus == null) this.cardStatus = OPERATIVE;
             if (this.status == null) this.status = ACTIVE;
+            if (this.updatedDate != null) this.updatedDate = LocalDateTime.now();
+            if (this.createdDate == null) this.createdDate = LocalDateTime.now();
 
             return new Card(this);
         }
