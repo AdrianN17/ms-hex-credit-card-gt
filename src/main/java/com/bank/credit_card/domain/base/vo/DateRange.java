@@ -43,7 +43,13 @@ public final class DateRange {
     }
 
     public static DateRange create(Short day) {
-        LocalDate startDate = now().withDayOfMonth(day);
+        LocalDate today = now();
+        LocalDate startDate = today.withDayOfMonth(day);
+
+        if (today.isBefore(startDate)) {
+            startDate = startDate.minusMonths(NEXT_MONTH);
+        }
+
         LocalDate endDate = startDate.plusMonths(NEXT_MONTH);
         return new DateRange(startDate, endDate);
     }
