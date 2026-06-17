@@ -23,7 +23,7 @@ spring:
   cloud:
     azure:
       cosmos:
-        endpoint: https://azcosmosgt3.documents.azure.com:443/
+        endpoint: https://azcosmosgt4.documents.azure.com:443/
         key: ${COSMOS_KEY}
         database: cosmosgtdata
         populate-query-metrics: false
